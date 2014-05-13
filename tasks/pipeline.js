@@ -54,9 +54,18 @@ var jsFilesToInject = [
         'js/lib/services/module.js',
         'js/lib/services/**/*.js',
     /*app*/
+        /*pages*/
+        'js/app/pages/module.js',
+        'js/app/pages/**/*.js',
         /*control panel*/
         'js/app/control_panel/module.js',
         'js/app/control_panel/**/*.js',
+        /*registration*/
+        'js/app/registration/module.js',
+        'js/app/registration/**/*.js',
+        /*user*/
+        'js/app/user/module.js',
+        'js/app/user/**/*.js',
     'js/app/app.js'
 ];
 

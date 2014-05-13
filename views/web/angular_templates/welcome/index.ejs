@@ -1,0 +1,25 @@
+<div class="js_ya-map b-ya-map__content" id="yaMap"></div>
+<div class="b-ya-map">
+    <div class="b-ya-map__hint">
+        <p style="margin-bottom: 20px;">
+            Портал о проишествиях на дороге, если в стали участником или свидетелем проишествия на дороге, то вы можете найти интересующее вас видео, зарегестрировавшись вы так же можете скачать интересующее вас видео.
+        </p>
+        <div class="btn btn-primary btn-block">Поиск видео</div>
+        <div class="btn btn-primary btn-block">ВОЙТИ</div>
+        <div class="btn btn-primary btn-block">ЗАРЕГЕСТРИРОВАТЬСЯ</div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    ymaps.ready(init);
+    var myMap;
+
+    function init(){
+        myMap = new ymaps.Map("yaMap", {
+            center: [55.76, 37.64],
+            zoom: 8
+        });
+    }
+</script>

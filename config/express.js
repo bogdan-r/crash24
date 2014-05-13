@@ -4,8 +4,52 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#documentation
  */
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt-nodejs');
+
+passport.serializeUser(function(user, next){
+    next(null, user.id);
+});
+
+passport.deserializeUser(function(id, next){
+    User.findOne(id).exec(function(err, user){
+        next(err, user);
+    })
+});
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+}, function (username, password, next) {
+
+    User.findOne()
+        .where({or : [
+            {username : username},
+            {email : username}
+        ]})
+        .exec(function (err, user) {
+            if (err) {return next(err)}
+            if (!user || user.length > 1) {
+                return next(null, false, {error: 'Пользователя с таким именем не существует'});
+            }
+            bcrypt.compare(password, user.password, function (err, res) {
+                if (!res) {
+                    return next(null, false, {error: 'Invalid password'});
+                }
+                return next(null, user);
+            });
+        });
+}));
+
 module.exports.express = {
 
+    middleware: {
+        custom: true
+    },
+    customMiddleware: function(app){
+        app.use(passport.initialize());
+        app.use(passport.session());
+    }
 	// Completely override Express middleware loading.  
 	// If you only want to override the bodyParser, cookieParser
 	// or methodOverride middleware, see the appropriate keys below.

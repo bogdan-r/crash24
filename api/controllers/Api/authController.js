@@ -13,16 +13,15 @@ module.exports = {
     login: function (req, res) {
         passport.authenticate('local', function(err, user, info){
             if(err || !user){
-                res.json(422, {errors : {
-                    common : "Произошла ошибка"
-                }})
+                return res.json(422, info)
             }
             req.logIn(user, function(err){
                 if(err){
-                    res.json(422, {errors : {
+                    return res.json(422, {errors : {
                         password : "Email или пароль введен неверно"
                     }})
                 }
+                return res.json({});
             })
         })(req, res);
     },

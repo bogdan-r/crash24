@@ -1,5 +1,5 @@
-<div ng-controller="NavbarCtrl" class="navbar navbar-inverse navbar-static-top" role="navigation">
-    <div class="container">
+<!--div ng-controller="NavbarCtrl" class="container b-navbar">
+    <div class="navbar navbar-inverse b-navbar__nav" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -11,9 +11,14 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="">Регистрация</a></li>
-                <li><a href="">Авторизация</a></li>
+                <% if(isAuth){%>
+                <li><a ui-sref="profile">Личный кабинет</a></li>
+                <li><a href="/logout">Выйти</a></li>
+                <%}else{%>
+                <li><a ui-sref="signup">Регистрация</a></li>
+                <li><a ui-sref="signin">Авторизация</a></li>
+                <%}%>
             </ul>
-        </div><!--/.navbar-collapse -->
+        </div>
     </div>
-</div>
+</div-->

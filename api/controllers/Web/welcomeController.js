@@ -10,6 +10,7 @@ module.exports = {
      * `Web/welcomeController.index`
      */
     index: function (req, res) {
+        console.log(req.session);
         return res.view();
     }
 };

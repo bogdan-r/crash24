@@ -8,7 +8,7 @@
 var bcrypt = require('bcrypt-nodejs');
 
 function hashPassword(values, next){
-    bcrypt.hash(values.password, 10, function(err, hash){
+    bcrypt.hash(values.password, null, null, function(err, hash){
         if(err){
             next(err);
         }
@@ -42,8 +42,9 @@ module.exports = {
             defaultsTo : false
         },
         toJSON : function(){
-            var obj = this.toObject;
+            var obj = this.toObject();
             delete obj.password;
+            delete obj.admin;
             return obj;
         },
         validPassword : function(password, callback){

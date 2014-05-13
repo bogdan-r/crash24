@@ -26,8 +26,24 @@ module.exports.routes = {
     // default view engine) your home page.
     //
     // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
-    '/': 'Web/welcomeController'
+    '/': 'Web/welcomeController',
 
+    /*angular templates*/
+    'get /angular_templates' : 'Web/angular_templatesController.show',
+
+    /*users*/
+    'post /api/user' : 'Api/userController.create',
+    'get /api/user/profile' : 'Api/userController.profile',
+
+    /*auth*/
+    'post /api/login' : 'Api/authController.login',
+    'get /logout' : 'Api/authController.logout',
+
+    /*other route*/
+    '/*' :{
+        controller : 'Web/welcomeController',
+        skipAssets : true
+    }
 
     // Custom routes here...
 
