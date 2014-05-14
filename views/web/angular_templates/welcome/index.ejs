@@ -1,16 +1,21 @@
-<div class="js_ya-map b-ya-map__content" id="yaMap"></div>
-<div class="b-ya-map">
-    <div class="b-ya-map__hint">
-        <p style="margin-bottom: 20px;">
-            Портал о проишествиях на дороге, если в стали участником или свидетелем проишествия на дороге, то вы можете найти интересующее вас видео, зарегестрировавшись вы так же можете скачать интересующее вас видео.
-        </p>
-        <div class="btn btn-primary btn-block">Поиск видео</div>
-        <div class="btn btn-primary btn-block">ВОЙТИ</div>
-        <div class="btn btn-primary btn-block">ЗАРЕГЕСТРИРОВАТЬСЯ</div>
-    </div>
+<div class="js_ya-map b-ya-map" id="yaMap"></div>
+<div class="container">
+    <div class="b-placer b-search">
+        <h1>Поиск</h1>
 
+        <form action="" class="form">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Город"/>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Улица"/>
+            </div>
+        </form>
+    </div>
 </div>
 
+<div class="b-placer b-result" style="display: none"></div>
+<div class="b-placer b-incident" style="display: none"></div>
 
 <script type="text/javascript">
     ymaps.ready(init);
@@ -19,7 +24,8 @@
     function init(){
         myMap = new ymaps.Map("yaMap", {
             center: [55.76, 37.64],
-            zoom: 8
+            zoom: 8,
+            controls: []
         });
     }
 </script>
