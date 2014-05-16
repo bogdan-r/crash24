@@ -23,6 +23,11 @@ angular.module(Crash24).config([
         templateUrl : RouterHelper.templateUrl('auth/signin')
         controller : 'SigninCtrl'
       })
+    .state('logout', {
+        url : ''
+        template : ''
+        controller : 'LogoutCtrl'
+      })
     .state('profile', {
         url : '/profile'
         templateUrl : RouterHelper.templateUrl('user/profile')

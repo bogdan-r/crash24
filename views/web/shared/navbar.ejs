@@ -49,12 +49,22 @@
             <span class="b-city-search__adress">Ул. Коненкова</span>
         </div>
         <ul class="b-navbar__userControls">
+            <% if(isAuth){%>
+            <li class="b-navbar__userControls__item">
+                <a class="b-navbar__userControls__item__link" ui-sref="profile">Личный кабинет</a>
+            </li>
+            <li class="b-navbar__userControls__item">
+                <a class="b-navbar__userControls__item__link" ui-sref="logout">Выйти</a>
+            </li>
+            <%}else{%>
             <li class="b-navbar__userControls__item">
                 <a class="b-navbar__userControls__item__link" ui-sref="signup">Регистрация</a>
             </li>
             <li class="b-navbar__userControls__item">
                 <a class="b-navbar__userControls__item__link" ui-sref="signin">Авторизация</a>
             </li>
+            <%}%>
+
         </ul>
     </nav>
 </header>
