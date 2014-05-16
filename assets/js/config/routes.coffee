@@ -13,10 +13,6 @@ angular.module(Crash24).config([
         templateUrl : RouterHelper.templateUrl('welcome/index')
         controller : 'WelcomeCtrl'
       })
-    .state('main.index', {
-        url : ''
-        templateUrl : RouterHelper.templateUrl('welcome/welcome_face')
-      })
     .state('signup', {
         url : '/signup'
         templateUrl : RouterHelper.templateUrl('auth/signup')

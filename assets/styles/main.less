@@ -1,19 +1,31 @@
 html, body{
   min-height: 100%;
   height: 100%;
-  color: #ddd;
+  color: @asphalt;
 }
 /*COMMON*/
 /*placer*/
 .b-placer{
-  background: rgba(64, 64, 64, 0.9);
-  border-radius: 10px;
+  width: 600px;
+  background: #fff;
   padding: 15px;
+  box-sizing: border-box;
   z-index: 1000;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  box-shadow: 0 0 8px #333;
   h1{
     margin-top: 0;
   }
 }
+
+
+
+
+
+
 
 .b-ya-map{
   position: fixed;
@@ -23,33 +35,215 @@ html, body{
   height: 100%;
   z-index: 1;
 }
+
+
+
+
+
+
+
+
+/*HEADER*/
 .b-header{
   margin-bottom: 0;
-  padding-top: 20px;
-  margin-bottom: 30px;
-  z-index: 1000;
+  z-index: 1001;
   position: relative;
 }
 
+
 .b-navbar{
-  background: rgba(64, 64, 64, 0.9);
-  border-radius: 10px;
-  height: 50px;
+  background: @asphalt;
+  height: 60px;
 }
+.b-navbar__menu{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    float: left;
+}
+.b-navbar__menu__item{
+    float: left;
+}
+.b-navbar__menu__item__link{
+    transition: background 0.3s ease, color 0.3s ease;
+    float: left;
+    width: 200px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    color: #ddd;
+    font-size: 20px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    position: relative;
+    &:hover{
+        color: #fff;
+        background: @road_sign_orange_light;
+        text-decoration: none;
+    }
+    &.b-navbar__logo:hover{
+        background: none;
+    }
+    &.b-navbar__menu__item__link-active{
+        background: @road_sign_orange_light;
+        color: #fff;
+        &:before{
+            z-index: 100;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 7px solid @road_sign_orange_light;
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -7px;
+            margin-left: -5px;
+        }
+    }
+}
+
+
+//TODO сделать общий класс
+.b-navbar__menu__item__link-result{
+    position: relative;
+    padding-left: 35px;
+    &:before{
+        content: "\e012";
+        font-family: 'Glyphicons Halflings';
+        text-shadow: none;
+        line-height: 1;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -12px;
+    }
+}
+.b-navbar__menu__item__link-filter{
+    position: relative;
+    padding-left: 35px;
+    &:before{
+        content: "\e138";
+        font-family: 'Glyphicons Halflings';
+        text-shadow: none;
+        line-height: 1;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -10px;
+    }
+}
+
+
 .b-navbar__logo{
   font-size: 24px;
   color: #ddd;
-  line-height: 50px;
-  padding-left: 15px;
   &:hover, &:focus{
     color: #ddd;
     text-decoration: none;
   }
 }
+.b-navbar__userControls{
+    list-style-type: none;
+    float: right;
+    margin-right: 50px;
+}
+.b-navbar__userControls__item{
+    float: left;
+}
+.b-navbar__userControls__item__link{
+    transition: background 0.3s ease, color 0.3s ease;
+    height: 60px;
+    line-height: 60px;
+    display: inline-block;
+    padding: 0 20px;
+    color: #ddd;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    &:hover{
+        background: @road_sign_orange_light;
+        text-decoration: none;
+        color: #fff;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+.b-city-search{
+    float: left;
+    margin-left: 20px;
+    padding-top: 11px;
+}
+.b-city-search__current{
+    color: #ddd;
+    opacity: 0.6;
+    font-family: "PT Sans Narrow";
+    font-size: 26px;
+    margin-right: 5px;
+}
+.b-city-search__adress{
+    color: #ddd;
+    opacity: 0.9;
+}
+
+
+
+
+
+
 
 /*search block*/
-.b-search{
-  height: 500px;
-  width: 370px;
-  position: relative;
+.b-result{
+    bottom: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+}
+.b-result__item{
+    transition: background 0.2s ease;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    min-height: 130px;
+    &:hover{
+        background: rgba(242, 135, 5, 0.7);
+        cursor : pointer;
+        .b-result__item__content{
+            color: #fff;
+        }
+        .b-result__item__date{
+            color: #fff;
+        }
+    }
+}
+.b-result__item__pic{
+    float: left;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+}
+.b-result__item__content{
+    transition: color 0.2s ease;
+    margin-left: 120px;
+}
+.b-result__item__headline{
+    font-family: "PT Sans Caption";
+    font-size: 26px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.b-result__item__date{
+    transition: color 0.2s ease;
+    color: #aaa;
+    font-style: italic;
+    font-size: 13px;
+    margin-bottom: 5px;
 }

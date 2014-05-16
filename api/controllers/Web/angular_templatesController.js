@@ -6,7 +6,7 @@
  */
 var path = require('path');
 var ROOT = process.cwd() + '/view/'
-var ANGULAR_ROOT = path.normalize('/web/angular_templates/');
+var ANGULAR_ROOT = path.normalize('web/angular_templates/');
 var FULL_ANG_PATH = path.normalize(path.join(ROOT, ANGULAR_ROOT));
 module.exports = {
 	show : function(req, res){

@@ -25,6 +25,9 @@ module.exports = {
         description : {
             type : 'text'
         },
+        place : {
+            type : 'string'
+        },
         user : {
             model : 'user'
         }
