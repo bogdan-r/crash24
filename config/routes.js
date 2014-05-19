@@ -35,6 +35,13 @@ module.exports.routes = {
     'post /api/user' : 'Api/userController.create',
     'get /api/user/profile' : 'Api/userController.profile',
 
+    /*incidents*/
+    'get /api/incident' : 'Api/incidentController.find', //TODO для теста, обязательно удалить
+    'get /api/incident' : 'Api/incidentController.create',
+    'put /api/incident/:id' : 'Api/incidentController.update',
+    'delete /api/incident/:id' : 'Api/incidentController.delete',
+    'post /api/incident/search' : 'Api/incidentController.search',
+
     /*auth*/
     'post /api/login' : 'Api/authController.login',
     'get /logout' : 'Api/authController.logout',
