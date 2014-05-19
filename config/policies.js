@@ -17,10 +17,19 @@ module.exports.policies = {
     // Default policy for all controllers and actions
     // (`true` allows public access)
     '*': 'injectAuthInfo',
+
+    /*users*/
     'Api/userController' : {
         '*' : false,
         create : true,
         profile : 'authenticated'
+    },
+
+    /*incidents*/
+    'Api/incidentController' : {
+        create : 'authenticated',
+        update : 'authenticated',
+        delete : 'authenticated'
     }
 
 

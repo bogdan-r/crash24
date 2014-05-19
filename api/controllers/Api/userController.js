@@ -7,7 +7,12 @@
 
 module.exports = {
     create : function(req, res){
-        User.create(req.body).exec(function(err, user){
+        var userParam = {
+            username : req.param('username'),
+            email : req.param('email'),
+            password : req.param('password')
+        }
+        User.create(userParam).exec(function(err, user){
             if(err){
                 //TODO Написать нормальные обработчик ошибок, удалить все лишнее
                 return res.json(err.status, err);
@@ -21,7 +26,10 @@ module.exports = {
         if(!req.user){
             return res.serverError();
         }else{
-            return res.json(req.user)
+            User.findOne(req.user.id).populate('incidents').exec(function(err, user){
+                if(err){return res.serverError();}
+                return res.json(user)
+            })
         }
     }
 };
