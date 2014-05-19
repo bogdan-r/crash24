@@ -12,7 +12,9 @@ module.exports = {
                 //TODO Написать нормальные обработчик ошибок, удалить все лишнее
                 return res.json(err.status, err);
             }
-            return res.json(user.toJSON());
+            req.logIn(user, function(err){
+                return res.json(user.toJSON());
+            })
         })
     },
     profile : function(req, res){
