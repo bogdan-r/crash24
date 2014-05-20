@@ -23,6 +23,28 @@ module.exports = {
             return res.json(incident);
         })
     },
+    findByAccount : function(req, res){
+        Incident.find({user : req.user.id}).exec(function(err, incidents){
+            if(err){return res.badRequest()}
+            res.json(incidents)
+        })
+    },
+    showByAccount : function(req, res){
+        Incident.findOne({
+            id : req.param('id'),
+            user : req.user.id
+        }).exec(function(err, incident){
+                res.json(incident)
+            });
+    },
+    show : function(req, res){
+        Incident.findOne({id : req.param('id')}).exec(function(err, incident){
+            if(err){return res.badRequest()}
+            if(!incident){return res.notFound()}
+
+            return res.json(incident)
+        })
+    },
     update : function(req, res){
         var idIncident = req.param('id');
         var incidentParams = {
@@ -34,7 +56,10 @@ module.exports = {
             place : req.param('place')
         };
 
-        Incident.update({id : idIncident, user : req.user.id}, incidentParams).exec(function(err, incident){
+        Incident.update({
+            id : idIncident,
+            user : req.user.id
+        }, incidentParams).exec(function(err, incident){
             if(err){return res.badRequest()}
             return res.json(incident);
         })
@@ -52,20 +77,8 @@ module.exports = {
                 })
             });
     },
-    //TODO для теста, обязательно удалить
-	find : function(req, res){
-        Incident.find().exec(function(err, incidents){
-            res.json(incidents)
-        })
-    },
-    show : function(req, res){
-        Incident.findOne({id : req.param('id')}).exec(function(err, incident){
-            if(err){return res.badRequest()}
-            if(!incident){return res.notFound()}
 
-            return res.json(incident)
-        })
-    },
+
     search : function(req, res){
 
     }

@@ -28,6 +28,8 @@ module.exports.policies = {
     /*incidents*/
     'Api/incidentController' : {
         create : 'authenticated',
+        findByAccount : 'authenticated',
+        showByAccount : 'authenticated',
         update : 'authenticated',
         delete : 'authenticated'
     }

@@ -28,9 +28,31 @@ angular.module(Crash24).config([
         template : ''
         controller : 'LogoutCtrl'
       })
-    .state('profile', {
+    .state('account', {
+        abstract : true
+        url : '/account'
+        templateUrl : RouterHelper.templateUrl('user/account')
+        resolve : {
+          userLoad : ['UserProfile', '$state', (UserProfile, $state)->
+            UserProfile.get().$promise.then(
+              (user)->
+                return user
+            , (err)->
+              if(err.status == 403)
+                $state.go('main')
+            )
+          ]
+        }
+        controller : 'AccountCtrl'
+      })
+    .state('account.profile', {
         url : '/profile'
-        templateUrl : RouterHelper.templateUrl('user/profile')
+        templateUrl : RouterHelper.templateUrl('user/account_profile')
         controller : 'ProfileCtrl'
+      })
+    .state('account.incidents', {
+        url : '/incidents'
+        templateUrl : RouterHelper.templateUrl('user/account_incidents')
+        controller : 'AccountIncidentsCtrl'
       })
 ])

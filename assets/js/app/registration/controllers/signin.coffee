@@ -2,7 +2,8 @@ angular.module(RegistrationControllers).controller('SigninCtrl', [
   '$scope'
   '$window'
   '$http'
-  ($scope, $window, $http)->
+  '$state'
+  ($scope, $window, $http, $state)->
 
     #var
 
@@ -10,7 +11,7 @@ angular.module(RegistrationControllers).controller('SigninCtrl', [
     _.extend($scope, {
       signin: (userParam)->
         $http.post('/api/login', userParam).success((data, status, headers, config)->
-          $window.location = '/profile'
+          $window.location = $state.href('account.profile')
         )
     })
 ])

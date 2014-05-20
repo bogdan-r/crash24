@@ -1,4 +1,4 @@
-angular.module(UserControllers).controller('ProfileCtrl', [
+angular.module(UserControllers).controller('AccountIncidentsCtrl', [
   '$scope'
   '$state'
   'UserProfile'
