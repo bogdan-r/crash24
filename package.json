@@ -37,5 +37,11 @@
     "url": "git://github.com/anonymous node/sails user/crash24.git"
   },
   "author": "anonymous node/sails user",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "mocha": "~1.19.0",
+    "grunt-mocha-test": "~0.10.2",
+    "sinon": "~1.10.0",
+    "assert": "~1.1.1"
+  }
 }

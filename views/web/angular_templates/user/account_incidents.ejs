@@ -1,1 +1,11 @@
-list incidents
+<h1>Видео</h1>
+
+<div style="margin-bottom: 20px;" ng-repeat="incident in incidents">
+    Заголовок: {{incident.title}}<br>
+    Дата: {{incident.date}}<br>
+    Описание: {{incident.description}}<br>
+    Место: {{incident.place}}<br>
+</div>
+<div>
+    <a ui-sref="account.incidents.add">Добавить видео</a>
+</div>

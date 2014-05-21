@@ -1,0 +1,21 @@
+<h1>Добавить видео</h1>
+
+<form ng-submit="addIncident(incidentParam)">
+    <div class="form-group">
+        <label for="">Заголовок</label>
+        <input type="text" ng-model="incidentParam.title" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="">Дата</label>
+        <input type="date" ng-model="incidentParam.date" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="">Описание</label>
+        <textarea ng-model="incidentParam.description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="">Место</label>
+        <input type="text" ng-model="incidentParam.place" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-default">Добавить видео</button>
+</form>

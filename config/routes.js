@@ -42,7 +42,7 @@ module.exports.routes = {
 
         /*for account*/
         'post /api/incident' : 'Api/incidentController.create',
-        'get /api/account/incident/' : 'Api/incidentController.findByAccount',
+        'get /api/account/incident' : 'Api/incidentController.findByAccount',
         'put /api/incident/:id' : 'Api/incidentController.update',
         'delete /api/incident/:id' : 'Api/incidentController.delete',
 

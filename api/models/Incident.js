@@ -30,6 +30,12 @@ module.exports = {
         },
         user : {
             model : 'user'
+        },
+        toJSON : function(){
+            var obj = this.toObject();
+            delete obj.user;
+
+            return obj;
         }
 
     }

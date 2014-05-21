@@ -55,4 +55,14 @@ angular.module(Crash24).config([
         templateUrl : RouterHelper.templateUrl('user/account_incidents')
         controller : 'AccountIncidentsCtrl'
       })
+    .state('account.incidents.add', {
+        url : '/add'
+        views : {
+          '@account' : {
+            templateUrl : RouterHelper.templateUrl('user/account_incidents_add')
+            controller : 'AccountIncidentsAddCtrl'
+          }
+        }
+
+      })
 ])

@@ -26,7 +26,7 @@ module.exports = {
         if(!req.user){
             return res.serverError();
         }else{
-            User.findOne(req.user.id).populate('incidents').exec(function(err, user){
+            User.findOne(req.user.id).exec(function(err, user){
                 if(err){return res.serverError();}
                 return res.json(user)
             })
