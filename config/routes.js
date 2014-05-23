@@ -38,6 +38,7 @@ module.exports.routes = {
     /*incidents*/
         /*common*/
         'post /api/incident/search' : 'Api/incidentController.search',
+        'post /api/incident/searchmap' : 'Api/incidentController.searchMap',
         'get /api/incident/:id' : 'Api/incidentController.show',
 
         /*for account*/

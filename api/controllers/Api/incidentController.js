@@ -10,8 +10,8 @@ module.exports = {
     create : function(req, res){
         var incidentParams = {
             title : req.param('title'),
-            lat : req.param('lat'),
-            long : req.param('long'),
+            lat : parseFloat(req.param('lat')),
+            long : parseFloat(req.param('long')),
             date : req.param('date'),
             description : req.param('description'),
             place : req.param('place'),
@@ -80,7 +80,18 @@ module.exports = {
 
 
     search : function(req, res){
+        //TODO Переписать на поиск с условиями
+        Incident.find().exec(function(err, incidents){
+            if (err) {return res.badRequest()}
+            return res.json(incidents)
+        })
+    },
 
+    searchMap : function(req, res){
+        //TODO Переписать на поиск с условиями для карты
+        Incident.find().exec(function(err, incidents){
+            if (err) {return res.badRequest()}
+            return res.json(incidents)
+        })
     }
-
 };

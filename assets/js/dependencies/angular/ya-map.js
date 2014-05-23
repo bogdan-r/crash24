@@ -10,7 +10,7 @@ angular.module('yaMap',[]).
 
     value('yaMapSettings',{
         lang:'ru-RU',
-        order:'longlat'
+        order:'latlong'
     }).
 
     factory('mapApiLoad',['yaMapSettings',function(yaMapSettings){
@@ -23,8 +23,8 @@ angular.module('yaMap',[]).
                 callback[0]();
             }
         };
-        var loadUrl = 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=' +
-            (yaMapSettings.lang || 'ru-RU') +'&coordorder=' +(yaMapSettings.order || 'longlat');
+        var loadUrl = 'http://api-maps.yandex.ru/2.1/?lang=' +
+            (yaMapSettings.lang || 'ru-RU') +'&coordorder=' +(yaMapSettings.order || 'latlong');
         var _loading = false;
         var loadScript = function(url, callback){
             if(_loading){

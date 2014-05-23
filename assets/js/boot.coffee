@@ -7,4 +7,5 @@ angular.module(Crash24, [
   'ngAnimate'
   'ngResource'
   'ui.router'
+  'yaMap'
 ])

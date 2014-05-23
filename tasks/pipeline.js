@@ -66,6 +66,12 @@ var jsFilesToInject = [
         /*user*/
         'js/app/user/module.js',
         'js/app/user/**/*.js',
+        /*ya maps*/
+        'js/app/maps/module.js',
+        'js/app/maps/**/*.js',
+        /*incidents*/
+        'js/app/incidents/module.js',
+        'js/app/incidents/**/*.js',
     'js/app/app.js'
 ];
 

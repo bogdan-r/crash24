@@ -13,6 +13,12 @@
         <label for="">Описание</label>
         <textarea ng-model="incidentParam.description" class="form-control"></textarea>
     </div>
+    <!--Для тестирования-->
+    <div class="form-group clearfix">
+        <label for="" style="display: block">Координаты</label>
+        <div class="col-xs-6" style="padding-left: 0"><input placeholder="Ширина" type="text" ng-model="incidentParam.lat" class="form-control"/></div>
+        <div class="col-xs-6" style="padding-right: 0"><input placeholder="Долгота" type="text" ng-model="incidentParam.long" class="form-control"/></div>
+    </div>
     <div class="form-group">
         <label for="">Место</label>
         <input type="text" ng-model="incidentParam.place" class="form-control"/>

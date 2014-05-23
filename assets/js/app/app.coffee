@@ -3,4 +3,6 @@ angular.module(Modules, [
   ControlPanel
   Registration
   User
+  YandexMaps
+  IncidentsM
 ])
