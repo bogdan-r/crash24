@@ -3,11 +3,10 @@ angular.module(IncidentsMControllers).controller('IncidentSearchResultCtrl', [
   'Incident'
   ($scope, Incident)->
     #var
-
+    console.log('IncidentSearchResultCtrl')
     #scope
     _.extend($scope, {
       incidents : []
-
     })
 
     #helpers
@@ -17,6 +16,5 @@ angular.module(IncidentsMControllers).controller('IncidentSearchResultCtrl', [
     #run
     Incident.search((incidents)->
       $scope.incidents = incidents
-      console.log($scope.incidents)
     )
 ])

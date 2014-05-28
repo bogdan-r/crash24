@@ -1,0 +1,10 @@
+<div ng-controller="MapMainCtrl">
+    <ya-map class="js_ya-map b-ya-map" ya-zoom="8" ya-center="[55.76, 37.64]" ya-after-init="afterMapInit($target)">
+        <ya-geo-object ng-repeat="point in points" ya-source="point" ya-options="{preset:'islands#blackStretchyIcon'}"></ya-geo-object>
+    </ya-map>
+</div>
+
+<div ui-view class="container"></div>
+
+<div class="b-placer b-filter" style="display: none"></div>
+

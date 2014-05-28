@@ -10,8 +10,24 @@ angular.module(Crash24).config([
     $stateProvider
     .state('main', {
         url : '/'
-        templateUrl : RouterHelper.templateUrl('welcome/index')
+        templateUrl : RouterHelper.templateUrl('pages/index')
         controller : 'WelcomeCtrl'
+      })
+    .state('search', {
+        abstract : true
+        url : '/search'
+        templateUrl : RouterHelper.templateUrl('search/search')
+      })
+    .state('search.result', {
+        url : ''
+        templateUrl : RouterHelper.templateUrl('search/search_result')
+        controller : 'IncidentSearchResultCtrl'
+      })
+    .state('search.result.showitem', {
+        #TODO изменить название для урла
+        url : '^/item'
+        templateUrl : RouterHelper.templateUrl('search/search_result_show')
+        controller : 'IncidentShowFromResultCtrl'
       })
     .state('signup', {
         url : '/signup'
@@ -39,7 +55,7 @@ angular.module(Crash24).config([
                 return user
             , (err)->
               if(err.status == 403)
-                $state.go('main')
+                $state.go('account.profile')
             )
           ]
         }

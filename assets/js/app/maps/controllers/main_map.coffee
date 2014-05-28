@@ -29,7 +29,7 @@ angular.module(YandexMapsControllers).controller('MapMainCtrl', [
           }
           properties: {
             iconContent: incident.title,
-            balloonContent: 'Меня можно перемещать'
+            balloonContent: incident.description
           }
         })
 
