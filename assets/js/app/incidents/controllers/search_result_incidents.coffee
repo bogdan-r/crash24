@@ -3,15 +3,22 @@ angular.module(IncidentsMControllers).controller('IncidentSearchResultCtrl', [
   'Incident'
   ($scope, Incident)->
     #var
-    console.log('IncidentSearchResultCtrl')
+
+
     #scope
     _.extend($scope, {
       incidents : []
+      isOpen : false
     })
 
     #helpers
 
     #event handler
+    $scope.$on('$stateChangeSuccess', (e, toState, toParam, fromState, fromParam)->
+      #FIXME сделать вариант понадежнее
+      if fromState.name == 'search.result.showitem'
+        $scope.isOpen = false
+    )
 
     #run
     Incident.search((incidents)->

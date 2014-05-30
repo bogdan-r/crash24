@@ -16,7 +16,15 @@ angular.module(Crash24).config([
     .state('search', {
         abstract : true
         url : '/search'
-        templateUrl : RouterHelper.templateUrl('search/search')
+        views : {
+          '' : {
+            templateUrl : RouterHelper.templateUrl('search/search')
+          }
+          'navbar@' : {
+            templateUrl : RouterHelper.templateUrl('search/control_panel')
+          }
+        }
+
       })
     .state('search.result', {
         url : ''
@@ -25,7 +33,7 @@ angular.module(Crash24).config([
       })
     .state('search.result.showitem', {
         #TODO изменить название для урла
-        url : '^/item'
+        url : '^/item/:id'
         templateUrl : RouterHelper.templateUrl('search/search_result_show')
         controller : 'IncidentShowFromResultCtrl'
       })

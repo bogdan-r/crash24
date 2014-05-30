@@ -1,7 +1,7 @@
 angular.module(Resources).factory('Incident', [
   '$resource'
   ($resource)->
-    Incident = $resource('/api/incident/:incidentId', null, {
+    Incident = $resource('/api/incident/:id', null, {
       'findByAccount' : {
         method : 'GET'
         url : '/api/account/incident'

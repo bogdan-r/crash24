@@ -1,12 +1,13 @@
 angular.module(IncidentsMControllers).controller('IncidentShowFromResultCtrl', [
   '$scope'
-  ($scope)->
+  '$stateParams'
+  'Incident'
+  ($scope, $stateParams, Incident)->
     #var
 
     #scope
     _.extend($scope, {
-      incidents : []
-
+      incident : {}
     })
 
     #helpers
@@ -14,5 +15,8 @@ angular.module(IncidentsMControllers).controller('IncidentShowFromResultCtrl', [
     #event handler
 
     #run
-
+    Incident.get({id : $stateParams.id}, (incident)->
+      $scope.incident = incident
+    )
+    $scope.$parent.isOpen = true
 ])

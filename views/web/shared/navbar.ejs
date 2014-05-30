@@ -1,29 +1,14 @@
 <header ng-controller="NavbarCtrl" class="b-header">
     <nav class="b-navbar">
-        <ul class="b-navbar__menu">
-            <li class="b-navbar__menu__item">
-                <a href="/" class="b-navbar__menu__item__link b-navbar__logo">24Crash</a>
-            </li>
-            <li class="b-navbar__menu__item">
-                <a href="" class="b-navbar__menu__item__link b-navbar__menu__item__link-active">
-                    <span class="b-navbar__menu__item__link-result">Результат</span>
-                </a>
-            </li>
-            <li class="b-navbar__menu__item">
-                <a href="" class="b-navbar__menu__item__link">
-                    <span class="b-navbar__menu__item__link-filter">
-                        Фильтры
-                    </span>
-
-                </a>
-            </li>
-        </ul>
-
-
-        <div class="b-city-search">
-            <span class="b-city-search__current">Москва</span>
-            <span class="b-city-search__adress">Ул. Коненкова</span>
+        <div ui-view="navbar">
+            <!--Шаблон по умолчанию-->
+            <ul class="b-navbar__menu">
+                <li class="b-navbar__menu__item">
+                    <a ui-sref="main" class="b-navbar__menu__item__link b-navbar__logo">24Crash</a>
+                </li>
+            </ul>
         </div>
+
         <ul class="b-navbar__userControls">
             <% if(isAuth){%>
             <li class="b-navbar__userControls__item">
