@@ -2,7 +2,7 @@
 
 <div style="margin-bottom: 20px;" ng-repeat="incident in incidents">
     Заголовок: {{incident.title}}<br>
-    Дата: {{incident.date}}<br>
+    Дата: {{incident.date | date:'dd.MM.yyyy'}}<br>
     Описание: {{incident.description}}<br>
     Место: {{incident.place}}<br>
 </div>

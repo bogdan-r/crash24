@@ -1,6 +1,6 @@
 <a ui-sref="search.result">Закрыть</a>
 <h1>{{incident.title}}</h1>
-<small>{{incident.date}}</small>
+<small>{{incident.date | date:'dd.MM.yyyy'}}</small>
 <p>{{incident.place}}</p>
 <p>{{incident.description}}</p>
 <div>

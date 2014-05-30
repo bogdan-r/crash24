@@ -8,9 +8,23 @@ angular.module('yaMap',[]).
         CIRCLE: 'Circle'
     }).
 
-    value('yaMapSettings',{
-        lang:'ru-RU',
-        order:'latlong'
+    provider('yaMapSettings',function yaMapSettingsProvider(){
+        var options = {
+            version:'2.1',
+            lang:'ru_RU',
+            order:'latlong'
+        };
+        this.setLanguage=function(lang){
+            options.lang=lang;
+            return this;
+        };
+        this.setOrder=function(order){
+            options.order = order;
+            return this;
+        };
+        this.$get=[function(){
+            return options;
+        }];
     }).
 
     factory('mapApiLoad',['yaMapSettings',function(yaMapSettings){
@@ -23,8 +37,8 @@ angular.module('yaMap',[]).
                 callback[0]();
             }
         };
-        var loadUrl = 'http://api-maps.yandex.ru/2.1/?lang=' +
-            (yaMapSettings.lang || 'ru-RU') +'&coordorder=' +(yaMapSettings.order || 'latlong');
+        var loadUrl = 'http://api-maps.yandex.ru/'+yaMapSettings.version+'/?lang=' +
+            yaMapSettings.lang +'&coordorder=' +yaMapSettings.order;
         var _loading = false;
         var loadScript = function(url, callback){
             if(_loading){
@@ -185,9 +199,6 @@ angular.module('yaMap',[]).
                 var hotspotLayer = new ymaps.hotspot.Layer(objSource, options);
                 $scope.map.layers.add(hotspotLayer);
             };
-            self.addToolbar = function(toolbar){
-                $scope.map.controls.add(toolbar);
-            };
         });
     }]).
     directive('yaMap',['$compile','mapApiLoad','yaMapSettings','$window','yaSubscriber','$parse','$q','$timeout',function($compile, mapApiLoad,yaMapSettings,$window,yaSubscriber,$parse,$q,$timeout){
@@ -215,17 +226,18 @@ angular.module('yaMap',[]).
                         if(centerCoordinatesDeferred)
                             centerCoordinatesDeferred.reject();
                         centerCoordinatesDeferred = $q.defer();
-                        var result;
                         if(!center){
                             //устанавливаем в качестве центра местоположение пользователя
                             mapApiLoad(function(){
-                                if(yaMapSettings.order==='longlat'){
-                                    result =  [ymaps.geolocation.longitude, ymaps.geolocation.latitude];
-                                }else{
-                                    result =  [ymaps.geolocation.latitude, ymaps.geolocation.longitude];
-                                }
-                                $timeout(function(){
-                                    centerCoordinatesDeferred.resolve(result);
+                                ymaps.geolocation.get({
+                                    // Выставляем опцию для определения положения по ip
+                                    provider: 'yandex'//,
+                                    // Карта автоматически отцентрируется по положению пользователя.
+                                    //mapStateAutoApply: true
+                                }).then(function (result) {
+                                    $timeout(function(){
+                                        centerCoordinatesDeferred.resolve(result.geoObjects.position);
+                                    });
                                 });
                             });
                         }else if(angular.isArray(center)){
@@ -237,9 +249,8 @@ angular.module('yaMap',[]).
                             mapApiLoad(function(){
                                 ymaps.geocode(center, { results: 1 }).then(function (res) {
                                     var firstGeoObject = res.geoObjects.get(0);
-                                    result = firstGeoObject.geometry.getCoordinates();
                                     scope.$apply(function(){
-                                        centerCoordinatesDeferred.resolve(result);
+                                        centerCoordinatesDeferred.resolve(firstGeoObject.geometry.getCoordinates());
                                     });
                                 }, function (err) {
                                     scope.$apply(function(){
@@ -252,6 +263,12 @@ angular.module('yaMap',[]).
                     };
                     var zoom = Number(attrs.yaZoom),
                         behaviors = attrs.yaBehaviors ? attrs.yaBehaviors.split(' ') : ['default'];
+                    var controls = ['default'];
+                    if(attrs.yaControls){
+                        controls=attrs.yaControls.split(' ');
+                    }else if(angular.isDefined(attrs.yaControls)){
+                        controls=[];
+                    }
                     var disableBehaviors=[], enableBehaviors=[], behavior;
                     for (var i = 0, ii = behaviors.length; i < ii; i++) {
                         behavior = behaviors[i];
@@ -280,6 +297,7 @@ angular.module('yaMap',[]).
                             scope.map = new ymaps.Map(element[0],{
                                 center: center,
                                 zoom:zoom,
+                                controls:controls,
                                 type:attrs.yaType || 'yandex#map',
                                 behaviors:enableBehaviors
                             }, options);
@@ -296,7 +314,7 @@ angular.module('yaMap',[]).
                             element.append(childNodes);
                             setTimeout(function(){
                                 scope.$apply(function() {
-                                    $compile(childNodes)(scope.$parent);
+                                    $compile(element.children())(scope.$parent);
                                 });
                             });
                         });
@@ -347,54 +365,14 @@ angular.module('yaMap',[]).
         };
     }]).
 
-    controller('MapToolbarCtrl',['$scope',function($scope){
-        this.add = function(control){
-            $scope.toolbar.add(control);
-        };
-    }]).
-    directive('yaToolbar',['$compile','$parse','yaSubscriber',function($compile,$parse,yaSubscriber){
-        return {
-            require:'^yaMap',
-            restrict:'E',
-            scope:{
-                yaAfterInit:'&'
-            },
-            compile:function(tElement){
-                var childNodes = tElement.contents();
-                tElement.html('');
-                return function(scope, element,attrs,yaMap) {
-                    if(!attrs.yaName){
-                        throw new Error('not pass attribute "name"');
-                    }
-                    var options = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : undefined;
-                    var params = attrs.yaParams ? scope.$eval(attrs.yaParams) : undefined;
-                    var className = attrs.yaName[0].toUpperCase() + attrs.yaName.substring(1);
-                    scope.toolbar = new ymaps.control[className](params);
-                    //подписка на события
-                    for(var key in attrs){
-                        if(key.indexOf('yaEvent')===0){
-                            var parentGet=$parse(attrs[key]);
-                            yaSubscriber.subscribe(scope.toolbar, parentGet,key,scope);
-                        }
-                    }
-                    yaMap.addControl(scope.toolbar,options);
-                    scope.yaAfterInit({$target:scope.toolbar});
-                    element.append(childNodes);
-                    $compile(childNodes)(scope.$parent);
-                };
-            },
-            controller:'MapToolbarCtrl'
-        };
-    }]).
-
     directive('yaControl',['yaSubscriber','templateLayoutFactory','$parse',function(yaSubscriber,templateLayoutFactory,$parse){
         return {
             restrict:'E',
-            require:'^yaToolbar',
+            require:'^yaMap',
             scope:{
                 yaAfterInit:'&'
             },
-            link:function(scope,elm,attrs,mapToolbar){
+            link:function(scope,elm,attrs,yaMap){
                 var className = attrs.yaType[0].toUpperCase() + attrs.yaType.substring(1);
                 var getEvalOrValue = function(value){
                     try{
@@ -411,30 +389,29 @@ angular.module('yaMap',[]).
                 if(options && options.itemLayout){
                     options.itemLayout = templateLayoutFactory.get(options.itemLayout);
                 }
-                var withoutParams = ['SearchControl','SmallZoomControl','ScaleLine','ZoomControl'];
-                var obj;
-                if(withoutParams.indexOf(className)>-1){
-                    obj = new ymaps.control[className](options);
-                }else{
-                    if(params && params.items){
-                        var items = [];
-                        var item;
-                        for (var i = 0, ii = params.items.length; i < ii; i++) {
-                            item = params.items[i];
-                            items.push(new ymaps.control.ListBoxItem(item));
-                        }
-                        params.items=items;
+                if(params && params.items){
+                    var items = [];
+                    var item;
+                    for (var i = 0, ii = params.items.length; i < ii; i++) {
+                        item = params.items[i];
+                        items.push(new ymaps.control.ListBoxItem(item));
                     }
-                    obj = new ymaps.control[className](params,options);
+                    params.items=items;
+                }
+                var obj = new ymaps.control[className](params);
+                for(var key in options){
+                    if(options.hasOwnProperty(key)){
+                        obj.options.set(key,options[key]);
+                    }
                 }
                 //подписка на события
-                for(var key in attrs){
+                for(key in attrs){
                     if(key.indexOf('yaEvent')===0){
                         var parentGet=$parse(attrs[key]);
                         yaSubscriber.subscribe(obj, parentGet,key,scope);
                     }
                 }
-                mapToolbar.add(obj);
+                yaMap.addControl(obj, options);
                 scope.yaAfterInit({$target:obj});
             }
         };
@@ -497,7 +474,7 @@ angular.module('yaMap',[]).
                         }
                     });
                     element.append(childNodes);
-                    $compile(childNodes)(scope.$parent);
+                    $compile(element.children())(scope.$parent);
                 };
             },
             controller:'CollectionCtrl'
@@ -516,21 +493,13 @@ angular.module('yaMap',[]).
                 tElement.html('');
                 return function(scope, element,attrs,yaMap) {
                     var collectionOptions = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : {};
-                    if(collectionOptions && collectionOptions.clusterBalloonMainContentLayout){
-                        collectionOptions.clusterBalloonMainContentLayout =
-                            templateLayoutFactory.get(collectionOptions.clusterBalloonMainContentLayout)
+                    if(collectionOptions && collectionOptions.clusterBalloonItemContentLayout){
+                        collectionOptions.clusterBalloonItemContentLayout =
+                            templateLayoutFactory.get(collectionOptions.clusterBalloonItemContentLayout);
                     }
-                    if(collectionOptions && collectionOptions.clusterBalloonSidebarItemLayout){
-                        collectionOptions.clusterBalloonSidebarItemLayout =
-                            templateLayoutFactory.get(collectionOptions.clusterBalloonSidebarItemLayout);
-                    }
-                    if(collectionOptions && collectionOptions.clusterBalloonContentItemLayout){
-                        collectionOptions.clusterBalloonContentItemLayout =
-                            templateLayoutFactory.get(collectionOptions.clusterBalloonContentItemLayout);
-                    }
-                    if(collectionOptions && collectionOptions.clusterBalloonAccordionItemContentLayout){
-                        collectionOptions.clusterBalloonAccordionItemContentLayout =
-                            templateLayoutFactory.get(collectionOptions.clusterBalloonAccordionItemContentLayout);
+                    if(collectionOptions && collectionOptions.clusterBalloonContentLayout){
+                        collectionOptions.clusterBalloonContentLayout =
+                            templateLayoutFactory.get(collectionOptions.clusterBalloonContentLayout);
                     }
                     //включение кластеризации
                     scope.collection = new ymaps.Clusterer(collectionOptions);
@@ -550,7 +519,7 @@ angular.module('yaMap',[]).
                         }
                     });
                     element.append(childNodes);
-                    $compile(childNodes)(scope.$parent);
+                    $compile(element.children())(scope.$parent);
                 };
             },
             controller:'CollectionCtrl'
@@ -572,6 +541,9 @@ angular.module('yaMap',[]).
                 var options = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : undefined;
                 if(options && options.balloonContentLayout){
                     options.balloonContentLayout = templateLayoutFactory.get(options.balloonContentLayout);
+                }
+                if(options && options.iconLayout){
+                    options.iconLayout = templateLayoutFactory.get(options.iconLayout);
                 }
                 var createGeoObject = function(from, options){
                     obj = new ymaps.GeoObject(from, options);
@@ -682,4 +654,28 @@ angular.module('yaMap',[]).
                 yaMap.addImageLayer(attrs.yaUrlTemplate, options);
             }
         }
+    }]).
+
+    directive('yaDragger',['yaSubscriber','$parse','mapApiLoad',function(yaSubscriber,$parse,mapApiLoad){
+        return {
+            restrict:'EA',
+            scope:{
+                yaAfterInit:'&'
+            },
+            link:function(scope,elm,attrs){
+                var options = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : {};
+                mapApiLoad(function(){
+                    options.autoStartElement=elm[0];
+                    var obj = new ymaps.util.Dragger(options);
+                    //подписка на события
+                    for(var key in attrs){
+                        if(key.indexOf('yaEvent')===0){
+                            var parentGet=$parse(attrs[key]);
+                            yaSubscriber.subscribe(obj, parentGet,key,scope);
+                        }
+                    }
+                    scope.yaAfterInit({$target:obj});
+                });
+            }
+        };
     }]);
