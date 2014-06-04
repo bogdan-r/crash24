@@ -1,5 +1,5 @@
 <div ng-controller="MapMainCtrl">
-    <ya-map class="js_ya-map b-ya-map" ya-zoom="8" ya-center="[55.76, 37.64]" ya-after-init="afterMapInit($target)">
+    <ya-map class="js_ya-map b-ya-map" ya-zoom="8" ya-center="[55.76, 37.64]" ya-controls="" ya-after-init="afterMapInit($target)">
         <ya-geo-object ng-repeat="point in points" ya-source="point" ya-options="{preset:'islands#blackStretchyIcon'}"></ya-geo-object>
     </ya-map>
 </div>

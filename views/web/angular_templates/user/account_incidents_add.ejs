@@ -1,6 +1,6 @@
 <h1>Добавить видео</h1>
 
-<form ng-submit="addIncident(incidentParam)">
+<form ng-submit="addIncident(incidentParam)" class="b-add-incident">
     <div class="form-group">
         <label for="">Заголовок</label>
         <input type="text" ng-model="incidentParam.title" class="form-control"/>
@@ -13,6 +13,10 @@
         <label for="">Описание</label>
         <textarea ng-model="incidentParam.description" class="form-control"></textarea>
     </div>
+
+    <ya-map class="b-add-incident__map" ya-zoom="8" ya-center="[55.76, 37.64]" ya-controls="" ya-after-init="afterMapInit($target)" >
+    </ya-map>
+
     <!--Для тестирования-->
     <div class="form-group clearfix">
         <label for="" style="display: block">Координаты</label>
