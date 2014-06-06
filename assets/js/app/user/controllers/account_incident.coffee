@@ -1,4 +1,4 @@
-angular.module(UserControllers).controller('AccountIncidentsCtrl', [
+angular.module('app.modules.user.controllers').controller('AccountIncidentsCtrl', [
   '$scope'
   'Incident'
   ($scope, Incident)->

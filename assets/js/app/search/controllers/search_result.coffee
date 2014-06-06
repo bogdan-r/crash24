@@ -1,4 +1,4 @@
-angular.module(IncidentsMControllers).controller('IncidentSearchResultCtrl', [
+angular.module('app.modules.search.controllers').controller('IncidentSearchResultCtrl', [
   '$scope'
   'Incident'
   ($scope, Incident)->

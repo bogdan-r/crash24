@@ -1,4 +1,4 @@
-angular.module(Resources).factory('User', [
+angular.module('app.resources').factory('User', [
   '$resource'
   ($resource)->
     User = $resource('/api/user/')

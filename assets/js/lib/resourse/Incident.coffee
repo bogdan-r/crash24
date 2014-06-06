@@ -1,4 +1,4 @@
-angular.module(Resources).factory('Incident', [
+angular.module('app.resources').factory('Incident', [
   '$resource'
   ($resource)->
     Incident = $resource('/api/incident/:id', null, {

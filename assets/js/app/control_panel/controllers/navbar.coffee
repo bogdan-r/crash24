@@ -1,4 +1,4 @@
-angular.module(ControlPanelControllers).controller('NavbarCtrl', [
+angular.module('app.modules.controlPanel.controllers').controller('NavbarCtrl', [
   '$scope'
   ($scope)->
 

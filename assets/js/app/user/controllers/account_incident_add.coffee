@@ -1,4 +1,4 @@
-angular.module(UserControllers).controller('AccountIncidentsAddCtrl', [
+angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCtrl', [
   '$scope'
   '$state'
   'Incident'
@@ -18,6 +18,7 @@ angular.module(UserControllers).controller('AccountIncidentsAddCtrl', [
           (incident)->
             $state.go('account.incidents')
         , (err)->
+          #TODO обработать ошибки
           console.log(err)
         )
     })

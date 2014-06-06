@@ -1,4 +1,4 @@
-angular.module(RegistrationControllers).controller('SigninCtrl', [
+angular.module('app.modules.registration.controllers').controller('SigninCtrl', [
   '$scope'
   '$window'
   '$http'

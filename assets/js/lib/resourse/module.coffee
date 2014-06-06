@@ -1,1 +1,1 @@
-angular.module(Resources, [])
+angular.module('app.resources', [])

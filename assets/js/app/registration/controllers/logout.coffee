@@ -1,4 +1,4 @@
-angular.module(RegistrationControllers).controller('LogoutCtrl', [
+angular.module('app.modules.registration.controllers').controller('LogoutCtrl', [
   '$scope'
   '$window'
   '$http'

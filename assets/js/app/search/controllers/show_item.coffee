@@ -1,4 +1,4 @@
-angular.module(IncidentsMControllers).controller('IncidentShowFromResultCtrl', [
+angular.module('app.modules.search.controllers').controller('IncidentShowFromResultCtrl', [
   '$scope'
   '$stateParams'
   'Incident'

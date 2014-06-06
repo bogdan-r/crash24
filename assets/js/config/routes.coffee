@@ -1,4 +1,4 @@
-angular.module(Crash24).config([
+angular.module('app').config([
   '$stateProvider',
   '$urlRouterProvider',
   '$locationProvider',

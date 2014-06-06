@@ -1,9 +1,8 @@
-window.Crash24 = 'app'
-window.Modules = 'app.modules';
-window.Resources = 'app.resources';
-angular.module(Crash24, [
-  Modules
-  Resources
+window.Components = 'app.components'
+angular.module('app', [
+  'app.modules'
+  'app.resources'
+  'app.components'
   'ngAnimate'
   'ngResource'
   'ui.router'

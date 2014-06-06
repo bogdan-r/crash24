@@ -1,4 +1,4 @@
-angular.module(RegistrationControllers).controller('SignupCtrl', [
+angular.module('app.modules.registration.controllers').controller('SignupCtrl', [
   '$scope'
   '$window'
   'User'

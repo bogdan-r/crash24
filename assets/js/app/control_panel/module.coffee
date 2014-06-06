@@ -1,8 +1,5 @@
-window.ControlPanel = 'app.modules.controlPanel'
-window.ControlPanelControllers = 'app.modules.controlPanel.controllers'
-
-angular.module(ControlPanel, [
-  ControlPanelControllers
+angular.module('app.modules.controlPanel', [
+  'app.modules.controlPanel.controllers'
 ])
 
-angular.module(ControlPanelControllers, [])
+angular.module('app.modules.controlPanel.controllers', [])

@@ -1,4 +1,4 @@
-angular.module(YandexMapsControllers).controller('MapMainCtrl', [
+angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
   '$scope',
   'Incident'
   ($scope, Incident)->
