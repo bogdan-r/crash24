@@ -54,6 +54,9 @@ var jsFilesToInject = [
         'js/lib/services/module.js',
         'js/lib/services/**/*.js',
     /*app*/
+        /*modal windows*/
+        'js/app/modals/module.js',
+        'js/app/modals/**/*.js',
         /*pages*/
         'js/app/pages/module.js',
         'js/app/pages/**/*.js',

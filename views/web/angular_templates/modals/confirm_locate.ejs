@@ -1,0 +1,37 @@
+<div class="b-modal-locate">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-hide="isEnableChouseCity">
+            Ваш регион {{locateCity}}?
+        </h3>
+        <h3 class="modal-title" ng-show="isEnableChouseCity">
+            Выберите ваш город
+        </h3>
+
+    </div>
+    <div class="modal-body" >
+        <div ng-show="isEnableChouseCity">
+            <div class="form-group b-modal-locate__form-group">
+                <label for="cityField">Ваш город</label>
+                <input ng-model="customCity" id="cityField" type="text" class="form-control" placeholder="Введите ваш город" ng-keyup="cityAutocomplete($event)" ng-click="showLocateListHandler($event)" ng-blur="hideLocateListHandler($event)"/>
+                <p class="text-danger" ng-show="notFoundCity">Невозможно найти город</p>
+                <div dropdown is-open="status.isOpenDropdown">
+                    <ul class="dropdown-menu b-modal-locate__list" role="menu">
+                        <li class="b-modal-locate__list__item" ng-repeat="cityItem in cityAutocompliteList">
+                            <a class="b-modal-locate__list__item__link" href="#" ng-click="chouseCity($event, cityItem)">
+                                <span class="b-modal-locate__list__item__city">{{cityItem.type}} {{cityItem.name}}</span>
+                                <span class="b-modal-locate__list__item__district">{{cityItem.parents[0].name}} {{cityItem.parents[0].type}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" ng-click="confirmCustomCity($event)">Подтвердить</button>
+        </div>
+        <div ng-hide="isEnableChouseCity">
+            <button class="btn btn-primary" ng-click="confirmCity($event)">Да</button>
+            <button class="btn btn-default" ng-click="showChouseCityField()" ng-hide="isEnableChouseCity">Другой город</button>
+        </div>
+    </div>
+</div>
