@@ -63,7 +63,7 @@ angular.module('app').config([
                 return user
             , (err)->
               if(err.status == 403)
-                $state.go('account.profile')
+                $state.go('main')
             )
           ]
         }

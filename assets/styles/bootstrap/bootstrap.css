@@ -1736,6 +1736,7 @@ input[type="date"] {
   line-height: 34px;
 }
 .form-group {
+  position: relative;
   margin-bottom: 15px;
 }
 .radio,

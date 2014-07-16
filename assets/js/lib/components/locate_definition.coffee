@@ -14,6 +14,7 @@ angular.module('app.components').factory('LocateDefinition', [
 
       setCity : (city)->
         cityGeoParam = {
+          country : city.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName')
           name : city.properties.get('name')
           coord : city.geometry.getCoordinates()
           boundedBy : city.properties.get('boundedBy')

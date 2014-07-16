@@ -12,14 +12,21 @@
         <div ng-show="isEnableChouseCity">
             <div class="form-group b-modal-locate__form-group">
                 <label for="cityField">Ваш город</label>
-                <input ng-model="customCity" id="cityField" type="text" class="form-control" placeholder="Введите ваш город" ng-keyup="cityAutocomplete($event)" ng-click="showLocateListHandler($event)" ng-blur="hideLocateListHandler($event)"/>
+                <input id="cityField"
+                       type="text"
+                       class="form-control"
+                       placeholder="Введите ваш город"
+                       ng-model="customCity"
+                       ng-keyup="cityAutocomplete($event)"
+                       ng-click="showLocateListHandler($event)"
+                       ng-blur="hideLocateListHandler($event)"/>
                 <p class="text-danger" ng-show="notFoundCity">Невозможно найти город</p>
                 <div dropdown is-open="status.isOpenDropdown">
-                    <ul class="dropdown-menu b-modal-locate__list" role="menu">
-                        <li class="b-modal-locate__list__item" ng-repeat="cityItem in cityAutocompliteList">
-                            <a class="b-modal-locate__list__item__link" href="#" ng-click="chouseCity($event, cityItem)">
-                                <span class="b-modal-locate__list__item__city">{{cityItem.type}} {{cityItem.name}}</span>
-                                <span class="b-modal-locate__list__item__district">{{cityItem.parents[0].name}} {{cityItem.parents[0].type}}</span>
+                    <ul class="dropdown-menu b-dropdown__list" role="menu">
+                        <li class="b-dropdown__list__item" ng-repeat="cityItem in cityAutocompliteList">
+                            <a class="b-dropdown__list__item__link" href="#" ng-click="chouseCity($event, cityItem)">
+                                <span class="b-dropdown__list__item__major">{{cityItem.type}} {{cityItem.name}}</span>
+                                <span class="b-dropdown__list__item__minor">{{cityItem.parents[0].name}} {{cityItem.parents[0].type}}</span>
                             </a>
                         </li>
                     </ul>

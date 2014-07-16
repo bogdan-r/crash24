@@ -1,13 +1,10 @@
 angular.module('app.modules.pages.controllers').controller('WelcomeCtrl', [
   '$scope'
-  '$modal'
   'mapApiLoad'
   'LocateDefinition'
-  '$controller'
-  ($scope, $modal, mapApiLoad, LocateDefinition, $controller)->
+  ($scope, mapApiLoad, LocateDefinition)->
 
     #var
-    _modalInstance = null
 
     #scope
 
@@ -17,17 +14,5 @@ angular.module('app.modules.pages.controllers').controller('WelcomeCtrl', [
 
     #run
 
-
-    if !LocateDefinition.isExistLocate()
-
-      _modalInstance = $modal.open({
-        templateUrl : RouterHelper.templateUrl('modals/confirm_locate')
-        controller : 'ConfirmLocateCtrl'
-        backdrop : 'static'
-      })
-
-    _modalInstance?.result.then(()->
-      LocateDefinition.setExistLocate()
-    )
 
 ])

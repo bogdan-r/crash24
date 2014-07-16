@@ -1,31 +1,107 @@
 <h1>Добавить видео</h1>
 
-<form ng-submit="addIncident(incidentParam)" class="b-add-incident">
+<form ng-submit="addIncident(incidentParam)" class="b-add-incident" name="incidentForm">
     <div class="form-group">
-        <label for="">Заголовок</label>
-        <input type="text" ng-model="incidentParam.title" class="form-control"/>
+        <label for="">Заголовок <sup>*</sup></label>
+        <input type="text" ng-model="incidentParam.title" name="title" class="form-control" required="required"/>
     </div>
     <div class="form-group">
-        <label for="">Дата</label>
-        <input type="date" ng-model="incidentParam.date" class="form-control"/>
-    </div>
-    <div class="form-group">
-        <label for="">Описание</label>
-        <textarea ng-model="incidentParam.description" class="form-control"></textarea>
+        <label for="">Дата <sup>*</sup></label>
+        <input type="text" ng-focus="openCalendar($event)"
+               ng-model="incidentParam.date"
+               datepicker-popup="{{format}}"
+               is-open="openedCalendar"
+               min-date="minDate" max-date="'2015-06-22'"
+               datepicker-options="dateOptions"
+               ng-required="true"
+               close-text="Закрыть" class="form-control"
+               required="required"/>
+
     </div>
 
-    <ya-map class="b-add-incident__map" ya-zoom="8" ya-center="[55.76, 37.64]" ya-controls="" ya-after-init="afterMapInit($target)" >
+    <div ng-hide="isExtendSearch">
+        <div class="form-group">
+            <label for="">Адрес <sup>*</sup></label>
+            <div class="input-group">
+                <input type="text"
+                       class="form-control"
+                       name="place"
+                       ng-model="incidentParam.place"
+                       ng-keyup="relatedAddress($event)"
+                       ng-click="showPlaceListHandler($event, 'placeAutocompliteList', 'isOpenPlace')"
+                       ng-blur="hidePlaceListHandler($event, 'isOpenPlace')"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="findAddressByValue($event)">Найти</button>
+                </span>
+            </div>
+            <div dropdown is-open="statusDrodown.isOpenPlace">
+                <ul class="dropdown-menu b-dropdown__list">
+                    <li class="b-dropdown__list__item" ng-repeat="place in placeAutocompliteList">
+                        <a class="b-dropdown__list__item__link" href="#" ng-click="chousePlaceHandler($event, place)">
+                            <span class="b-dropdown__list__item__major">{{place.prop.name}}</span>
+                            <span class="b-dropdown__list__item__minor">{{place.prop.description}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div><a href="#" ng-click="showExtendSearch()">Расширенный поиск</a></div>
+    </div>
+    <div ng-hide="!isExtendSearch">
+        <div class="form-group">
+            <label for="">Страна <sup>*</sup></label>
+            <input class="form-control" type="text" name="country"
+                   ng-model="extFormField.country"
+                   ng-keyup="relatedCountry($event)"/>
+        </div>
+        <div class="form-group">
+            <label for="">Город <sup>*</sup></label>
+            <input class="form-control" type="text" name="city"
+                   ng-model="extFormField.city"
+                   ng-disabled="extFormField.country == ''"
+                   ng-keyup="relatedCity($event)" />
+        </div>
+        <div class="form-group">
+            <label for="">Улица <sup>*</sup></label>
+            <input class="form-control" type="text" name="street"
+                   ng-model="extFormField.street"
+                   ng-disabled="extFormField.city == '' || extFormField.country == ''"
+                   ng-keyup="relatedStreet($event)"/>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" type="button" >Найти</button>
+        </div>
+
+        <div><a href="#" ng-click="hideExtendSearch()">Обычный поиск</a></div>
+    </div>
+    <span class="help-block">Так же вы можете выбрать адрес проишествия нажав на карту, или перетащить маркер на нужную позицию.</span>
+
+    <ya-map class="b-add-incident__map"
+            ya-options="mapOption"
+            ya-center="{{currentCityCenter}}"
+            ya-controls=""
+            ya-after-init="afterMapInit($target)"
+            ya-event-click="setIncidentCoordsHandler($event)"
+    >
+        <ya-geo-object
+                ya-source="incidentPoint"
+                ya-options="{preset:'islands#icon', draggable : true}"
+                ya-event-dragend="dragIncidentMarker($event)"></ya-geo-object>
     </ya-map>
 
     <!--Для тестирования-->
     <div class="form-group clearfix">
-        <label for="" style="display: block">Координаты</label>
-        <div class="col-xs-6" style="padding-left: 0"><input placeholder="Ширина" type="text" ng-model="incidentParam.lat" class="form-control"/></div>
-        <div class="col-xs-6" style="padding-right: 0"><input placeholder="Долгота" type="text" ng-model="incidentParam.long" class="form-control"/></div>
+        <label for="" style="display: block">Координаты (testing mode)</label>
+        <div>
+            {{incidentParam.lat}} <br/>
+            {{incidentParam.long}}
+        </div>
     </div>
+
     <div class="form-group">
-        <label for="">Место</label>
-        <input type="text" ng-model="incidentParam.place" class="form-control"/>
+        <label for="">Описание</label>
+        <textarea ng-model="incidentParam.description" name="description" class="form-control"></textarea>
     </div>
+
     <button type="submit" class="btn btn-default">Добавить видео</button>
 </form>
