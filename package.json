@@ -39,10 +39,11 @@
   "author": "anonymous node/sails user",
   "license": "",
   "devDependencies": {
-    "mocha": "~1.19.0",
-    "grunt-mocha-test": "~0.10.2",
-    "sinon": "~1.10.0",
     "assert": "~1.1.1",
-    "nock": "~0.31.3"
+    "grunt-mocha-test": "~0.10.2",
+    "mocha": "~1.19.0",
+    "nock": "~0.31.3",
+    "node-fs": "^0.1.7",
+    "sinon": "~1.10.0"
   }
 }

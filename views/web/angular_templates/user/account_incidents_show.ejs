@@ -1,0 +1,10 @@
+<h1>{{incident.title}}</h1>
+<div></div>
+<time datetime="{{incident.date}}" class="">{{incident.date | date:'dd.MM.yyyy'}}</time>
+<div class="">
+    {{incident.place}}
+</div>
+
+<div class="">
+    <iframe width="570" height="321" ng-src="{{trustVideoSrc(incident.video)}}" frameborder="0" allowfullscreen></iframe>
+</div>

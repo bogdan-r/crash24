@@ -1,11 +1,33 @@
-<h1>Видео</h1>
+<div class="b-profile-video">
+    <h1>Видео</h1>
 
-<div style="margin-bottom: 20px;" ng-repeat="incident in incidents">
-    Заголовок: {{incident.title}}<br>
-    Дата: {{incident.date | date:'dd.MM.yyyy'}}<br>
-    Описание: {{incident.description}}<br>
-    Место: {{incident.place}}<br>
-</div>
-<div>
-    <a ui-sref="account.incidents.add">Добавить видео</a>
+    <section class="b-incident-list row">
+        <article class="b-incident-list__item col-sm-4" ng-repeat="incident in incidents">
+            <div class="thumbnail">
+                <div class="b-incident-list__item__img-wrap">
+                    <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail_big}}" alt=""/>
+                    <div class="b-incident-list__item__settings">
+                        <div class="b-incident-list__item__show">
+                            <a href="" class="b-incident-list__item__settings__link" ui-sref="account.incidents.show({id : incident.id})">Посмотреть</a>
+                        </div>
+                        <div class="b-incident-list__item__edit">
+                            <a href="" class="b-incident-list__item__settings__link" ng-click="editIncident($event, incident)">Редактировать</a>
+                        </div>
+                        <div class="b-incident-list__item__delete">
+                            <a href="" class="b-incident-list__item__settings__link" ng-click="deleteIncident($event, incident)">Удалить</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="caption">
+                    <h3 class="b-incident-list__item__headline">{{incident.title}}</h3>
+                    <time class="b-incident-list__item__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
+                    <div class="b-incident-list__item__place">{{incident.place}}</div>
+                    <p class="b-incident-list__item__desc">{{incident.description}}</p>
+                </div>
+            </div>
+        </article>
+    </section>
+    <div class="b-incident-add">
+        <a ui-sref="account.incidents.add">Добавить видео</a>
+    </div>
 </div>

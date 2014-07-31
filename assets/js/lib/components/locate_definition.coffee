@@ -13,7 +13,9 @@ angular.module('app.components').factory('LocateDefinition', [
         localStorage.setItem('isFirstVisit', true)
 
       setCity : (city)->
+
         cityGeoParam = {
+          country_id : city.properties.get('country_id')
           country : city.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName')
           name : city.properties.get('name')
           coord : city.geometry.getCoordinates()

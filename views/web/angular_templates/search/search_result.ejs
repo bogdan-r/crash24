@@ -1,7 +1,9 @@
 <div class="b-placer">
     <div class="b-result">
         <a ui-sref="search.result.showitem({id : incident.id})" ng-repeat="incident in incidents" class="b-result__item">
-            <div class="b-result__item__pic"></div>
+            <div class="b-result__item__pic">
+                <img ng-src="{{incident.video_thumbnail}}" alt=""/>
+            </div>
             <div class="b-result__item__content">
                 <h3 class="b-result__item__headline">{{incident.title}}</h3>
                 <date class="b-result__item__date">{{incident.date | date:'dd.MM.yyyy'}}</date>

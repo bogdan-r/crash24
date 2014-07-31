@@ -89,4 +89,14 @@ angular.module('app').config([
         }
 
       })
+    .state('account.incidents.show', {
+        url : '/show/:id'
+        views : {
+          '@account' : {
+            templateUrl : RouterHelper.templateUrl('user/account_incidents_show')
+            controller : 'AccountIncidentsShowCtrl'
+          }
+        }
+
+      })
 ])

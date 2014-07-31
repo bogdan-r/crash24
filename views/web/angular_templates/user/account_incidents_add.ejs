@@ -1,10 +1,15 @@
 <h1>Добавить видео</h1>
 
-<form ng-submit="addIncident(incidentParam)" class="b-add-incident" name="incidentForm">
+<form ng-submit="addIncident(incidentParam)" class="b-add-incident-form" name="incidentForm">
     <div class="form-group">
         <label for="">Заголовок <sup>*</sup></label>
         <input type="text" ng-model="incidentParam.title" name="title" class="form-control" required="required"/>
     </div>
+    <div class="form-group">
+        <label for="">Ссылка на видео <sup>*</sup></label>
+        <input type="text" ng-model="incidentParam.video" name="video" class="form-control" required="required"/>
+    </div>
+
     <div class="form-group">
         <label for="">Дата <sup>*</sup></label>
         <input type="text" ng-focus="openCalendar($event)"
@@ -26,12 +31,13 @@
                 <input type="text"
                        class="form-control"
                        name="place"
+                       required="required"
                        ng-model="incidentParam.place"
                        ng-keyup="relatedAddress($event)"
-                       ng-click="showPlaceListHandler($event, 'placeAutocompliteList', 'isOpenPlace')"
-                       ng-blur="hidePlaceListHandler($event, 'isOpenPlace')"/>
+                       ng-click="showDropdownsHandler($event, 'placeAutocompliteList', 'isOpenPlace')"
+                       ng-blur="hideDropdownsHandler($event, 'isOpenPlace')"/>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="findAddressByValue($event)">Найти</button>
+                    <button class="btn btn-default" type="button" ng-click="findAddressByValue($event)">Поставить метку</button>
                 </span>
             </div>
             <div dropdown is-open="statusDrodown.isOpenPlace">
@@ -45,38 +51,75 @@
                 </ul>
             </div>
         </div>
-        <div><a href="#" ng-click="showExtendSearch()">Расширенный поиск</a></div>
+        <!--div><a href="#" ng-click="showExtendSearch()">Расширенный поиск</a></div-->
     </div>
     <div ng-hide="!isExtendSearch">
+        <!--
         <div class="form-group">
             <label for="">Страна <sup>*</sup></label>
             <input class="form-control" type="text" name="country"
-                   ng-model="extFormField.country"
-                   ng-keyup="relatedCountry($event)"/>
+                   ng-model="extFormField.country.name"
+                   ng-keyup="relatedCountry($event)"
+                   ng-click="showDropdownsHandler($event, 'countriesAutocompliteList', 'isOpenCountry')"
+                   ng-blur="hideDropdownsHandler($event, 'isOpenCountry')"/>
+
+            <div dropdown is-open="statusDrodown.isOpenCountry">
+                <ul class="dropdown-menu b-dropdown__list">
+                    <li class="b-dropdown__list__item" ng-repeat="country in countriesAutocompliteList">
+                        <a class="b-dropdown__list__item__link" href="#" ng-click="setCountryItem($event, country)">
+                            <span class="b-dropdown__list__item__major">{{country.title_ru}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <div class="form-group">
             <label for="">Город <sup>*</sup></label>
             <input class="form-control" type="text" name="city"
                    ng-model="extFormField.city"
-                   ng-disabled="extFormField.country == ''"
-                   ng-keyup="relatedCity($event)" />
+                   ng-keyup="relatedCity($event)"
+                   ng-click="showDropdownsHandler($event, 'cityAutocompliteList', 'isOpenCity')"
+                   ng-blur="hideDropdownsHandler($event, 'isOpenCity')"
+                   ng-disabled="extFormField.country == ''"/>
+
+            <div dropdown is-open="statusDrodown.isOpenCity">
+                <ul class="dropdown-menu b-dropdown__list">
+                    <li class="b-dropdown__list__item" ng-repeat="city in cityAutocompliteList">
+                        <a class="b-dropdown__list__item__link" href="#" ng-click="setCityItem($event, city)">
+                            <span class="b-dropdown__list__item__major">{{city.title_ru}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <div class="form-group">
             <label for="">Улица <sup>*</sup></label>
             <input class="form-control" type="text" name="street"
                    ng-model="extFormField.street"
                    ng-disabled="extFormField.city == '' || extFormField.country == ''"
                    ng-keyup="relatedStreet($event)"/>
+
+            <div dropdown is-open="statusDrodown.isOpenStreet">
+                <ul class="dropdown-menu b-dropdown__list">
+                    <li class="b-dropdown__list__item" ng-repeat="street in streetAutocompliteList">
+                        <a class="b-dropdown__list__item__link" href="#" >
+                            <span class="b-dropdown__list__item__major">{{street.prop.name}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="form-group">
-            <button class="btn btn-default" type="button" >Найти</button>
+            <button class="btn btn-default" type="button" >Поставить метку</button>
         </div>
-
+        -->
         <div><a href="#" ng-click="hideExtendSearch()">Обычный поиск</a></div>
     </div>
     <span class="help-block">Так же вы можете выбрать адрес проишествия нажав на карту, или перетащить маркер на нужную позицию.</span>
 
-    <ya-map class="b-add-incident__map"
+    <ya-map class="b-add-incident-form__map"
             ya-options="mapOption"
             ya-center="{{currentCityCenter}}"
             ya-controls=""

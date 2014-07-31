@@ -31,11 +31,64 @@ html, body{
   position: fixed;
   top: 0;
   left: 0;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  padding-left: 600px;
   z-index: 1;
 }
 
+
+
+
+
+
+
+
+/*incident list*/
+.b-incident-list{}
+.b-incident-list__item{}
+.b-incident-list__item__img-wrap{
+  position: relative;
+}
+.b-incident-list__item__img{
+  vertical-align: top;
+}
+.b-incident-list__item__settings{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.7);
+}
+.b-incident-list__item__settings__link{
+  font-size: 13px;
+  color: #fff;
+  &:hover{
+    color: #fff;
+  }
+}
+.b-incident-list__item__headline{
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 5px;
+}
+.b-incident-list__item__time{
+  display: block;
+  color: #888;
+  font-size: 12px;
+  font-style: italic;
+}
+.b-incident-list__item__place{
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.b-incident-list__item__desc{
+  font-size: 14px;
+}
 
 
 
@@ -196,7 +249,7 @@ html, body{
 
 
 
-
+/*SEARCH*/
 /*search block*/
 .b-result{
     bottom: 0;
@@ -212,7 +265,7 @@ html, body{
     transition: background 0.4s ease;
     padding: 15px;
     border-bottom: 1px solid #ddd;
-    min-height: 130px;
+    min-height: 122px;
     display: block;
     color : #404040;
     &:hover{
@@ -224,13 +277,16 @@ html, body{
 }
 .b-result__item__pic{
     float: left;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 90px;
     border: 1px solid #ddd;
+    img{
+      vertical-align: top;
+    }
 }
 .b-result__item__content{
     transition: color 0.2s ease;
-    margin-left: 120px;
+    margin-left: 140px;
 }
 .b-result__item__headline{
     font-family: "PT Sans Caption";
@@ -251,11 +307,73 @@ html, body{
 
 
 
+/*video item*/
+.b-incident-video{
+  padding: 15px;
+  position: relative;
+}
+.b-incident-video__close{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #404040;
+  font-size: 50px;
+  line-height: 100%;
+  &:hover{
+    color: #000;
+    text-decoration: none;
+  }
+}
+.b-incident-video__headline{
+  padding-right: 50px;
+}
+.b-incident-video__time{
+  color: #888;
+  font-size: 12px;
+  font-style: italic;
+}
+.b-incident-video__place{
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+.b-incident-video__frame{
+  margin-bottom: 20px;
+}
+.b-incident-video__descr{}
+
+
+
+
+
+
+
 /*PROFILE*/
 
+/*profile video partition*/
+.b-profile-video{
+  padding-bottom: 30px;
+}
+
+
+
+
+
+
+
+/*profile menu*/
+.b-profile-menu{
+  padding-top: 33px;
+}
+
+
+
+
+
+
+
 /*add incident*/
-.b-add-incident{}
-.b-add-incident__map{
+.b-add-incident-form{}
+.b-add-incident-form__map{
     display: block;
     width: 100%;
     height: 400px;

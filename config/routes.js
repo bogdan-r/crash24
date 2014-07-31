@@ -48,6 +48,10 @@ module.exports.routes = {
         'delete /api/incident/:id' : 'Api/incidentController.delete',
 
 
+    /*locate info*/
+    'get /api/get_country_by_name/:title' : 'Api/locateInfoController.findCountryByName',
+    'get /api/get_city_by_name/:title' : 'Api/locateInfoController.findCityByName',
+
     /*auth*/
     'post /api/login' : 'Api/authController.login',
     'get /logout' : 'Api/authController.logout',
