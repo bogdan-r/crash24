@@ -4,10 +4,8 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
   '$timeout'
   'LocateDefinition'
   'Incident'
-  'LocateInfo'
-  ($scope, $state, $timeout, LocateDefinition, Incident, LocateInfo)->
-
-    #TODO рефакторинг, слишком много копипасты
+  'AccountIncidentCollection'
+  ($scope, $state, $timeout, LocateDefinition, Incident, AccountIncidentCollection)->
 
     #var
     _map = null
@@ -54,11 +52,8 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
         _setIncidentCoords(coords)
 
       addIncident : (incidentParam)->
-        #TODO поменять функцию добавления на сервис
-        incident = new Incident(incidentParam)
-        incident.$save().then(
-          (incident)->
-            $state.go('account.incidents')
+        AccountIncidentCollection.add(incidentParam).then(()->
+          $state.go('account.incidents')
         , (err)->
           #TODO обработать ошибки
           console.log(err)
@@ -91,71 +86,6 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
           _hideDropdowns('isOpenPlace')
           $scope.placeAutocompliteList = []
 
-
-      ###
-      #Поиск релевантной страны(расширенный поиск)
-      relatedCountry : ($event)->
-        $timeout.cancel(_adressAutocompliteTimeout)
-        if $event.target.value == ''
-          _hideDropdowns('isOpenCountry')
-          $scope.countriesAutocompliteList = []
-          $scope.extFormField.city = ''
-          $scope.extFormField.street = ''
-          return
-        _adressAutocompliteTimeout = $timeout(()->
-          LocateInfo.findCountryByName({title : $event.target.value}, (countries)->
-            $scope.countriesAutocompliteList = countries
-            if _isEnptyListDropdown('countriesAutocompliteList')
-              _hideDropdowns('isOpenCountry')
-            else
-              _showDropdowns('isOpenCountry')
-          )
-        , 200)
-
-
-      #Поиск релевантного города(расширенный поиск)
-      relatedCity : ($event)->
-        $timeout.cancel(_adressAutocompliteTimeout)
-        if $event.target.value == ''
-          _hideDropdowns('isOpenCity')
-          $scope.extFormField.street = ''
-          return
-        _adressAutocompliteTimeout = $timeout(()->
-          LocateInfo.findCityByName({
-            title : $event.target.value
-            country_id :  $scope.extFormField.country.id
-          }, (cities)->
-            $scope.cityAutocompliteList = cities
-            if _isEnptyListDropdown('cityAutocompliteList')
-              _hideDropdowns('isOpenCity')
-            else
-              _showDropdowns('isOpenCity')
-          )
-        , 200)
-
-      #Поиск релевантной улицы(расширенный поиск)
-      relatedStreet : ()->
-        $timeout.cancel(_adressAutocompliteTimeout)
-        _adressAutocompliteTimeout = $timeout(()->
-          ymaps.geocode("#{incidentForm.street.value}, #{incidentForm.city.value}, #{incidentForm.country.value}", {
-            results : 10
-          }).then((result)->
-            interimArr = []
-            result.geoObjects.each((el)->
-              interimArr.push({
-                prop : el.properties.getAll()
-                coords : el.geometry.getCoordinates()
-              })
-            )
-            $scope.streetAutocompliteList = interimArr
-            if _isEnptyListDropdown('streetAutocompliteList')
-              _hideDropdowns('isOpenStreet')
-            else
-              _showDropdowns('isOpenStreet')
-            $scope.$apply()
-          )
-        , 500)
-      ###
       findAddressByValue : ()->
         ymaps.geocode(incidentForm.place.value, {
           results : 1
@@ -172,25 +102,6 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
 
       chousePlaceHandler : ($event, place)->
         _chousePlace(place)
-
-      ###
-      setCountryItem : ($event, country)->
-        if !country
-          return
-        $scope.extFormField.country = {
-          id : country.country_id
-          name : country.title_ru
-        }
-        $scope.countriesAutocompliteList = []
-        _hideDropdowns('isOpenCountry')
-
-      setCityItem : ($event, city)->
-        if !city
-          return
-        $scope.extFormField.city = city.title_ru
-        $scope.cityAutocompliteList = []
-        _hideDropdowns('isOpenCity')
-      ###
 
       showDropdownsHandler : ($event, dropdownPlaylist, dropdown)->
         _showDropdownsHandler($event, dropdownPlaylist, dropdown)

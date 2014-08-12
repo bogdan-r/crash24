@@ -12,26 +12,19 @@ var fs = require('node-fs');
 module.exports = {
 
     create : function(req, res){
-        //TODO после перехода на mysql сделать валидацию на загрузку миниатюры
-        var videoUrl = url.parse(req.param('video'), true);
-        var formattedVideoUrl;
-        var videoType;
-        var videoThumbnailUrl; //http://img.youtube.com/vi/i9MHigUZKEM/default.jpg
-        var videoBigThumbnailUrl; //http://img.youtube.com/vi/i9MHigUZKEM/0.jpg
+        var socialVideo = new SocialVideo(req.param('video'));
+        var socialVideoInfo = socialVideo.getVideoInfo();
+        var errors = new ErrorStorage();
 
-        if(videoUrl.host && videoUrl.host.search(/youtube/) && videoUrl.query.v){
-            formattedVideoUrl = '//www.youtube.com/embed/' + videoUrl.query.v
-            videoType = 'youtube'
-            videoThumbnailUrl = 'http://img.youtube.com/vi/' + videoUrl.query.v + '/default.jpg'
-            videoBigThumbnailUrl = 'http://img.youtube.com/vi/' + videoUrl.query.v + '/0.jpg'
-        }else{
-            return res.badRequest({error : 'Ссылка на видео не верна'})
+        if(socialVideoInfo.videoType === undefined){
+            errors.add('video', 'Ссылка на видео не верна')
+            return res.badRequest(errors.get())
         }
 
         var incidentParams = {
             title : req.param('title'),
-            video : formattedVideoUrl,
-            video_type : videoType,
+            video : socialVideoInfo.embedUrl,
+            video_type : socialVideoInfo.videoType,
             lat : parseFloat(req.param('lat')),
             long : parseFloat(req.param('long')),
             date : req.param('date'),
@@ -40,72 +33,18 @@ module.exports = {
             user : req.user.id
         };
 
-        async.waterfall([
-            function (cb) {
-                Incident.create(incidentParams).exec(cb)
-            },
-            function (incident, cb) {
-
-                function getThumbRequest (thumbUrl, asyncCb){
-                    http.get(thumbUrl, function (response) {
-                        var imageData = '';
-
-                        response.setEncoding('binary');
-                        response.on('data', function (chunk) {
-                            imageData += chunk;
-                        })
-                        response.on('end', function () {
-                            asyncCb(null, imageData);
-                        })
-
-                    }).on('error', function(){
-                            asyncCb(null, imageData);
-                        });
-                }
-
-                async.parallel({
-                    thumb : function(innerCb){
-                        getThumbRequest(videoThumbnailUrl, innerCb);
-                    },
-                    thumb_big : function(innerCb){
-                        getThumbRequest(videoBigThumbnailUrl, innerCb);
-                    }
-                }, function(err, imagesData){
-                    cb(err, incident, imagesData)
-                });
-
-            },
-            function(incident, imagesData, cb){
-                fs.mkdir(incident.urlToThumbAssets(), 0777, true, function(err){
-                    cb(null, incident, imagesData);
-                })
-
-            },
-            function(incident, imagesData, cb){
-
-                function writeThumb (url, imgData, asyncCb){
-                    fs.writeFile(url, imgData, 'binary', function (err) {
-                        asyncCb(null);
-                    })
-                }
-                async.parallel([
-                    function(innerCb){
-                        writeThumb(incident.urlThumbAssets(), imagesData.thumb, innerCb);
-                    },
-                    function(innerCb){
-                        writeThumb(incident.urlBigThumbAssets(), imagesData.thumb_big, innerCb);
-                    }
-                ], function(err){
-                    cb(null, incident);
-                })
-
-            }
-
-        ], function(err, incident){
-            //TODO сделать обработку ошибок
+        Incident.create(incidentParams).exec(function(err, incident){
+            sails.log.error(err);
             if (err) return res.badRequest();
-            return res.json(incident);
+            socialVideo.setVideoThumbs(incident).then(function(){
+                return res.json(incident);
+            }, function(errProm){
+                sails.log.error(errProm);
+                return res.badRequest();
+            });
+
         })
+
     },
     findByAccount : function(req, res){
         Incident.findByActiveState({user : req.user.id}).exec(function(err, incidents){
@@ -118,13 +57,14 @@ module.exports = {
             id : req.param('id'),
             user : req.user.id
         }).exec(function(err, incident){
+                if(err){return res.badRequest()}
                 res.json(incident)
             });
     },
     show : function(req, res){
         Incident.findByActiveState({id : req.param('id')}).exec(function(err, incident){
             if(err){return res.badRequest()}
-            if(!incident){return res.notFound()}
+            if(!incident.length){return res.notFound()}
 
             return res.json(incident[0])
         })
@@ -158,7 +98,15 @@ module.exports = {
                 return res.json(incident[0])
             });
     },
-
+    restore : function(req, res){
+        Incident.restore({
+            id: req.param('id'),
+            user: req.user.id
+        }).exec(function (err, incident) {
+                if (err) {return res.serverError()}
+                return res.json(incident[0])
+            });
+    },
 
     search : function(req, res){
         //TODO Переписать на поиск с условиями

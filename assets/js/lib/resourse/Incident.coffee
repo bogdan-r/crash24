@@ -16,6 +16,10 @@ angular.module('app.resources').factory('Incident', [
         method : 'POST'
         url : '/api/incident/searchmap'
         isArray : true
+      },
+      restore : {
+        method : 'POST'
+        url : '/api/incident/:id/restore'
       }
     })
 

@@ -6,6 +6,8 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
     class AccountIncidentCollection
       constructor : ()->
         @_incidents = []
+        @_deletedIncidentPromise = {}
+        @INCIDENT_TIME_DELETED = 5000
 
       load : ->
         Incident.findByAccount().$promise
@@ -37,7 +39,7 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
       add : (incidentParam)->
         defer = $q.defer()
         incident = new Incident(incidentParam)
-        incident.$save.then((result)=>
+        incident.$save().then((result)=>
           @_incidents.push(result)
           defer.resolve(@_incidents)
         , (err)=>
@@ -47,14 +49,33 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
 
       delete : (incidentId)->
         defer = $q.defer()
-        incidentIndex = @indexOf(incidentId)
+        indexBeforeDelete = @indexOf(incidentId)
+        @_incidents[indexBeforeDelete].isDeleted = true
+        @_incidents[indexBeforeDelete].indexPromise = indexBeforeDelete
+
         Incident.delete({id : incidentId}).$promise.then(()=>
-          @_incidents.splice(incidentIndex, 1);
           defer.resolve()
         , (err)=>
           defer.reject(err)
         )
-        defer.promise
+        defer.promise.then(()=>
+          @_incidents[indexBeforeDelete].isCompliteDeleted = true
+          @_deletedIncidentPromise['incidentPromise_' + indexBeforeDelete] = $timeout(()=>
+            index = @indexOf(incidentId)
+            @_incidents.splice(index, 1);
+            delete @_deletedIncidentPromise['incidentPromise_' + indexBeforeDelete]
+          , @INCIDENT_TIME_DELETED)
+        )
+
+      restore : (incidentId)->
+        index = indexOf(incidentId)
+        indexPromise = @_incidents[index].indexPromise
+        @_incidents[index].isDeleted = false
+        $timeout.cancel(@_deletedIncidentPromise['incidentPromise_' + indexPromise])
+
+        Incident.restore({id : incidentId}).$promise.then(()=>
+          @_incidents[index].isCompliteDeleted = false
+        )
 
       indexOf : (item)->
         itemId = if typeof item == 'number' or typeof item == 'string' then item else item.id

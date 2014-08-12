@@ -5,7 +5,7 @@
         <article class="b-incident-list__item col-sm-4" ng-repeat="incident in incidents">
             <div class="thumbnail">
                 <div class="b-incident-list__item__img-wrap">
-                    <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail_big}}" alt=""/>
+                    <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail}}" alt=""/>
                     <div class="b-incident-list__item__settings">
                         <div class="b-incident-list__item__show">
                             <a href="" class="b-incident-list__item__settings__link" ui-sref="account.incidents.show({id : incident.id})">Посмотреть</a>
