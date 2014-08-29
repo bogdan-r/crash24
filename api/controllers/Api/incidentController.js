@@ -110,9 +110,19 @@ module.exports = {
 
     search : function(req, res){
         //TODO Переписать на поиск с условиями
+
+        var orderBy = req.param('order_by');
+        var location = {
+            lat : req.param('lat'),
+            long : req.param('long')
+        }
+
         Incident.findByActiveState().exec(function(err, incidents){
             if (err) {return res.badRequest()}
-            return res.json(incidents)
+
+
+            var sortResult = sortByDistance(incidents, location);
+            return res.json(sortResult)
         })
     },
 

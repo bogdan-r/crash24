@@ -1,15 +1,15 @@
 <div class="b-placer">
     <div class="b-result">
-        <a ui-sref="search.result.showitem({id : incident.id})" ng-repeat="incident in incidents" class="b-result__item">
+        <a ui-sref="search.result.showitem({id : incident.id})" ng-repeat="incident in incidents"  class="b-result__item">
             <div class="b-result__item__pic">
                 <img ng-src="{{incident.video_thumbnail_small}}" alt=""/>
             </div>
             <div class="b-result__item__content">
-                <h3 class="b-result__item__headline">{{incident.title}}</h3>
+                <h2 class="b-result__item__headline">{{incident.title}}</h2>
                 <date class="b-result__item__date">{{incident.date | date:'dd.MM.yyyy'}}</date>
                 <div class="b-result__item__place">{{incident.place}}</div>
             </div>
         </a>
     </div>
 </div>
-<div ui-view class="b-placer anim-b-placer" ng-class="{'anim-b-placer_show-state' : isOpen}"></div>
+<div ui-view class="b-placer b-placer_result anim-b-placer" ng-class="{'anim-b-placer_show-state' : isOpen}"></div>

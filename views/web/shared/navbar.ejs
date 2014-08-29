@@ -1,21 +1,42 @@
-<header ng-controller="NavbarCtrl" class="b-header">
-    <nav class="b-navbar">
-        <div ui-view="navbar">
-            <!--Шаблон по умолчанию-->
-            <ul class="b-navbar__menu">
-                <li class="b-navbar__menu__item">
-                    <a ui-sref="main" class="b-navbar__menu__item__link b-navbar__logo">24Crash</a>
+<header ng-controller="NavbarCtrl" class="b-header navbar" id="header-navbar">
+    <div class="b-navbar container">
+        <a class="navbar-brand" ui-sref="main">24Crash</a>
+        <div class="navbar-left pull-left">
+            <ul class="nav navbar-nav b-nav-menu">
+                <li class="b-nav-menu__item">
+                    <a class="b-nav-menu__link" ui-sref="search.result">Карта</a>
                 </li>
             </ul>
         </div>
-
-        <ul class="b-navbar__userControls">
+        <ul class="b-navbar__user-controls nav navbar-nav pull-right">
             <% if(isAuth){%>
-            <li class="b-navbar__userControls__item">
-                <a class="b-navbar__userControls__item__link" ui-sref="account.profile">Личный кабинет</a>
-            </li>
-            <li class="b-navbar__userControls__item">
-                <a class="b-navbar__userControls__item__link" href="#" ui-sref="logout">Выйти</a>
+            <li class="profile-dropdown b-profile-dropdown"
+                ng-mouseenter="showUserDropmenuHandler($event)"
+                ng-mouseleave="hideUserDropmenuHandler($event)">
+                <a href="#" class="dropdown-toggle b-profile-dropdown__toggle">
+                    <img src="/images/fallback/default_user.png" alt="">
+                    <span class="hidden-xs"><%=User.username%></span>
+                </a>
+                <ul class="b-profile-dropdown__menu anim-b-profile-dropdown__menu" ng-show="isOpenDropdownUser">
+                    <li class="b-profile-dropdown__menu__item">
+                        <a class="b-profile-dropdown__menu__item__link" ui-sref="account.profile">
+                            <i class="fa fa-user"></i>
+                            <span class="b-profile-dropdown__menu__item__name">Личный кабинет</span>
+                        </a>
+                    </li>
+                    <li class="b-profile-dropdown__menu__item">
+                        <a class="b-profile-dropdown__menu__item__link" ui-sref="account.incidents">
+                            <i class="fa fa-video-camera" ></i>
+                            <span class="b-profile-dropdown__menu__item__name">Видео</span>
+                        </a>
+                    </li>
+                    <li class="b-profile-dropdown__menu__item">
+                        <a class="b-profile-dropdown__menu__item__link" href="#" ui-sref="logout">
+                            <i class="fa fa-power-off" ></i>
+                            <span class="b-profile-dropdown__menu__item__name">Выйти</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <%}else{%>
             <li class="b-navbar__userControls__item">
@@ -25,7 +46,7 @@
                 <a class="b-navbar__userControls__item__link" ui-sref="signin">Авторизация</a>
             </li>
             <%}%>
-
         </ul>
-    </nav>
+    </div>
+
 </header>

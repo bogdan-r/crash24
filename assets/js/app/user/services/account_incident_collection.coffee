@@ -30,6 +30,7 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
         defer = $q.defer()
         @getAll().then(()=>
           incidentIndex = @indexOf(incidentId)
+          console.log('incidentIndex', incidentIndex)
           defer.resolve(@_incidents[incidentIndex])
         , (err)->
           defer.reject(err)
@@ -78,8 +79,11 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
         )
 
       indexOf : (item)->
-        itemId = if typeof item == 'number' or typeof item == 'string' then item else item.id
+        itemId = if typeof item == 'number' or typeof item == 'string' then parseInt(item, 10) else item.id
         index = -1
+        console.log('item', item)
+        console.log('itemId', itemId)
+        console.log('typeof itemId', typeof itemId)
         _.any @_incidents, (x, i) ->
           if x.id == itemId
             index = i

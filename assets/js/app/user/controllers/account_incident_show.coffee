@@ -21,6 +21,7 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsShowC
 
   #run
     AccountIncidentCollection.get($stateParams.id).then((incident)->
+      console.log('incident', incident)
       $scope.incident = incident
     )
 ])

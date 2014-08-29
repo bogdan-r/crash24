@@ -20,9 +20,6 @@ angular.module('app').config([
           '' : {
             templateUrl : RouterHelper.templateUrl('search/search')
           }
-          'navbar@' : {
-            templateUrl : RouterHelper.templateUrl('search/control_panel')
-          }
         }
 
       })

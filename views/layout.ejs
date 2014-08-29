@@ -5,19 +5,49 @@
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=cyrillic-ext,cyrillic,latin' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,300,700&subset=latin,cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/styles/libs/nanoscroller.css">
+    <link rel="stylesheet" href="/styles/compiled/layout.css">
+    <link rel="stylesheet" href="/styles/compiled/elements.css">
+    <link rel="stylesheet" href="/styles/compiled/calendar.css">
+    <link rel="stylesheet" href="/styles/compiled/wizard.css">
     <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/libs/bootstrap-timepicker.css">
+    <link rel="stylesheet" href="/styles/libs/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="/styles/libs/bootstrap-wizard.css">
+    <link rel="stylesheet" href="/styles/libs/datepicker.css">
+    <link rel="stylesheet" href="/styles/libs/daterangepicker.css">
+    <link rel="stylesheet" href="/styles/libs/dropzone.css">
+    <link rel="stylesheet" href="/styles/libs/font-awesome.css">
+    <link rel="stylesheet" href="/styles/libs/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/libs/fullcalendar.css">
+    <link rel="stylesheet" href="/styles/libs/fullcalendar.print.css">
+    <link rel="stylesheet" href="/styles/libs/jquery-jvectormap-1.1.1.css">
+    <link rel="stylesheet" href="/styles/libs/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="/styles/libs/jquery-ui.custom_ZATIAL_SA_NEPOUZIVA.css">
+    <link rel="stylesheet" href="/styles/libs/jquery.nouislider.css">
+    <link rel="stylesheet" href="/styles/libs/jquery.nouislider.min.css">
+    <link rel="stylesheet" href="/styles/libs/magnific-popup.css">
+    <link rel="stylesheet" href="/styles/libs/morris.css">
+    <link rel="stylesheet" href="/styles/libs/select2.css">
+    <link rel="stylesheet" href="/styles/libs/xcharts.css">
+    <link rel="stylesheet" href="/styles/libs/xcharts.min.css">
     <!--STYLES END-->
     <!--script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script-->
 </head>
 
-<body>
+<body class="content-wrapper-no-mar">
     <%- partial('web/shared/navbar') %>
-    <%- body %>
+    <div id="page-wrapper" class="container">
+        <div class="row">
+            <div id="content-wrapper">
+                <%- body %>
+            </div>
+        </div>
+    </div>
+
 
     <!--TEMPLATES-->
     
@@ -39,7 +69,9 @@
     <script src="/js/dependencies/angular/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="/js/dependencies/angular/ya-map.js"></script>
     <script src="/js/dependencies/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/dependencies/moment.min.js"></script>
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/dependencies/select2.min.js"></script>
     <script src="/js/boot.js"></script>
     <script src="/js/config/application.js"></script>
     <script src="/js/config/router_helper.js"></script>
@@ -49,6 +81,7 @@
     <script src="/js/lib/components/setting_access.js"></script>
     <script src="/js/lib/directives/module.js"></script>
     <script src="/js/lib/filters/module.js"></script>
+    <script src="/js/lib/filters/split_apart.js"></script>
     <script src="/js/lib/resourse/module.js"></script>
     <script src="/js/lib/resourse/Incident.js"></script>
     <script src="/js/lib/resourse/LocateInfo.js"></script>
@@ -75,6 +108,7 @@
     <script src="/js/app/user/controllers/profile.js"></script>
     <script src="/js/app/user/services/account_incident_collection.js"></script>
     <script src="/js/app/search/module.js"></script>
+    <script src="/js/app/search/controllers/search_filters.js"></script>
     <script src="/js/app/search/controllers/search_map.js"></script>
     <script src="/js/app/search/controllers/search_result.js"></script>
     <script src="/js/app/search/controllers/show_item.js"></script>

@@ -35,6 +35,7 @@ module.exports = {
             var publicThumbAsset = SocialVideo.getThumbsUrl().thumbUrlAssetPublic;
             var thumbsName = SocialVideo.getThumbsName();
             var obj = this.toObject();
+            delete obj.isApproved;
             delete obj.isActive;
             delete obj.user;
             obj.video_thumbnail = publicThumbAsset + this.id + '/' + thumbsName.original;

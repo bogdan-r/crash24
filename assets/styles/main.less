@@ -12,15 +12,19 @@ html, body{
   box-sizing: border-box;
   z-index: 1000;
   position: fixed;
-  top: 60px;
+  top: 50px;
   left: 0;
   bottom: 0;
-  box-shadow: 0 0 8px #333;
+  box-shadow: 1px 2px 2px 0 #CCCCCC;
   h1{
     margin-top: 0;
   }
 }
-
+/*.b-placer.b-placer_result{
+  top: 50px;
+  z-index: 1005;
+  box-shadow: none;
+}*/
 
 
 
@@ -35,6 +39,7 @@ html, body{
   width: 100%;
   height: 100%;
   padding-left: 600px;
+  padding-top: 50px;
   z-index: 1;
 }
 
@@ -75,6 +80,7 @@ html, body{
   margin-top: 0;
   padding-top: 0;
   margin-bottom: 5px;
+  line-height: 24px;
 }
 .b-incident-list__item__time{
   display: block;
@@ -97,152 +103,70 @@ html, body{
 
 
 /*HEADER*/
-.b-header{
-  margin-bottom: 0;
-  z-index: 1001;
-  position: relative;
+.b-nav-menu{
+
+}
+.b-nav-menu__item{
+
+}
+.b-nav-menu__link{
+  transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 18px !important;
+  font-size: 15px !important;
 }
 
-
-.b-navbar{
-  background: @asphalt;
-  height: 60px;
+.b-navbar__user-controls{
+  margin-right: -8px;
 }
-.b-navbar__menu{
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    float: left;
+.b-profile-dropdown{
+  min-width: 225px;
+  &:hover .b-profile-dropdown__toggle{
+    background: #34495e !important;
+    color: #fff !important;
+  }
 }
-.b-navbar__menu__item{
-    float: left;
+.b-profile-dropdown__toggle{
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-.b-navbar__menu__item__link{
-    transition: background 0.3s ease, color 0.3s ease;
-    float: left;
-    width: 200px;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    color: #ddd;
-    font-size: 20px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    position: relative;
-    &:hover{
-        color: #fff;
-        background: @road_sign_orange_light;
-        text-decoration: none;
-    }
-    &.b-navbar__logo:hover{
-        background: none;
-    }
-    &.b-navbar__menu__item__link-active{
-        background: @road_sign_orange_light;
-        color: #fff;
-        &:before{
-            z-index: 100;
-            width: 0;
-            height: 0;
-            border-left: 7px solid transparent;
-            border-right: 7px solid transparent;
-            border-top: 7px solid @road_sign_orange_light;
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -7px;
-            margin-left: -5px;
-        }
-    }
+.b-profile-dropdown__menu{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background: #34495e;//#2980b9;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
 }
-
-
-//TODO сделать общий класс
-.b-navbar__menu__item__link-result{
-    position: relative;
-    padding-left: 35px;
-    &:before{
-        content: "\e012";
-        font-family: 'Glyphicons Halflings';
-        text-shadow: none;
-        line-height: 1;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        margin-top: -12px;
-    }
+.b-profile-dropdown__menu__item{
+  transition: background 0.2s ease;
+  &:hover{
+    background: #3498db;
+  }
 }
-.b-navbar__menu__item__link-filter{
-    position: relative;
-    padding-left: 35px;
-    &:before{
-        content: "\e138";
-        font-family: 'Glyphicons Halflings';
-        text-shadow: none;
-        line-height: 1;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        margin-top: -10px;
-    }
-}
-
-
-.b-navbar__logo{
-  font-size: 24px;
-  color: #ddd;
-  &:hover, &:focus{
-    color: #ddd;
+.b-profile-dropdown__menu__item__link{
+  display: block;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px 10px 10px 25px;
+  text-decoration: none;
+  &:hover{
+    color: #fff;
     text-decoration: none;
   }
 }
-.b-navbar__userControls{
-    list-style-type: none;
-    float: right;
-    margin-right: 50px;
+.b-profile-dropdown__menu__item__link .fa{
+  margin-right: 10px;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 20px;
 }
-.b-navbar__userControls__item{
-    float: left;
-}
-.b-navbar__userControls__item__link{
-    transition: background 0.3s ease, color 0.3s ease;
-    height: 60px;
-    line-height: 60px;
-    display: inline-block;
-    padding: 0 20px;
-    color: #ddd;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    &:hover{
-        background: @road_sign_orange_light;
-        text-decoration: none;
-        color: #fff;
-    }
+.b-profile-dropdown__menu__item__name{
+  vertical-align: middle;
+  line-height: 100%;
 }
 
-
-
-
-
-
-
-
-
-
-.b-city-search{
-    float: left;
-    margin-left: 20px;
-    padding-top: 11px;
-}
-.b-city-search__current{
-    color: #ddd;
-    opacity: 0.6;
-    font-family: "PT Sans Narrow";
-    font-size: 26px;
-    margin-right: 5px;
-}
-.b-city-search__adress{
-    color: #ddd;
-    opacity: 0.9;
-}
 
 
 
@@ -250,6 +174,79 @@ html, body{
 
 
 /*SEARCH*/
+/*filter panel*/
+.b-filter-panel{
+  position: relative;
+  margin: -15px -15px 0 585px;
+  padding: 7px 15px 0;
+  background: #2980b9;
+  height: 50px;
+  box-sizing: border-box;
+//  box-shadow: 1px 1px 2px 0 #CCCCCC;
+  z-index: 1005;
+}
+.b-filter-panel__search__input{
+  background: transparent;
+  border: 0;
+  font-size: 22px;
+  font-weight: 300;
+  color: #fff;
+  width: 450px;
+  outline: none;
+}
+.b-filter-panel__search__input:focus{
+  border: 0;
+}
+.b-filter-panel__search__icon{
+  color: #fff;
+  font-size: 22px;
+  margin-right: 10px;
+}
+.b-filter-panel__bars-button{
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+.b-filter-panel__dropdown-locate{
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: #2980b9;
+}
+.b-filter-panel__dropdown-locate__list{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.b-filter-panel__dropdown-locate__item{
+  color: #fff;
+  padding: 8px 10px 8px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  &:hover{
+    background: #3498db;
+  }
+}
+.b-filter-panel__dropdown-locate__item__name{
+  margin-left: 8px;
+  font-size: 18px;
+}
+.b-filter-panel__dropdown-locate__item__region{
+  font-size: 12px;
+  color: #ddd;
+}
+
+
+
+
+
+
+
+
 /*search block*/
 .b-result{
     bottom: 0;
@@ -289,10 +286,11 @@ html, body{
     margin-left: 140px;
 }
 .b-result__item__headline{
-    font-family: "PT Sans Caption";
     font-size: 26px;
     margin-top: 0;
     margin-bottom: 0;
+    padding: 0;
+    clear: none;
 }
 .b-result__item__date{
     transition: color 0.2s ease;
@@ -361,9 +359,7 @@ html, body{
 
 
 /*profile menu*/
-.b-profile-menu{
-  padding-top: 33px;
-}
+.b-profile-menu{}
 
 
 

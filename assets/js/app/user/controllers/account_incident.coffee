@@ -1,7 +1,8 @@
 angular.module('app.modules.user.controllers').controller('AccountIncidentsCtrl', [
   '$scope'
+  '$filter'
   'AccountIncidentCollection'
-  ($scope, AccountIncidentCollection)->
+  ($scope, $filter, AccountIncidentCollection)->
 
     #var
 
@@ -20,6 +21,6 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsCtrl'
 
     #run
     AccountIncidentCollection.getAll().then((incidents)->
-      $scope.incidents = incidents
+      $scope.incidents = $filter('splitApart')(incidents, [3])
     )
 ])

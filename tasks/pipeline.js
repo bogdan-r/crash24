@@ -15,6 +15,10 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+    'styles/bootstrap/**/*.css',
+    'styles/libs/nanoscroller.css',
+    'styles/compiled/layout.css',
+    'styles/compiled/elements.css',
 	'styles/**/*.css'
 ];
 

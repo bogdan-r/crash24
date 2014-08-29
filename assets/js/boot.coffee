@@ -3,6 +3,7 @@ angular.module('app', [
   'app.modules'
   'app.resources'
   'app.components'
+  'app.filters'
   'app.services'
   'ngAnimate'
   'ngResource'

@@ -1,8 +1,9 @@
-<div class="b-profile-video">
-    <h1>Видео</h1>
-
-    <section class="b-incident-list row">
-        <article class="b-incident-list__item col-sm-4" ng-repeat="incident in incidents">
+<div class="main-box-header clearfix">
+    <h2>Видео</h2>
+</div>
+<div class="main-box-body clearfix">
+    <section class="b-incident-list row" ng-repeat="row in incidents">
+        <article class="b-incident-list__item col-sm-4" ng-repeat="incident in row">
             <div class="thumbnail">
                 <div class="b-incident-list__item__img-wrap">
                     <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail}}" alt=""/>
@@ -19,10 +20,10 @@
                     </div>
                 </div>
                 <div class="caption">
-                    <h3 class="b-incident-list__item__headline">{{incident.title}}</h3>
+                    <h2 class="b-incident-list__item__headline">{{incident.title}}</h2>
                     <time class="b-incident-list__item__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
                     <div class="b-incident-list__item__place">{{incident.place}}</div>
-                    <p class="b-incident-list__item__desc">{{incident.description}}</p>
+                    <p class="b-incident-list__item__desc">{{incident.description | limitTo:100}}</p>
                 </div>
             </div>
         </article>

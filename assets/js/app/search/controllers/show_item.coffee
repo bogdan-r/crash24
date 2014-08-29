@@ -1,9 +1,12 @@
 angular.module('app.modules.search.controllers').controller('IncidentShowFromResultCtrl', [
+  '$rootScope'
   '$scope'
+  '$state'
   '$stateParams'
   '$sce'
   'Incident'
-  ($scope, $stateParams, $sce, Incident)->
+  'mapApiLoad'
+  ($rootScope, $scope, $state, $stateParams, $sce, Incident, mapApiLoad)->
     #var
 
     #scope
@@ -20,6 +23,9 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
     #run
     Incident.get({id : $stateParams.id}, (incident)->
       $scope.incident = incident
+      mapApiLoad(()->
+        $rootScope.$broadcast('loadIncidentItem', incident)
+      )
     )
     $scope.$parent.isOpen = true
 ])

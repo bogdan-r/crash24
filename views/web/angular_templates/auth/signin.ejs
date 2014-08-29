@@ -1,16 +1,15 @@
-<div class="container">
-    <div class="b-registration marginAuto jumbotron">
-        <h1 class="b-registration-headline">Авторизация</h1>
-        <form action="" class="form" ng-submit="signin(user)">
-            <div class="form-group">
-                <label for="reg_email" class="control-label ">E-mail</label>
-                <input type="email" class="form-control" id="reg_email" ng-model="user.email"/>
-            </div>
-            <div class="form-group">
-                <label for="reg_password" class="control-label ">Пароль</label>
-                <input type="password" class="form-control" id="reg_password" ng-model="user.password"/>
-            </div>
-            <button type="submit" class="btn btn-primary">Войти</button>
-        </form>
-    </div>
+<div class="b-registration marginAuto jumbotron">
+    <h1 class="b-registration-headline">Авторизация</h1>
+
+    <form action="" class="form" ng-submit="signin(user)">
+        <div class="form-group">
+            <label for="reg_email" class="control-label ">E-mail</label>
+            <input type="email" class="form-control" id="reg_email" ng-model="user.email"/>
+        </div>
+        <div class="form-group">
+            <label for="reg_password" class="control-label ">Пароль</label>
+            <input type="password" class="form-control" id="reg_password" ng-model="user.password"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
 </div>

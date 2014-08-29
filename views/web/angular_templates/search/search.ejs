@@ -1,10 +1,33 @@
+<div class="b-filter-panel " ng-controller="IncidentSearchFiltersCtrl">
+    <form class="b-filter-panel__search" action="">
+        <span class="b-filter-panel__search__icon"><i class="fa fa-search"></i></span>
+        <input type="text" class="b-filter-panel__search__input"
+               ng-model="currentLocation"
+               ng-keyup="relatedAddress($event)"
+               ng-click="showDropdownsHandler($event, 'placeAutocompliteList', 'isOpenPlace')"
+               ng-blur="hideDropdownsHandler($event, 'isOpenPlace')">
+    </form>
+    <div class="b-filter-panel__dropdown-locate" ng-show="statusDrodown.isOpenPlace">
+        <ul class="b-filter-panel__dropdown-locate__list">
+            <li class="b-filter-panel__dropdown-locate__item" ng-click="chousePlaceHandler($event, place)" ng-repeat="place in placeAutocompliteList">
+                <i class="fa fa-map-marker"></i>
+                <span class="b-filter-panel__dropdown-locate__item__name">{{place.prop.name}}</span>
+                <span class="b-filter-panel__dropdown-locate__item__region">{{place.prop.description}}</span>
+            </li>
+        </ul>
+    </div>
+    <span class="b-filter-panel__bars-button" ng-click="toggleBarsMenu($event)">
+        <i class="fa fa-bars"></i>
+    </span>
+</div>
 <div ng-controller="MapMainCtrl">
-    <ya-map class="js_ya-map b-ya-map" ya-zoom="8" ya-center="[55.76, 37.64]" ya-controls="" ya-after-init="afterMapInit($target)">
-        <ya-geo-object ng-repeat="point in points" ya-source="point" ya-options="{preset:'islands#blackStretchyIcon'}"></ya-geo-object>
+    <ya-map class="js_ya-map b-ya-map" ya-zoom="15" ya-center="{{cityCoords}}" ya-controls="" ya-after-init="afterMapInit($target)">
+        <ya-geo-object ng-repeat="point in points"
+                       ya-source="point"
+                       ya-options="{preset:'islands#icon'}"
+                       ya-event-click="chouseIncident($event, point)"></ya-geo-object>
     </ya-map>
 </div>
 
-<div ui-view class="container"></div>
-
-<div class="b-placer b-filter" style="display: none"></div>
+<div ui-view ></div>
 

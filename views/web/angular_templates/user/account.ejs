@@ -1,12 +1,33 @@
-<div class="container">
-    <div class="row">
-        <div class="b-profile-menu col-sm-3">
-
-            <div class="list-group">
-                <a class="list-group-item" ui-sref="account.profile">Профайл</a>
-                <a class="list-group-item" ui-sref="account.incidents">Видео</a>
-            </div>
-        </div>
-        <div ui-view class="col-sm-9"></div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1>Личный кабинет</h1>
     </div>
 </div>
+<div class="row" id="user-profile">
+    <div class="b-profile-menu col-lg-3 col-md-4 col-sm-4">
+        <aside class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2>{{user.username}}</h2>
+            </header>
+            <div class="main-box-body">
+                <img src="/images/fallback/default_user.png" width="160" alt="" class="profile-img img-responsive center-block"/>
+                <div class="profile-details">
+                    <ul class="fa-ul">
+                        <li><i class="fa-li fa fa-user"></i><a ui-sref="account.profile">Профиль</a></li>
+                        <li><i class="fa-li fa fa-video-camera"></i><a ui-sref="account.incidents">Видео</a></li>
+                    </ul>
+                </div>
+                <div class="profile-message-btn center-block text-center">
+                    <a ui-sref="account.incidents.add" class="btn btn-success">
+                        <i class="fa fa-plus"></i>
+                        Добавить видео
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <div class="col-lg-9 col-md-8 col-sm-8">
+        <div ui-view class="main-box clearfix"></div>
+    </div>
+</div>
+
