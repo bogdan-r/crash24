@@ -1,13 +1,18 @@
-angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCtrl', [
+angular.module('app.modules.user.controllers').controller('AccountIncidentsEditCtrl', [
   '$scope'
   '$state'
+  '$stateParams'
   '$timeout'
+  '$q'
+  '$filter'
   'LocateDefinition'
   'Incident'
   'AccountIncidentCollection'
-  ($scope, $state, $timeout, LocateDefinition, Incident, AccountIncidentCollection)->
+  ($scope, $state, $stateParams, $timeout, $q, $filter, LocateDefinition, Incident, AccountIncidentCollection)->
 
     #var
+    _deferIncident = $q.defer()
+
     _map = null
     _locatePlaceInfo = LocateDefinition.getCityInfo()
 
@@ -18,19 +23,22 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
       placeAutocompliteList : [] #Массив с адресами геолокации
 
       incidentParam : {} #Параметры для добавления инцидента
-      currentCityCenter : [_locatePlaceInfo.coord[0], _locatePlaceInfo.coord[1]]
 
       afterMapInit : (map)->
         _map = map
-        _map.setBounds(_locatePlaceInfo.boundedBy)
+        _deferIncident.promise.then((incident)->
+          _map.setBounds(incident.boundedBy, {
+            checkZoomRange : true
+          })
+        )
         return
 
       setIncidentCoordsHandler : ($event)->
         coords = $event.get('coords')
         _setIncidentCoords(coords)
 
-      addIncident : (incidentParam)->
-        AccountIncidentCollection.add(incidentParam).then(()->
+      updateIncident : (incidentParam)->
+        AccountIncidentCollection.update(incidentParam).then(()->
           $state.go('account.incidents')
         , (err)->
           $scope.errors = err.data.errors
@@ -39,7 +47,7 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
       resetError : (error)->
         $scope.errors[error] = []
 
-      #Поиск списка адресов по строке
+    #Поиск списка адресов по строке
       relatedAddress : (value)->
         ymaps.geocode(incidentForm.place.value, {
           results : 10
@@ -117,6 +125,20 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
     #event handler
 
     #run
-    AccountIncidentCollection.getAll()
+    AccountIncidentCollection.get($stateParams.id).then((incident)->
+      $scope.incidentParam = incident
+      $scope.incidentParam.date = $filter('date')(incident.date, 'yyyy-MM-dd')
+      $scope.incidentParam.video = incident.original_video_url
+      $scope.currentCityCenter = [incident.lat, incident.long]
+      $scope.incidentPoint = {
+        geometry: {
+          type: 'Point'
+          coordinates: [incident.lat, incident.long]
+        }
+      }
+
+      _deferIncident.resolve(incident)
+
+    )
 
 ])

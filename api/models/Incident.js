@@ -13,6 +13,7 @@ module.exports = {
         },
         lat : {type : 'float'},
         long : {type : 'float'},
+        boundedBy : {type : 'array'},
         date : {
             type : 'date',
             required : true
@@ -21,6 +22,7 @@ module.exports = {
         place : {type : 'string'},
         video : {type : 'string'},
         video_type : {type : 'string'},
+        original_video_url : {type : 'string'},
         isApproved : {
             type : 'boolean',
             defaultsTo : false
@@ -35,6 +37,9 @@ module.exports = {
             var publicThumbAsset = SocialVideo.getThumbsUrl().thumbUrlAssetPublic;
             var thumbsName = SocialVideo.getThumbsName();
             var obj = this.toObject();
+            if(typeof obj.boundedBy == 'string'){
+                obj.boundedBy = JSON.parse(obj.boundedBy)
+            }
             delete obj.isApproved;
             delete obj.isActive;
             delete obj.user;

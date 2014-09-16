@@ -1,35 +1,48 @@
 angular.module('app.modules.search.controllers').controller('IncidentSearchResultCtrl', [
   '$rootScope'
   '$scope'
+  '$state'
+  '$stateParams'
   'Incident'
   'LocateDefinition'
-  ($rootScope, $scope, Incident, LocateDefinition)->
+  'CurrentPlaceStorage'
+  ($rootScope, $scope, $state, $stateParams, Incident, LocateDefinition, CurrentPlaceStorage)->
     #var
-    cityInfo = LocateDefinition.getCityInfo()
+    _cityInfo = LocateDefinition.getCityInfo()
+    _cityInfoOptions = {}
+
 
     #scope
     _.extend($scope, {
+      #TODO сделать коллекцию, для избавления от лишних запросов
       incidents : []
-      isOpen : false
-
     })
     #helpers
 
-
     #event handler
-    $scope.$on('$stateChangeSuccess', (e, toState, toParam, fromState, fromParam)->
-      #FIXME сделать вариант понадежнее
-      if fromState.name == 'search.result.showitem'
-        $scope.isOpen = false
-    )
-    $scope.$on('chouseSearchPlace', (e, place)->
-      Incident.search({lat : place.coords[0], long : place.coords[1]}, (incidents)->
-        $scope.incidents = incidents
-      )
-    )
 
     #run
-    Incident.search({lat : cityInfo.coord[0], long : cityInfo.coord[1]}, (incidents)->
+
+    if !CurrentPlaceStorage.isSetPlaceParams()
+      if $stateParams.lat && $stateParams.long && $stateParams.place
+        _cityInfoOptions = {
+          lat : $stateParams.lat
+          long : $stateParams.long
+          place : $stateParams.place
+        }
+      else
+        _cityInfoOptions = {
+          lat : _cityInfo.coord[0]
+          long : _cityInfo.coord[1]
+          place : _cityInfo.name
+        }
+      CurrentPlaceStorage.set(_cityInfoOptions)
+
+    #NOTE обычная загрузка проишествий
+    Incident.search({
+        lat : CurrentPlaceStorage.get('lat')
+        long : CurrentPlaceStorage.get('long')
+        take : 100}, (incidents)->
       $scope.incidents = incidents
     )
 ])

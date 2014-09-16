@@ -1,25 +1,37 @@
 angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
   '$scope',
   '$state',
-  'LocateDefinition'
-  'Incident'
-  ($scope, $state, LocateDefinition, Incident)->
+  '$stateParams',
+  'LocateDefinition',
+  'mapApiLoad'
+  'Incident',
+  ($scope, $state, $stateParams, LocateDefinition, mapApiLoad, Incident)->
 
     #var
     _map = null
     _points = []
     _cityInfo = LocateDefinition.getCityInfo()
 
+    if $stateParams.lat && $stateParams.long
+      _cityCoords = [$stateParams.lat, $stateParams.long]
+    else
+      _cityCoords = _cityInfo.coord
+
     #scope
     _.extend($scope, {
       points : []
-      cityCoords : _cityInfo.coord
+      cityCoords : _cityCoords
 
       afterMapInit : (map)->
         _map = map
 
       chouseIncident : ($event, point)->
-        $state.go('search.result.showitem', {id : point.incident.id})
+        isStateShowItem = $state.current.name == 'search.showitem'
+        isStateShowItemFromMap = $state.current.name == 'search.showitem.fromMap'
+        if (isStateShowItem or isStateShowItemFromMap) and parseInt($stateParams.id) == parseInt(point.incident.id)
+          $state.go('search.result')
+        else
+          $state.go('search.showitem.fromMap', {id : point.incident.id}, {})
     })
 
     #helpers
@@ -32,9 +44,10 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
     )
 
     $scope.$on('loadIncidentItem', (e, incident)->
-      _map.setCenter([incident.lat, incident.long], 15, {
-        checkZoomRange : true
-      })
+      if $state.current.data?.fromMap == false or $state.current.data?.fromMap == undefined
+        _map.setCenter([incident.lat, incident.long], 15, {
+          checkZoomRange : true
+        })
     )
 
     #run

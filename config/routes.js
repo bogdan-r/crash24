@@ -61,7 +61,7 @@ module.exports.routes = {
     /*other route*/
     '/*' :{
         controller : 'Web/welcomeController',
-        skipAssets : true
+        skipRegex : /^[^?]+\./
     }
 
 

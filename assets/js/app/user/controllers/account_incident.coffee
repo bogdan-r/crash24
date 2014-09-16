@@ -9,11 +9,12 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsCtrl'
     #scope
     _.extend($scope, {
       incidents : []
-      editIncident : ($event, incident)->
-        console.log incident
+      cb : new Date().getTime()
 
       deleteIncident : ($event, incident)->
-        AccountIncidentCollection.delete(incident.id)
+        AccountIncidentCollection.delete(incident.id).then(()->
+          $scope.incidents = $filter('splitApart')(AccountIncidentCollection.getAll(true), [3])
+        )
     })
     #helpers
 

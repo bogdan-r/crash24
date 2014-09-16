@@ -1,4 +1,5 @@
 var util = require('util');
+var _ = require('underscore');
 function ErrorStorage (errors){
     this._errors = {};
     if(typeof errors == 'object'){
@@ -48,6 +49,32 @@ ErrorStorage.prototype.get = function(errName){
     }else{
         return {errors : this._errors}
     }
+}
+ErrorStorage.prototype.transformValidateErrors = function(errors){
+
+    if(errors.invalidAttributes && !_.isEmpty(errors.invalidAttributes)){
+        for(var key in errors.invalidAttributes){
+            for(var i = 0; i < errors.invalidAttributes[key].length; i++){
+
+                switch (errors.invalidAttributes[key][i].rule){
+                    case 'required':
+                        this.add(key, 'Поле обязательно для заполнения');
+                        break
+                    case 'email':
+                        this.add(key, 'Неправильный формат поля email');
+                        break
+                    case 'unique':
+                        this.add(key, 'Поле должно быть уникальным');
+                        break
+                }
+            }
+        }
+        return this.get();
+    }
+}
+
+ErrorStorage.prototype.hasError = function(){
+    return !_.isEmpty(this._errors)
 }
 
 

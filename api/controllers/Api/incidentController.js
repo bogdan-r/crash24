@@ -18,28 +18,33 @@ module.exports = {
 
         if(socialVideoInfo.videoType === undefined){
             errors.add('video', 'Ссылка на видео не верна')
+        }
+        if(req.param('lat') === undefined || req.param('long') === undefined){
+            errors.add('place', 'Не удалось определить место проишествие, укажите место на карте')
+        }
+        if(errors.hasError()){
             return res.badRequest(errors.get())
         }
 
         var incidentParams = {
-            title : req.param('title'),
-            video : socialVideoInfo.embedUrl,
-            video_type : socialVideoInfo.videoType,
-            lat : parseFloat(req.param('lat')),
-            long : parseFloat(req.param('long')),
-            date : req.param('date'),
+            title :       req.param('title'),
+            video :       socialVideoInfo.embedUrl,
+            video_type :  socialVideoInfo.videoType,
+            original_video_url : req.param('video'),
+            lat :         parseFloat(req.param('lat')),
+            long :        parseFloat(req.param('long')),
+            date :        req.param('date'),
             description : req.param('description'),
-            place : req.param('place'),
-            user : req.user.id
+            place :       req.param('place'),
+            boundedBy :   req.param('boundedBy'),
+            user :        req.user.id
         };
 
         Incident.create(incidentParams).exec(function(err, incident){
-            sails.log.error(err);
             if (err) return res.badRequest();
             socialVideo.setVideoThumbs(incident).then(function(){
                 return res.json(incident);
             }, function(errProm){
-                sails.log.error(errProm);
                 return res.badRequest();
             });
 
@@ -71,21 +76,45 @@ module.exports = {
     },
     update : function(req, res){
         var idIncident = req.param('id');
+        var socialVideo = new SocialVideo(req.param('video'));
+        var socialVideoInfo = socialVideo.getVideoInfo();
+        var errors = new ErrorStorage();
+
+        if(socialVideoInfo.videoType === undefined){
+            errors.add('video', 'Ссылка на видео не верна')
+        }
+        if(req.param('lat') === undefined || req.param('long') === undefined){
+            errors.add('place', 'Не удалось определить место проишествие, укажите место на карте')
+        }
+        if(errors.hasError()){
+            return res.badRequest(errors.get())
+        }
+
         var incidentParams = {
-            title : req.param('title'),
-            lat : req.param('lat'),
-            long : req.param('long'),
-            date : req.param('date'),
+            title :       req.param('title'),
+            video :       socialVideoInfo.embedUrl,
+            video_type :  socialVideoInfo.videoType,
+            original_video_url : req.param('video'),
+            lat :         parseFloat(req.param('lat')),
+            long :        parseFloat(req.param('long')),
+            date :        req.param('date'),
             description : req.param('description'),
-            place : req.param('place')
+            place :       req.param('place'),
+            boundedBy :   req.param('boundedBy'),
+            user :        req.user.id
         };
 
         Incident.update({
-            id : idIncident,
-            user : req.user.id
-        }, incidentParams).exec(function(err, incident){
-            if(err){return res.badRequest()}
-            return res.json(incident);
+            id: idIncident,
+            user: req.user.id
+        }, incidentParams).exec(function (err, incident) {
+            if (err) return res.badRequest();
+            socialVideo.setVideoThumbs(incident[0]).then(function () {
+                return res.json(incident[0]);
+            }, function (errProm) {
+                return res.badRequest();
+            });
+
         })
 
     },
@@ -111,19 +140,38 @@ module.exports = {
     search : function(req, res){
         //TODO Переписать на поиск с условиями
 
-        var orderBy = req.param('order_by');
+        var orderBy =  req.param('order_by') || 'distance';
+        var skip =     parseInt(req.param('skip'));
+        var take =     parseInt(req.param('take'));
+        var distance = parseInt(req.param('distance'))
         var location = {
             lat : req.param('lat'),
             long : req.param('long')
         }
+        if(!req.param('lat') || !req.param('long') || isNaN(take)){
+            return res.badRequest()
+        }
+        var incidents = Incident.findByActiveState();
+        switch (orderBy){
+            case 'distance':
+            default :
+                incidents.then(function(incidents){
+                    var sortResult = sortByDistance(incidents, location);
+                    sortResult = sortResult.splice(isNaN(skip) ? 0 : skip, take);
+                    return res.json(sortResult)
+                }).fail(function(err){
+                    if (err) {return res.badRequest()}
+                })
+                break
+            case 'date':
+                incidents.sort('date ASC').exec(function(err, incidents){
+                    if (err) {return res.badRequest()}
+                    return res.json(incidents)
+                });
+                break
+        }
 
-        Incident.findByActiveState().exec(function(err, incidents){
-            if (err) {return res.badRequest()}
 
-
-            var sortResult = sortByDistance(incidents, location);
-            return res.json(sortResult)
-        })
     },
 
     searchMap : function(req, res){

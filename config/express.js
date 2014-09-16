@@ -21,7 +21,6 @@ passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
 }, function (username, password, next) {
-
     User.findOne()
         .where({or : [
             {username : username},
@@ -30,11 +29,11 @@ passport.use(new LocalStrategy({
         .exec(function (err, user) {
             if (err) {return next(err)}
             if (!user || user.length > 1) {
-                return next(null, false, {error: 'Пользователя с таким именем не существует'});
+                return next(null, false,  {message : 'Неверный пароль или email'});
             }
             bcrypt.compare(password, user.password, function (err, res) {
                 if (!res) {
-                    return next(null, false, {error: 'Invalid password'});
+                    return next(null, false, {message :'Неверный пароль или email'});
                 }
                 return next(null, user);
             });

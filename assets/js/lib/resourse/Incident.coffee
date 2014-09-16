@@ -17,6 +17,9 @@ angular.module('app.resources').factory('Incident', [
         url : '/api/incident/searchmap'
         isArray : true
       },
+      update : {
+        method : 'PUT'
+      }
       restore : {
         method : 'POST'
         url : '/api/incident/:id/restore'

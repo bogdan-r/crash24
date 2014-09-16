@@ -5,7 +5,8 @@ angular.module('app').config([
   ($stateProvider, $urlRouterProvider, $locationProvider)->
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
-    $urlRouterProvider.otherwise('/')
+    $urlRouterProvider.when('/', '/search')
+    $urlRouterProvider.otherwise('/search')
 
     $stateProvider
     .state('main', {
@@ -24,15 +25,19 @@ angular.module('app').config([
 
       })
     .state('search.result', {
-        url : ''
+        url : '?lat&long&place'
         templateUrl : RouterHelper.templateUrl('search/search_result')
-        controller : 'IncidentSearchResultCtrl'
+        controller : 'IncidentSearchResultCtrl',
       })
-    .state('search.result.showitem', {
-        #TODO изменить название для урла
+    .state('search.showitem', {
         url : '^/item/:id'
         templateUrl : RouterHelper.templateUrl('search/search_result_show')
         controller : 'IncidentShowFromResultCtrl'
+      })
+    .state('search.showitem.fromMap', {
+        data : {
+          fromMap : true
+        }
       })
     .state('signup', {
         url : '/signup'
@@ -95,5 +100,14 @@ angular.module('app').config([
           }
         }
 
+      })
+    .state('account.incidents.edit', {
+        url : '/edit/:id'
+        views : {
+          '@account' : {
+            templateUrl : RouterHelper.templateUrl('user/account_incidents_edit')
+            controller : 'AccountIncidentsEditCtrl'
+          }
+        }
       })
 ])

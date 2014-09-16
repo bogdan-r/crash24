@@ -11,15 +11,16 @@ module.exports = {
      */
 
     login: function (req, res) {
-        passport.authenticate('local', function(err, user, info){
+        var errors = new ErrorStorage();
+        passport.authenticate('local',{badRequestMessage: 'Неверный пароль или email'}, function(err, user, info){
             if(err || !user){
-                return res.json(422, info)
+                errors.add('common', info.message)
+                return res.badRequest(errors.get())
             }
             req.logIn(user, function(err){
                 if(err){
-                    return res.json(422, {errors : {
-                        password : "Email или пароль введен неверно"
-                    }})
+                    errors.add('common', "Неверный пароль или email")
+                    return res.badRequest(errors.get())
                 }
                 return res.json({});
             })

@@ -6,13 +6,13 @@
         <article class="b-incident-list__item col-sm-4" ng-repeat="incident in row">
             <div class="thumbnail">
                 <div class="b-incident-list__item__img-wrap">
-                    <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail}}" alt=""/>
+                    <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail}}?cb={{cb}}" alt=""/>
                     <div class="b-incident-list__item__settings">
                         <div class="b-incident-list__item__show">
                             <a href="" class="b-incident-list__item__settings__link" ui-sref="account.incidents.show({id : incident.id})">Посмотреть</a>
                         </div>
                         <div class="b-incident-list__item__edit">
-                            <a href="" class="b-incident-list__item__settings__link" ng-click="editIncident($event, incident)">Редактировать</a>
+                            <a href="" class="b-incident-list__item__settings__link" ui-sref="account.incidents.edit({id : incident.id})">Редактировать</a>
                         </div>
                         <div class="b-incident-list__item__delete">
                             <a href="" class="b-incident-list__item__settings__link" ng-click="deleteIncident($event, incident)">Удалить</a>

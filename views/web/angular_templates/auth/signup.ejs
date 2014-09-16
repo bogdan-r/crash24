@@ -1,19 +1,51 @@
-<div class="b-registration marginAuto jumbotron">
-    <h1 class="b-registration-headline">Регистрация</h1>
+<div id="login-box" class="b-auth">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="login-box-inner">
+                <h1 class="b-auth__title">
+                    Регистрация
+                </h1>
 
-    <form action="" class="form" ng-submit="signup(user)">
-        <div class="form-group">
-            <label for="reg_username" class="control-label ">Имя пользователя *</label>
-            <input type="text" class="form-control" id="reg_username" ng-model="user.username"/>
+                <form role="form" ng-submit="signup(user)">
+                    <div class="form-group" ng-class="{'has-error':errors.username.length}">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input class="form-control" type="text" placeholder="Имя пользователя"
+                                   ng-model="user.username" ng-focus="resetError('username')">
+                        </div>
+                        <span class="help-block" ng-repeat="error in errors.username">
+                            {{error}}
+                        </span>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':errors.email.length}">
+                        <div class="input-group" >
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input class="form-control" type="text" placeholder="Email" ng-model="user.email"
+                                   ng-focus="resetError('email')">
+                        </div>
+                        <span class="help-block" ng-repeat="error in errors.email">
+                            {{error}}
+                        </span>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error':errors.password.length}">
+                        <div class="input-group" >
+                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                            <input type="password" class="form-control" placeholder="Пароль" ng-model="user.password"
+                                   ng-focus="resetError('password')">
+                        </div>
+                        <span class="help-block" ng-repeat="error in errors.password">
+                            {{error}}
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-success col-xs-12">Зарегестрироваться</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="reg_email" class="control-label ">E-mail *</label>
-            <input type="email" class="form-control" id="reg_email" ng-model="user.email"/>
-        </div>
-        <div class="form-group">
-            <label for="reg_password" class="control-label ">Пароль *</label>
-            <input type="password" class="form-control" id="reg_password" ng-model="user.password"/>
-        </div>
-        <button type="submit" class="btn btn-primary">Зарегестрироваться</button>
-    </form>
+    </div>
 </div>

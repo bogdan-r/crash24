@@ -84,6 +84,7 @@ SocialVideo.prototype._mkdir = function(thumbUrlAssetInstance){
     var defer = q.defer();
     fs.mkdir(thumbUrlAssetInstance, 0777, true, function(err){
         if(err){
+            console.log('mkdir err', err);
             defer.reject(err);
         }else{
             defer.resolve();
@@ -95,6 +96,7 @@ SocialVideo.prototype._writeThumb = function(url, imgData){
     var defer = q.defer()
     fs.writeFile(url, imgData, 'binary', function (err) {
         if(err){
+            console.log('writeFile err', err);
             defer.reject(err);
         }else{
             defer.resolve();
@@ -107,6 +109,7 @@ SocialVideo.prototype._resizeThumb = function(options){
 
     im.resize(options, function(err, stdout, stderr){
         if(err){
+            console.log('resize err', err);
             defer.reject(err);
         }else{
             defer.resolve();

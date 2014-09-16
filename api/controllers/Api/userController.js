@@ -7,6 +7,7 @@
 
 module.exports = {
     create : function(req, res){
+        var errors = new ErrorStorage();
         var userParam = {
             username : req.param('username'),
             email : req.param('email'),
@@ -14,8 +15,8 @@ module.exports = {
         }
         User.create(userParam).exec(function(err, user){
             if(err){
-                //TODO Написать нормальные обработчик ошибок, удалить все лишнее
-                return res.json(err.status, err);
+                var transformsErrors = errors.transformValidateErrors(err)
+                return res.badRequest(transformsErrors)
             }
             req.logIn(user, function(err){
                 return res.json(user.toJSON());

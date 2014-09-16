@@ -1,9 +1,12 @@
 angular.module('app.modules.search.controllers').controller('IncidentSearchFiltersCtrl',[
   '$rootScope'
   '$scope'
+  '$state'
+  '$stateParams'
   '$timeout'
   'LocateDefinition'
-  ($rootScope, $scope, $timeout, LocateDefinition)->
+  'CurrentPlaceStorage'
+  ($rootScope, $scope, $state, $stateParams, $timeout, LocateDefinition, CurrentPlaceStorage)->
 
     #var
     _cityInfo = LocateDefinition.getCityInfo()
@@ -53,7 +56,11 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
 
       chousePlaceHandler : ($event, place)->
         $scope.currentLocation = "#{place.prop.text}"
+        CurrentPlaceStorage.set('lat', place.coords[0])
+        CurrentPlaceStorage.set('long', place.coords[1])
+        CurrentPlaceStorage.set('place', place.prop.text)
         $rootScope.$broadcast('chouseSearchPlace', place)
+        $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
         $scope.placeAutocompliteList = []
     })
 
@@ -82,7 +89,11 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
       , 200)
 
     #event handler
+    $scope.$on('firstLoadIncidentItem', (e, incident)->
+      $scope.currentLocation = incident.place
+    )
 
-
-  #run
+    #run
+    if $stateParams.place
+      $scope.currentLocation = $stateParams.place
 ])

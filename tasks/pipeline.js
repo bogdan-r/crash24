@@ -31,6 +31,7 @@ var jsFilesToInject = [
 	// are brought in here
 	'js/dependencies/jquery-1.11.0.min.js',
 	'js/dependencies/underscore-min.js',
+	'js/dependencies/select2.min.js',
 	'js/dependencies/angular/angular.min.js',
 	'js/dependencies/angular/*.js',
 	'js/dependencies/bootstrap/*.js',

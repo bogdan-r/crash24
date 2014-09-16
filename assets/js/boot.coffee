@@ -9,5 +9,6 @@ angular.module('app', [
   'ngResource'
   'ui.router'
   'ui.bootstrap'
+  'ui.select2'
   'yaMap'
 ])

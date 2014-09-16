@@ -12,25 +12,27 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
       load : ->
         Incident.findByAccount().$promise
 
-      getAll : ()->
-        defer = $q.defer()
-        if _.isEmpty(@_incidents)
-          @load().then((incidents)=>
-            @_incidents = incidents
-            defer.resolve(@_incidents)
-          , (err)=>
-            defer.reject(err)
-          )
-          defer.promise
+      getAll : (directAccess = false)->
+        if directAccess == true
+          @_incidents
         else
-          defer.resolve(@_incidents)
-          defer.promise
+          defer = $q.defer()
+          if _.isEmpty(@_incidents)
+            @load().then((incidents)=>
+              @_incidents = incidents
+              defer.resolve(@_incidents)
+            , (err)=>
+              defer.reject(err)
+            )
+            defer.promise
+          else
+            defer.resolve(@_incidents)
+            defer.promise
 
       get : (incidentId)->
         defer = $q.defer()
         @getAll().then(()=>
           incidentIndex = @indexOf(incidentId)
-          console.log('incidentIndex', incidentIndex)
           defer.resolve(@_incidents[incidentIndex])
         , (err)->
           defer.reject(err)
@@ -67,6 +69,16 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
             delete @_deletedIncidentPromise['incidentPromise_' + indexBeforeDelete]
           , @INCIDENT_TIME_DELETED)
         )
+      update : (incident)->
+        defer = $q.defer()
+        Incident.update({id : incident.id}, incident).$promise.then((result)=>
+          index = @indexOf(incident.id)
+          @_incidents.splice(index, 1, result);
+          defer.resolve(@_incidents)
+        , (err)=>
+          defer.reject(err)
+        )
+        defer.promise
 
       restore : (incidentId)->
         index = indexOf(incidentId)
@@ -81,9 +93,6 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
       indexOf : (item)->
         itemId = if typeof item == 'number' or typeof item == 'string' then parseInt(item, 10) else item.id
         index = -1
-        console.log('item', item)
-        console.log('itemId', itemId)
-        console.log('typeof itemId', typeof itemId)
         _.any @_incidents, (x, i) ->
           if x.id == itemId
             index = i

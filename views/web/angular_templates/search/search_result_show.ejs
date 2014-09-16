@@ -1,14 +1,16 @@
-<section class="b-result">
-    <article class="b-incident-video">
-        <a class="b-incident-video__close anim-b-incident-video__close" ui-sref="search.result">&times;</a>
-        <h1 class="b-incident-video__headline">{{incident.title}}</h1>
-        <time datetime="{{incident.date}}" class="b-incident-video__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
-        <div class="b-incident-video__place">
-            {{incident.place}}
-        </div>
-        <div class="b-incident-video__frame">
-            <iframe width="570" height="321" ng-src="{{trustVideoSrc(incident.video)}}" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <p class="b-incident-video__descr">{{incident.description}}</p>
-    </article>
-</section>
+<div class="b-placer b-placer_result">
+    <section class="b-result">
+        <article class="b-incident-video">
+            <a href="#" class="b-incident-video__close anim-b-incident-video__close" ng-click="goToSearch()">&times;</a>
+            <h1 class="b-incident-video__headline">{{incident.title}}</h1>
+            <time datetime="{{incident.date}}" class="b-incident-video__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
+            <div class="b-incident-video__place">
+                {{incident.place}}
+            </div>
+            <div class="b-incident-video__frame">
+                <iframe width="570" height="321" ng-src="{{trustVideoSrc(incident.video)}}" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <p class="b-incident-video__descr">{{incident.description}}</p>
+        </article>
+    </section>
+</div>
