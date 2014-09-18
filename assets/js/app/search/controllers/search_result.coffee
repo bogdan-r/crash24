@@ -16,6 +16,7 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchResul
     _.extend($scope, {
       #TODO сделать коллекцию, для избавления от лишних запросов
       incidents : []
+      cb : new Date().getTime()
     })
     #helpers
 

@@ -2,7 +2,7 @@
     <div class="b-result">
         <a ui-sref="search.showitem({id : incident.id})" ng-repeat="incident in incidents"  class="b-result__item">
             <div class="b-result__item__pic">
-                <img ng-src="{{incident.video_thumbnail_small}}" alt=""/>
+                <img ng-src="{{incident.video_thumbnail_small}}?cb={{cb}}" alt=""/>
             </div>
             <div class="b-result__item__content">
                 <h2 class="b-result__item__headline">{{incident.title}}</h2>
