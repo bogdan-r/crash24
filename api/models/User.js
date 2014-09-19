@@ -56,7 +56,6 @@ module.exports = {
         }
     },
     beforeCreate : function(values, next){
-        console.log(values);
         hashPassword(values, next);
     },
     beforeUpdate : function(values, next){

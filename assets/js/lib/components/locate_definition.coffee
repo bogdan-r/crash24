@@ -3,6 +3,7 @@ angular.module('app.components').factory('LocateDefinition', [
   ($rootScope)->
 
     class LoacteDefinition
+      DEFAULT_GEO_PARAM = {"country":"Россия","name":"Москва","coord":[55.753676,37.619899],"boundedBy":[[55.490631,37.298509],[55.957565,37.967682]]}
       isExistLocate : ->
         if localStorage.getItem('isFirstVisit') == 'true' || localStorage.getItem('isFirstVisit') == true
           return true
@@ -23,6 +24,9 @@ angular.module('app.components').factory('LocateDefinition', [
         }
         localStorage.setItem('currentCityInfo', JSON.stringify(cityGeoParam))
         return
+
+      setDefault : ()->
+        localStorage.setItem('currentCityInfo', JSON.stringify(DEFAULT_GEO_PARAM))
 
       getCityInfo : ()->
         JSON.parse(localStorage.getItem('currentCityInfo'))
