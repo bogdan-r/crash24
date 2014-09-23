@@ -2,14 +2,17 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
   '$scope',
   '$state',
   '$stateParams',
+  '$q'
   'LocateDefinition',
   'CurrentPlaceStorage'
   'mapApiLoad'
   'templateLayoutFactory'
   'Incident',
-  ($scope, $state, $stateParams, LocateDefinition, CurrentPlaceStorage, mapApiLoad, templateLayoutFactory, Incident)->
+  ($scope, $state, $stateParams, $q, LocateDefinition, CurrentPlaceStorage, mapApiLoad, templateLayoutFactory, Incident)->
 
     #var
+    _deferMap = $q.defer()
+    _deferPoint = $q.defer()
     _map = null
     _points = []
     _cityInfo = LocateDefinition.getCityInfo()
@@ -36,6 +39,7 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
 
       afterMapInit : (map)->
         _map = map
+        _deferMap.resolve(map)
 
       chouseIncident : ($event, point)->
         isStateShowItem = $state.current.name == 'search.showitem'
@@ -87,15 +91,20 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
     )
 
     $scope.$on('loadIncidentItem', (e, incident)->
-      if _activeIncidentIndex != null
-        _resetActivePoint()
-      _activeIncidentIndex = _pointsIndexOf(incident.id)
-      $scope.points[_activeIncidentIndex].properties.isActive = true
+      _deferPoint.promise.then(->
+        if _activeIncidentIndex != null
+          _resetActivePoint()
+        _activeIncidentIndex = _pointsIndexOf(incident.id)
+        $scope.points[_activeIncidentIndex].properties.isActive = true
+      )
 
       if $state.current.data?.fromMap == false or $state.current.data?.fromMap == undefined
-        _map.setCenter([incident.lat, incident.long], 15, {
-          checkZoomRange : true
-        })
+        _deferMap.promise.then(->
+          _map.setCenter([incident.lat, incident.long], 15, {
+            checkZoomRange : true
+          })
+        )
+
       return
     )
 
@@ -119,6 +128,7 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
         })
 
       $scope.points = _points
+      _deferPoint.resolve(_points)
     )
 
 ])
