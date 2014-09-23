@@ -30,7 +30,7 @@ html, body{
 
 
 
-
+/*search map*/
 .b-ya-map{
   position: fixed;
   top: 0;
@@ -42,7 +42,38 @@ html, body{
   padding-top: 50px;
   z-index: 1;
 }
-
+.b-ya-map__item{
+  background: #000;
+  position: absolute;
+  left: -40px;
+  top: -52px;
+  width: 70px;
+  height: 52px;
+  border: 2px solid #3498db;
+  opacity: 0.6;
+  &:after{
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    height: 0;
+    line-height: 0;
+    border-top: 5px solid #3498db;
+    border-right: 5px solid rgba(0, 0, 0, 0);
+    border-left: 5px solid rgba(0, 0, 0, 0);
+  }
+  &.b-ya-map__item_active,
+  &.b-ya-map__item_hover{
+    opacity: 1;
+  }
+  img{
+    vertical-align: top;
+    width: 70px;
+    height: 52px;
+  }
+}
 
 
 
@@ -338,7 +369,7 @@ html, body{
   }
 }
 .b-incident-video__headline{
-  padding-right: 50px;
+  padding: 0 50px 0 0;
 }
 .b-incident-video__time{
   color: #888;

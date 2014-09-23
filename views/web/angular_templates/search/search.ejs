@@ -21,11 +21,35 @@
     </span>-->
 </div>
 <div ng-controller="MapMainCtrl">
+    <ya-template-layout ya-key="incidentItemLayout" >
+        <div class="b-ya-map__item {% if properties.isActive %} b-ya-map__item_active {% endif %}">
+            <img src="$[properties.incident.video_thumbnail_small]" alt=""/>
+        </div>
+    </ya-template-layout>
+
+    <ya-template-layout ya-key="incidentItemActiveLayout">
+        <div class="b-ya-map__item b-ya-map__item_active">
+            <img src="$[properties.incident.video_thumbnail_small]" alt=""/>
+        </div>
+    </ya-template-layout>
+
+    <ya-template-layout ya-key="incidentItemHoverLayout">
+        <div class="b-ya-map__item b-ya-map__item_hover">
+            <img src="$[properties.incident.video_thumbnail_small]" alt=""/>
+        </div>
+    </ya-template-layout>
+
     <ya-map class="js_ya-map b-ya-map" ya-zoom="15" ya-center="{{cityCoords}}" ya-controls="" ya-after-init="afterMapInit($target)">
-        <ya-geo-object ng-repeat="point in points"
-                       ya-source="point"
-                       ya-options="{preset:'islands#icon'}"
-                       ya-event-click="chouseIncident($event, point)"></ya-geo-object>
+        <ya-cluster ya-options="{preset:'islands#invertedVioletClusterIcons'}">
+            <ya-geo-object ng-repeat="point in points"
+                           ya-source="point"
+                           ya-options="{{mapsItemOptions}}"
+                           ya-event-click="chouseIncident($event, point)"
+                           ya-event-mouseenter="itemMouseenter($event)"
+                           ya-event-mouseleave="itemMouseleave($event)"
+                           ya-event-propertieschange="itemPropChange($event, point)"></ya-geo-object>
+        </ya-cluster>
+
     </ya-map>
 </div>
 

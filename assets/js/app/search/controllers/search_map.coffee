@@ -3,14 +3,17 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
   '$state',
   '$stateParams',
   'LocateDefinition',
+  'CurrentPlaceStorage'
   'mapApiLoad'
+  'templateLayoutFactory'
   'Incident',
-  ($scope, $state, $stateParams, LocateDefinition, mapApiLoad, Incident)->
+  ($scope, $state, $stateParams, LocateDefinition, CurrentPlaceStorage, mapApiLoad, templateLayoutFactory, Incident)->
 
     #var
     _map = null
     _points = []
     _cityInfo = LocateDefinition.getCityInfo()
+    _activeIncidentIndex = null
 
     if $stateParams.lat && $stateParams.long
       _cityCoords = [$stateParams.lat, $stateParams.long]
@@ -22,6 +25,15 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
       points : []
       cityCoords : _cityCoords
 
+      mapsItemOptions : {
+        iconLayout : 'incidentItemLayout',
+        iconShape : {
+          type : 'Rectangle',
+          coordinates: [[-37, -56], [37, 0]]
+        }
+        hideIconOnBalloonOpen : false
+      }
+
       afterMapInit : (map)->
         _map = map
 
@@ -29,12 +41,43 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
         isStateShowItem = $state.current.name == 'search.showitem'
         isStateShowItemFromMap = $state.current.name == 'search.showitem.fromMap'
         if (isStateShowItem or isStateShowItemFromMap) and parseInt($stateParams.id) == parseInt(point.incident.id)
-          $state.go('search.result')
+          _resetActivePoint()
+          $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
         else
           $state.go('search.showitem.fromMap', {id : point.incident.id}, {})
+
+      itemMouseenter : ($event)->
+        iconContentLayout = templateLayoutFactory.get('incidentItemHoverLayout')
+        $event.get('target').options.set('iconLayout', iconContentLayout)
+
+      itemMouseleave : ($event)->
+        if $event.get('target').properties.get('isActive')
+          return
+        iconContentLayout = templateLayoutFactory.get('incidentItemLayout')
+        $event.get('target').options.set('iconLayout', iconContentLayout)
+
+      itemPropChange : ($event, point)->
+        isActive = $event.get('target').properties.get('isActive')
+        if isActive
+          iconContentLayout = templateLayoutFactory.get('incidentItemActiveLayout')
+        else
+          iconContentLayout = templateLayoutFactory.get('incidentItemLayout')
+        $event.get('target').options.set('iconLayout', iconContentLayout)
     })
 
     #helpers
+    _pointsIndexOf = (itemId)->
+      index = -1
+      _.any $scope.points, (x, i) ->
+        if x.incident.id == itemId
+          index = i
+          return true
+      index
+
+    _resetActivePoint = (index)->
+      pointIndex = if index then index else _activeIncidentIndex
+      $scope.points[pointIndex].properties.isActive = false
+      _activeIncidentIndex = null
 
     #event handler
     $scope.$on('chouseSearchPlace', (e, place)->
@@ -44,10 +87,20 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
     )
 
     $scope.$on('loadIncidentItem', (e, incident)->
+      if _activeIncidentIndex != null
+        _resetActivePoint()
+      _activeIncidentIndex = _pointsIndexOf(incident.id)
+      $scope.points[_activeIncidentIndex].properties.isActive = true
+
       if $state.current.data?.fromMap == false or $state.current.data?.fromMap == undefined
         _map.setCenter([incident.lat, incident.long], 15, {
           checkZoomRange : true
         })
+      return
+    )
+
+    $scope.$on('closeIncidentItem', (e, incident)->
+      _resetActivePoint(_pointsIndexOf(incident.id))
     )
 
     #run
@@ -58,6 +111,10 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
           geometry: {
             type: 'Point'
             coordinates: [incident.lat, incident.long]
+          },
+          properties : {
+            incident : incident
+            isActive : false
           }
         })
 

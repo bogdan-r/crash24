@@ -21,6 +21,7 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
         $sce.trustAsResourceUrl(src)
 
       goToSearch : ->
+        $rootScope.$broadcast('closeIncidentItem', $scope.incident)
         $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
 
     })

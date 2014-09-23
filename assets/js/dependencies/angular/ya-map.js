@@ -142,7 +142,7 @@ angular.module('yaMap',[]).
     service('templateLayoutFactory',['mapApiLoad',function(mapApiLoad){
         this._cache = {};
         this.get=function(key){
-            return this._cache[key];
+            return this._cache[key] || key;
         };
         this.create = function(key, template, overadice){
             if(this._cache[key]){
@@ -164,7 +164,7 @@ angular.module('yaMap',[]).
             },
             compile: function(tElement) {
                 var html = tElement.html();
-                tElement.html('');
+                tElement.children().remove();
                 return function(scope,elm,attrs){
                     if(!attrs.yaKey){
                         throw new Error('not require attribute "key"');
@@ -216,7 +216,7 @@ angular.module('yaMap',[]).
             compile: function(tElement) {
                 var childNodes = tElement.children(),
                     centerCoordinatesDeferred = null;
-                tElement.html('');
+                tElement.children().remove();
                 return function(scope, element,attrs) {
                     var getEvalOrValue = function(value){
                         try{
@@ -238,10 +238,10 @@ angular.module('yaMap',[]).
                                     // Карта автоматически отцентрируется по положению пользователя.
                                     //mapStateAutoApply: true
                                 }).then(function (result) {
-                                        $timeout(function(){
-                                            centerCoordinatesDeferred.resolve(result.geoObjects.position);
-                                        });
+                                    $timeout(function(){
+                                        centerCoordinatesDeferred.resolve(result.geoObjects.position);
                                     });
+                                });
                             });
                         }else if(angular.isArray(center)){
                             $timeout(function(){
@@ -342,10 +342,10 @@ angular.module('yaMap',[]).
                             }
                         );
                         /*if(_center){
-                         setCenter(function(){
-                         scope.map.setCenter(_center);
-                         });
-                         }*/
+                            setCenter(function(){
+                                scope.map.setCenter(_center);
+                            });
+                        }*/
                     });
                     scope.$watch('yaType',function(newValue){
                         if(newValue && mapPromise){
@@ -430,59 +430,59 @@ angular.module('yaMap',[]).
     }]).
     directive('yaCollection',['$compile','yaMapSettings','$timeout','yaSubscriber','$parse',
         function($compile,yaMapSettings,$timeout,yaSubscriber,$parse){
-            return {
-                require:'^yaMap',
-                restrict:'E',
-                scope:{
-                    yaAfterInit:'&'
-                },
-                compile:function(tElement){
-                    var childNodes = tElement.contents();
-                    tElement.html('');
-                    return function(scope, element,attrs,yaMap) {
-                        var options = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : {};
+        return {
+            require:'^yaMap',
+            restrict:'E',
+            scope:{
+                yaAfterInit:'&'
+            },
+            compile:function(tElement){
+                var childNodes = tElement.contents();
+                tElement.children().remove();
+                return function(scope, element,attrs,yaMap) {
+                    var options = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : {};
 
-                        var showAll = angular.isDefined(attrs.showAll) && attrs.showAll!='false';
-                        if(showAll){
-                            var map = yaMap.getMap();
-                            var timeout;
-                            var addEventHandler = function(){
-                                if(timeout){
-                                    $timeout.cancel(timeout);
+                    var showAll = angular.isDefined(attrs.showAll) && attrs.showAll!='false';
+                    if(showAll){
+                        var map = yaMap.getMap();
+                        var timeout;
+                        var addEventHandler = function(){
+                            if(timeout){
+                                $timeout.cancel(timeout);
+                            }
+                            timeout = $timeout(function(){
+                                map.geoObjects.events.remove('add',addEventHandler);
+                                var bounds = map.geoObjects.getBounds();
+                                if(bounds){
+                                    map.setBounds(bounds);
                                 }
-                                timeout = $timeout(function(){
-                                    map.geoObjects.events.remove('add',addEventHandler);
-                                    var bounds = map.geoObjects.getBounds();
-                                    if(bounds){
-                                        map.setBounds(bounds);
-                                    }
-                                }, 300);
-                            };
-                            map.geoObjects.events.add('add',addEventHandler);
+                            }, 300);
+                        };
+                        map.geoObjects.events.add('add',addEventHandler);
+                    }
+                    scope.collection = new ymaps.GeoObjectCollection({},options);
+                    //подписка на события
+                    for(var key in attrs){
+                        if(key.indexOf('yaEvent')===0){
+                            var parentGet=$parse(attrs[key]);
+                            yaSubscriber.subscribe(scope.collection, parentGet,key,scope);
                         }
-                        scope.collection = new ymaps.GeoObjectCollection({},options);
-                        //подписка на события
-                        for(var key in attrs){
-                            if(key.indexOf('yaEvent')===0){
-                                var parentGet=$parse(attrs[key]);
-                                yaSubscriber.subscribe(scope.collection, parentGet,key,scope);
-                            }
-                        }
+                    }
 
-                        yaMap.addGeoObjects(scope.collection);
-                        scope.yaAfterInit({$target:scope.collection});
-                        scope.$on('$destroy', function () {
-                            if (scope.collection) {
-                                yaMap.removeGeoObjects(scope.collection);
-                            }
-                        });
-                        element.append(childNodes);
-                        $compile(element.children())(scope.$parent);
-                    };
-                },
-                controller:'CollectionCtrl'
-            };
-        }]).
+                    yaMap.addGeoObjects(scope.collection);
+                    scope.yaAfterInit({$target:scope.collection});
+                    scope.$on('$destroy', function () {
+                        if (scope.collection) {
+                            yaMap.removeGeoObjects(scope.collection);
+                        }
+                    });
+                    element.append(childNodes);
+                    $compile(element.children())(scope.$parent);
+                };
+            },
+            controller:'CollectionCtrl'
+        };
+    }]).
 
     directive('yaCluster',['yaMapSettings','yaSubscriber','$compile','templateLayoutFactory','$parse',function(yaMapSettings,yaSubscriber,$compile,templateLayoutFactory,$parse){
         return {
@@ -493,7 +493,7 @@ angular.module('yaMap',[]).
             },
             compile:function(tElement){
                 var childNodes = tElement.contents();
-                tElement.html('');
+                tElement.children().remove();
                 return function(scope, element,attrs,yaMap) {
                     var collectionOptions = attrs.yaOptions ? scope.$eval(attrs.yaOptions) : {};
                     if(collectionOptions && collectionOptions.clusterBalloonItemContentLayout){
