@@ -40,7 +40,7 @@
     </ya-template-layout>
 
     <ya-map class="js_ya-map b-ya-map" ya-zoom="15" ya-center="{{cityCoords}}" ya-controls="" ya-after-init="afterMapInit($target)">
-        <ya-cluster ya-options="{preset:'islands#invertedVioletClusterIcons'}">
+        <ya-cluster ya-options="{gridSize : 512}">
             <ya-geo-object ng-repeat="point in points"
                            ya-source="point"
                            ya-options="{{mapsItemOptions}}"
