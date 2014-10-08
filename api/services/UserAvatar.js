@@ -9,13 +9,13 @@ var AVATAR_LIST = [
         name: 'avatar',
         width: 160,
         height: 160,
-        ext : '.jpg'
+        ext : '.png'
     },
     {
         name: 'avatar_small',
         width: 35,
         height: 35,
-        ext : '.jpg'
+        ext : '.png'
     }
 ];
 
@@ -36,6 +36,7 @@ UserAvatar.prototype.generateAvatars = function(){
             resizeList.push(ImageAction.crop({
                 srcPath : self.options.originalAvatar,
                 dstPath : path.dirname(self.options.originalAvatar) + '/' + AVATAR_LIST[i].name + AVATAR_LIST[i].ext,
+                format: 'png',
                 width : AVATAR_LIST[i].width,
                 height : AVATAR_LIST[i].height
             }))

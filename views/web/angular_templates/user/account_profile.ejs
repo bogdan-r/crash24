@@ -58,10 +58,12 @@
         <div class="form-group" ng-class="{'has-error':errors.avatar.length}">
 
             <button type="button" class="btn btn-primary btn-lg b-update-profile-form__load-button"
+                    ng-disabled="isLoadingAvatarUpdate"
                     ng-click="avatarUploader.uploadItem(0)"
                     ng-show="avatarUploader.queue.length > 0">
                 Загрузить
             </button>
+            <i class="b-update-profile-form__loader fa fa-spinner fa-spin" ng-show="isLoadingAvatarUpdate"></i>
             <span class="help-block" ng-repeat="error in errors.avatar">
                 {{error}}
             </span>

@@ -20,6 +20,7 @@ angular.module('app.modules.user.controllers').controller('ProfileCtrl', [
       errors : {}
       isLoadingUserUpdate : false
       isLoadingPassUpdate : false
+      isLoadingAvatarUpdate : false
       updateSuccessed : false
       avatarUpdateSuccessed : false
       passwordUpdateSuccessed : false
@@ -86,6 +87,7 @@ angular.module('app.modules.user.controllers').controller('ProfileCtrl', [
 
     $scope.avatarUploader.onErrorItem = (item, response)->
       $scope.errors['avatar'] = response.errors.avatar
+      $scope.isLoadingAvatarUpdate = false
 
     $scope.avatarUploader.onAfterAddingFile = (item)->
       $scope.errors['avatar'] = []
@@ -93,12 +95,19 @@ angular.module('app.modules.user.controllers').controller('ProfileCtrl', [
         $scope.avatarUploader.removeFromQueue(0)
 
     $scope.avatarUploader.onSuccessItem = (item, response, status, headers)->
+      $scope.isLoadingAvatarUpdate = false
       UserInfo.setAvatars(response.avatars)
       $scope.avatarUpdateSuccessed = true
       $timeout.cancel(_avatarSuccessTimeout)
       _avatarSuccessTimeout = $timeout(()->
         $scope.avatarUpdateSuccessed = false
       , 5000)
+
+    $scope.avatarUploader.onCompleteItem = ()->
+      $scope.isLoadingAvatarUpdate = false
+
+    $scope.avatarUploader.onBeforeUploadItem = ()->
+      $scope.isLoadingAvatarUpdate = true
 
 
     #run
