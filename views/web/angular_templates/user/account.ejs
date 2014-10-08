@@ -10,7 +10,7 @@
                 <h2>{{user.username}}</h2>
             </header>
             <div class="main-box-body">
-                <img src="/images/fallback/default_user.png" width="160" alt="" class="profile-img img-responsive center-block"/>
+                <img ng-src="{{userAvatar}}" width="160" alt="" class="profile-img img-responsive center-block"/>
                 <div class="profile-details">
                     <ul class="fa-ul">
                         <li><i class="fa-li fa fa-user"></i><a ui-sref="account.profile">Профиль</a></li>

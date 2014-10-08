@@ -17,17 +17,29 @@ function hashPassword(values, next){
     })
 }
 module.exports = {
-
+    types : {
+        isCurrentUsername : function(username){
+            return username.match(/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/) == null ? false : true
+        }
+    },
     attributes: {
         username :{
             type : 'string',
             required: true,
-            unique : true
+            unique : true,
+            isCurrentUsername : true
+        },
+        name : {
+            type : 'string'
         },
         email : {
             type : 'email',
             required : true,
             unique : true
+        },
+        isSetAvatar : {
+            type : 'boolean',
+            defaultsTo : false
         },
         password : {
             type : 'string',
@@ -43,8 +55,14 @@ module.exports = {
         },
         toJSON : function(){
             var obj = this.toObject();
+            obj.avatars = {}
             delete obj.password;
             delete obj.admin;
+            if(this.isSetAvatar){
+                obj.avatars = UserAvatar.getAvatarUrlPublic(this.id);
+            }
+            delete obj.isSetAvatar
+
             return obj;
         },
         validPassword : function(password, callback){
@@ -52,7 +70,7 @@ module.exports = {
             if(callback){
                 return bcrypt.compare(password, obj.password, callback)
             }
-            return bcrypt.compare(password, obj.password)
+            return bcrypt.compareSync(password, obj.password)
         }
     },
     beforeCreate : function(values, next){

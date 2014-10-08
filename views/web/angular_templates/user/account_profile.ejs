@@ -1,8 +1,113 @@
+
 <div class="main-box-header clearfix">
     <h2>Профиль</h2>
 </div>
 
 <div class="main-box-body clearfix">
-    <h2>{{user.username}}</h2>
-    <p>{{user.email}}</p>
+    <form ng-submit="updateProfileInfo(user)" class="b-update-profile-form" name="updateProfileForm">
+        <div class="form-group" ng-class="{'has-error':errors.username.length}">
+            <label for="">Имя пользователя <sup>*</sup></label>
+            <input type="text" ng-model="user.username" name="username" class="form-control" ng-focus="resetError('username')" required="required"/>
+            <span class="help-block" ng-repeat="error in errors.username">
+                {{error}}
+            </span>
+            <span class="help-block">Имя пользователя может содержать только латинские буквы, цифры и должно начинаться с буквы.</span>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':errors.email.length}">
+            <label for="">Email <sup>*</sup></label>
+            <input type="text" ng-model="user.email" name="email" class="form-control" ng-focus="resetError('username')" required="required"/>
+            <span class="help-block" ng-repeat="error in errors.email">
+                {{error}}
+            </span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="">Ваше настоящее имя</label>
+            <input type="text" ng-model="user.name" name="name" class="form-control" />
+        </div>
+
+
+        <div class="form-group">
+            <button ng-disabled="isLoadingUserUpdate" type="submit" class="btn btn-primary btn-lg">Обновить</button> <i class="b-update-profile-form__loader fa fa-spinner fa-spin" ng-show="isLoadingUserUpdate"></i>
+        </div>
+
+        <div class="alert alert-success anim-b-update-profile-form__success-message" ng-hide="!updateSuccessed">
+            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+            Данные обновленны
+        </div>
+    </form>
+
+    <h3>
+        <span>Загрузить аватар</span>
+    </h3>
+
+    <form action="" name="loadAvatar" class="b-load-avatar-form">
+        <div class="form-group">
+            <span class="help-block">Не больше 1Мб</span>
+            <button type="button" class="btn btn-primary b-load-avatar-form__load-file">
+                <input type="file" name="avatar" nv-file-select uploader="avatarUploader" class="b-load-avatar-form__load-input"/>
+                Выберите файл
+            </button>
+
+            <label for="" class="b-load-avatar-form__filename">{{avatarUploader.queue[0].file.name}}</label>
+
+
+        </div>
+        <div class="form-group" ng-class="{'has-error':errors.avatar.length}">
+
+            <button type="button" class="btn btn-primary btn-lg b-update-profile-form__load-button"
+                    ng-click="avatarUploader.uploadItem(0)"
+                    ng-show="avatarUploader.queue.length > 0">
+                Загрузить
+            </button>
+            <span class="help-block" ng-repeat="error in errors.avatar">
+                {{error}}
+            </span>
+
+        </div>
+        <div class="alert alert-success anim-b-update-profile-form__success-message" ng-hide="!avatarUpdateSuccessed">
+            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+            Аватар успешно загружен
+        </div>
+    </form>
+
+
+    <h3>
+        <span>Смена пароля</span>
+    </h3>
+
+    <form ng-submit="updatePassword(passwordData)" name="updatePasswordForm">
+        <div class="form-group" ng-class="{'has-error':errors.old_password.length}">
+            <label for="">Старый пароль</label>
+            <input type="password" ng-model="passwordData.old_password" name="password" class="form-control" ng-focus="resetError('old_password')" required="required"/>
+            <span class="help-block" ng-repeat="error in errors.old_password">
+                {{error}}
+            </span>
+        </div>
+        <div class="form-group" ng-class="{'has-error':errors.new_password.length}">
+            <label for="">Новый пароль</label>
+            <input type="password" ng-model="passwordData.new_password" name="new_password" class="form-control" ng-focus="resetError('new_password')" required="required"/>
+            <span class="help-block" ng-repeat="error in errors.new_password">
+                {{error}}
+            </span>
+        </div>
+        <div class="form-group" ng-class="{'has-error':errors.new_password_confirm.length}">
+            <label for="">Новый пароль еще раз</label>
+            <input type="password" ng-model="passwordData.new_password_confirm" name="password_confirm" class="form-control" ng-focus="resetError('new_password_confirm')" required="required"/>
+            <span class="help-block" ng-repeat="error in errors.new_password_confirm">
+                {{error}}
+            </span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg" ng-disabled="isLoadingPassUpdate">Обновить пароль</button>
+            <i class="b-update-profile-form__loader fa fa-spinner fa-spin" ng-show="isLoadingPassUpdate"></i>
+        </div>
+
+        <div class="alert alert-success anim-b-update-profile-form__success-message" ng-hide="!passwordUpdateSuccessed">
+            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+            Пароль изменен
+        </div>
+    </form>
 </div>

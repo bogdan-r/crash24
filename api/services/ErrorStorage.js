@@ -66,6 +66,9 @@ ErrorStorage.prototype.transformValidateErrors = function(errors){
                     case 'unique':
                         this.add(key, 'Поле должно быть уникальным');
                         break
+                    case 'isCurrentUsername':
+                        this.add(key, 'Недопустимые символы');
+                        break
                 }
             }
         }

@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var async = require('async');
 var q = require('q');
 var url = require('url');
 var http = require('http');

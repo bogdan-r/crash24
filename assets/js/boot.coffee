@@ -7,8 +7,10 @@ angular.module('app', [
   'app.services'
   'ngAnimate'
   'ngResource'
+  'ngCookies'
   'ui.router'
   'ui.bootstrap'
   'ui.select2'
   'yaMap'
+  'angularFileUpload'
 ])

@@ -59,8 +59,8 @@ angular.module('app').config([
         url : '/account'
         templateUrl : RouterHelper.templateUrl('user/account')
         resolve : {
-          userLoad : ['UserProfile', '$state', (UserProfile, $state)->
-            UserProfile.get().$promise.then(
+          userLoad : ['UserInfo', '$state', (UserInfo, $state)->
+            UserInfo.get().then(
               (user)->
                 return user
             , (err)->

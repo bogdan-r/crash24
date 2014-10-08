@@ -30,7 +30,10 @@ module.exports.policies = {
     'Api/userController' : {
         '*' : false,
         create : true,
-        profile : 'authenticated'
+        profile : 'authenticated',
+        uploadAvatar : 'authenticated',
+        update : 'authenticated',
+        updatePassword : 'authenticated'
     },
 
     /*incidents*/

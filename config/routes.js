@@ -35,6 +35,9 @@ module.exports.routes = {
     /*users*/
     'post /api/user' :        'Api/userController.create',
     'get /api/user/profile' : 'Api/userController.profile',
+    'put /api/user/profile' : 'Api/userController.update',
+    'put /api/user/password' : 'Api/userController.updatePassword',
+    'post /api/user/uploadAvatar' : 'Api/userController.uploadAvatar',
 
     /*incidents*/
         /*common*/

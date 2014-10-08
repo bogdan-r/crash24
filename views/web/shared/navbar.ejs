@@ -14,8 +14,8 @@
                 ng-mouseenter="showUserDropmenuHandler($event)"
                 ng-mouseleave="hideUserDropmenuHandler($event)">
                 <a href="#" class="dropdown-toggle b-profile-dropdown__toggle">
-                    <img src="/images/fallback/default_user.png" alt="">
-                    <span class="hidden-xs"><%=User.username%></span>
+                    <img ng-src="{{userAvatar}}" alt="">
+                    <span class="hidden-xs">{{user.username}}</span>
                 </a>
                 <ul class="b-profile-dropdown__menu anim-b-profile-dropdown__menu" ng-show="isOpenDropdownUser">
                     <li class="b-profile-dropdown__menu__item">
