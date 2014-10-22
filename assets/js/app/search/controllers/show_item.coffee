@@ -35,6 +35,7 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
           CurrentPlaceStorage.set('lat', incident.lat)
           CurrentPlaceStorage.set('long', incident.long)
           CurrentPlaceStorage.set('place', incident.place)
+          CurrentPlaceStorage.set('boundLocation', incident.boundedBy)
           $rootScope.$broadcast('firstLoadIncidentItem', incident)
         )
     )

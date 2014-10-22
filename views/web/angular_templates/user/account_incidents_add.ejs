@@ -18,7 +18,7 @@
 
         <div class="form-group">
             <label for="">Дата <sup>*</sup></label>
-            <input type="text" data-provide="datepicker" data-date-language="ru" data-date-format="yyyy-mm-dd"
+            <input type="text" cr-datepicker="datepickerSetting"
                    ng-model="incidentParam.date"
                    ng-required="true" class="form-control"
                    required="required"/>
@@ -35,7 +35,7 @@
                        ng-model="incidentParam.place"
                        typeahead="place for place in relatedAddress($viewValue)"
                        typeahead-wait-ms="300"
-                       typeahead-on-select="findAddressByValue()"
+                       typeahead-on-select="findAddressByValue($item)"
                        ng-focus="resetError('place')"/>
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" ng-click="findAddressByValue($event)">Поставить метку</button>

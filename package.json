@@ -34,7 +34,8 @@
     "sails-migrations": "^0.1.0",
     "sails-mongo": "^0.10.2",
     "sails-postgresql": "^0.10.4",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "moment" : "*"
   },
   "scripts": {
     "start": "node app.js",

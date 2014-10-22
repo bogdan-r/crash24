@@ -25,7 +25,7 @@ angular.module('app').config([
 
       })
     .state('search.result', {
-        url : '?lat&long&place'
+        url : '?lat&long&place&boundLocation&dateFrom&dateTo&orderBy'
         templateUrl : RouterHelper.templateUrl('search/search_result')
         controller : 'IncidentSearchResultCtrl',
       })

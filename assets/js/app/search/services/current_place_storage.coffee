@@ -20,6 +20,7 @@ angular.module('app.modules.search.services').factory('CurrentPlaceStorage', [
             lat : @get('lat')
             long : @get('long')
             place : @get('place')
+            boundLocation : @get('boundLocation')
           }
         else
           {}

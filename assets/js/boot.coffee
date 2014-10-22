@@ -1,6 +1,7 @@
 window.Components = 'app.components'
 angular.module('app', [
   'app.modules'
+  'app.directives'
   'app.resources'
   'app.components'
   'app.filters'
@@ -10,7 +11,6 @@ angular.module('app', [
   'ngCookies'
   'ui.router'
   'ui.bootstrap'
-  'ui.select2'
   'yaMap'
   'angularFileUpload'
 ])

@@ -10,7 +10,6 @@ angular.module('app.resources').factory('Incident', [
       search : {
         method : 'POST'
         url : '/api/incident/search'
-        isArray : true
       },
       searchMap : {
         method : 'POST'

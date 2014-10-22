@@ -2,17 +2,20 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
   '$scope'
   '$state'
   '$timeout'
+  'SettingsServ'
   'LocateDefinition'
   'Incident'
   'AccountIncidentCollection'
-  ($scope, $state, $timeout, LocateDefinition, Incident, AccountIncidentCollection)->
+  ($scope, $state, $timeout, SettingsServ, LocateDefinition, Incident, AccountIncidentCollection)->
 
     #var
     _map = null
     _locatePlaceInfo = LocateDefinition.getCityInfo()
+    _settings = new SettingsServ
 
     #scope
     _.extend($scope, {
+      datepickerSetting : _settings.get('datePickers:addIncident')
       errors : {}
 
       placeAutocompliteList : [] #Массив с адресами геолокации
@@ -53,8 +56,8 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsAddCt
           return interimArr
         )
 
-      findAddressByValue : ()->
-        ymaps.geocode(incidentForm.place.value, {
+      findAddressByValue : ($item)->
+        ymaps.geocode($item, {
           results : 1
           boundedBy : _locatePlaceInfo.boundedBy
         }).then((result)->
