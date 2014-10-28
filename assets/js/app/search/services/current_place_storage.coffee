@@ -9,19 +9,18 @@ angular.module('app.modules.search.services').factory('CurrentPlaceStorage', [
 
       set : (key, value)->
         if typeof key == 'object'
-          @_cityInfo = key
+          @_cityInfo = _.extend(@_cityInfo, key)
           return
         else
           @_cityInfo[key] = value
           return
+
+      remove : (key)->
+        delete @_cityInfo[key]
+
       getPlaceParams : ->
         if @isSetPlaceParams
-          {
-            lat : @get('lat')
-            long : @get('long')
-            place : @get('place')
-            boundLocation : @get('boundLocation')
-          }
+          @_cityInfo
         else
           {}
 

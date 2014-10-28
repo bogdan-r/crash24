@@ -50,7 +50,10 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchResul
           place : _cityInfo.name
           boundLocation : _cityInfo.boundedBy
         }
-      CurrentPlaceStorage.set(_cityInfoOptions)
+      CurrentPlaceStorage.set(_.extend({}, _cityInfoOptions, {
+        dateFrom : $stateParams.dateFrom
+        dateTo : $stateParams.dateTo
+      }))
 
     if $stateParams.orderBy
       $scope.predicate = _sortFilters[$stateParams.orderBy].predicate
@@ -58,14 +61,9 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchResul
 
     $scope.place = CurrentPlaceStorage.get('place')
     #NOTE обычная загрузка проишествий
-    Incident.search({
-        lat : CurrentPlaceStorage.get('lat')
-        long : CurrentPlaceStorage.get('long')
-        boundLocation : CurrentPlaceStorage.get('boundLocation')
+    Incident.search(_.extend({}, CurrentPlaceStorage.getPlaceParams(), {
         boundUserCity : _cityInfo.boundedBy
-        dateFrom : $stateParams.dateFrom
-        dateTo : $stateParams.dateTo
-        take : 100}, (incidents)->
+        take : 100}), (incidents)->
       $scope.locationIncidents = incidents.groupByLocation
       $scope.userLocationIncidents = incidents.groupByUserLocation
       $scope.otherIncidents = incidents.groupByOther

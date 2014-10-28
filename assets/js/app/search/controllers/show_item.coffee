@@ -32,10 +32,12 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
     $scope.$on('$stateChangeSuccess', (e, toState, toParam, fromState, fromParam)->
       if fromState.name.indexOf('search') == -1
         _deferIncident.promise.then((incident)->
-          CurrentPlaceStorage.set('lat', incident.lat)
-          CurrentPlaceStorage.set('long', incident.long)
-          CurrentPlaceStorage.set('place', incident.place)
-          CurrentPlaceStorage.set('boundLocation', incident.boundedBy)
+          CurrentPlaceStorage.set({
+            lat : incident.lat
+            long : incident.long
+            place : incident.place
+            boundLocation : incident.boundedBy
+          })
           $rootScope.$broadcast('firstLoadIncidentItem', incident)
         )
     )

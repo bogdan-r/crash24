@@ -3,20 +3,26 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
   '$state',
   '$stateParams',
   '$q'
+  '$timeout'
   'LocateDefinition',
   'CurrentPlaceStorage'
   'mapApiLoad'
   'templateLayoutFactory'
-  'Incident',
-  ($scope, $state, $stateParams, $q, LocateDefinition, CurrentPlaceStorage, mapApiLoad, templateLayoutFactory, Incident)->
+  'Incident'
+  'SettingsServ'
+  'MapPointCollection'
+  ($scope, $state, $stateParams, $q, $timeout, LocateDefinition, CurrentPlaceStorage, mapApiLoad, templateLayoutFactory, Incident, SettingsServ, MapPointCollection)->
 
     #var
     _deferMap = $q.defer()
     _deferPoint = $q.defer()
     _map = null
+    _mapPointCollection = MapPointCollection
     _points = []
     _cityInfo = LocateDefinition.getCityInfo()
+    _settings = new SettingsServ
     _activeIncidentIndex = null
+
 
     if $stateParams.lat && $stateParams.long
       _cityCoords = [$stateParams.lat, $stateParams.long]
@@ -28,14 +34,7 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
       points : []
       cityCoords : _cityCoords
 
-      mapsItemOptions : {
-        iconLayout : 'incidentItemLayout',
-        iconShape : {
-          type : 'Rectangle',
-          coordinates: [[-37, -56], [37, 0]]
-        }
-        hideIconOnBalloonOpen : false
-      }
+      mapsItemOptions : _settings.get('mapsItemOptions')
 
       afterMapInit : (map)->
         _map = map
@@ -67,13 +66,24 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
         else
           iconContentLayout = templateLayoutFactory.get('incidentItemLayout')
         $event.get('target').options.set('iconLayout', iconContentLayout)
+
+      moveMap : ($event)->
+        _mapPointCollection.load({
+          dateFrom : $stateParams.dateFrom
+          dateTo : $stateParams.dateTo
+          boundMap : _map.getBounds()
+        }).then((points)->
+          $scope.points = points
+          console.info 'load moveMap'
+        )
+
     })
 
     #helpers
     _pointsIndexOf = (itemId)->
       index = -1
       _.any $scope.points, (x, i) ->
-        if x.incident.id == itemId
+        if x.incident.id == parseInt(itemId)
           index = i
           return true
       index
@@ -91,12 +101,20 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
     )
 
     $scope.$on('loadIncidentItem', (e, incident)->
-      _deferPoint.promise.then(->
-        if _activeIncidentIndex != null
-          _resetActivePoint()
-        _activeIncidentIndex = _pointsIndexOf(incident.id)
-        $scope.points[_activeIncidentIndex].properties.isActive = true
-      )
+      console.info 'loadIncidentItem'
+      _deferPoint = $q.defer()
+      _deferPoint.resolve(incident)
+#      _deferPoint.promise.then(()->
+#      $timeout(->
+
+      ###if _activeIncidentIndex != null
+        _resetActivePoint()
+      _activeIncidentIndex = _pointsIndexOf(incident.id)
+      $scope.points[_activeIncidentIndex].properties.isActive = true###
+
+#      , 1000)
+
+#      )
 
       if $state.current.data?.fromMap == false or $state.current.data?.fromMap == undefined
         _deferMap.promise.then(->
@@ -112,23 +130,31 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
       _resetActivePoint(_pointsIndexOf(incident.id))
     )
 
-    #run
-    Incident.searchMap((incidents)->
-      for incident, i in incidents
-        _points.push({
-          incident : incident
-          geometry: {
-            type: 'Point'
-            coordinates: [incident.lat, incident.long]
-          },
-          properties : {
-            incident : incident
-            isActive : false
-          }
-        })
+    $scope.$on('changeSearchFilter', (e)->
+      console.log('changeSearchFilter')
+      if $state.current.name == 'search.showitem'
+        _resetActivePoint(_pointsIndexOf($state.params.id))
 
-      $scope.points = _points
-      _deferPoint.resolve(_points)
+      _mapPointCollection.load({
+        dateFrom : $stateParams.dateFrom
+        dateTo : $stateParams.dateTo
+        boundMap : _map.getBounds()
+      }, true).then((points)->
+        $scope.points = points
+      )
+    )
+
+
+    #run
+
+    _deferMap.promise.then(->
+      _mapPointCollection.load({
+        dateFrom : $stateParams.dateFrom
+        dateTo : $stateParams.dateTo
+        boundMap : _map.getBounds()
+      }).then((points)->
+        $scope.points = points
+      )
     )
 
 ])

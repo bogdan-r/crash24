@@ -86,7 +86,8 @@
         </div>
     </ya-template-layout>
 
-    <ya-map class="js_ya-map b-ya-map" ya-zoom="15" ya-center="{{cityCoords}}" ya-controls="" ya-after-init="afterMapInit($target)">
+    <ya-map class="js_ya-map b-ya-map" ya-zoom="15" ya-center="{{cityCoords}}" ya-controls="" ya-after-init="afterMapInit($target)"
+            ya-event-actionend="moveMap($event)">
         <ya-cluster ya-options="{gridSize : 512}">
             <ya-geo-object ng-repeat="point in points"
                            ya-source="point"

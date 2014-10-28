@@ -101,9 +101,9 @@ module.exports = {
 
     search : function(req, res){
         var reqParams = req.allParams();
-        var incidentContentProvider = IncidentContentProvider.retrieve(reqParams)
+        var incidentContentProvider = new IncidentContentProvider(reqParams);
 
-        incidentContentProvider.then(function(results){
+        incidentContentProvider.retrieveIncident().then(function(results){
             return res.json(results)
         }).fail(function(){
                 return res.badRequest()
@@ -112,10 +112,13 @@ module.exports = {
     },
 
     searchMap : function(req, res){
-        //TODO Переписать на поиск с условиями для карты
-        Incident.findByActiveState().exec(function(err, incidents){
-            if (err) {return res.badRequest()}
-            return res.json(incidents)
-        })
+        var reqParams = req.allParams();
+        var incidentContentProvider = new IncidentContentProvider(reqParams);
+
+        incidentContentProvider.retrieveMapIncident().then(function(results){
+            return res.json(results)
+        }).fail(function(){
+                return res.badRequest()
+            })
     }
 };

@@ -69,16 +69,20 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
 
       chousePlaceHandler : ($event, place)->
         $scope.currentLocation = "#{place.prop.text}"
-        CurrentPlaceStorage.set('lat', place.coords[0])
-        CurrentPlaceStorage.set('long', place.coords[1])
-        CurrentPlaceStorage.set('place', place.prop.text)
-        CurrentPlaceStorage.set('boundLocation', place.prop.boundedBy)
+        CurrentPlaceStorage.set({
+          lat : place.coords[0]
+          long : place.coords[1]
+          place : place.prop.text
+          boundLocation : place.prop.boundedBy
+        })
         $rootScope.$broadcast('chouseSearchPlace', place)
         $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
         $scope.placeAutocompliteList = []
 
       applyFilters : ()->
+        _setFilterPlaceStorage()
         $scope.setFiltersNamesList()
+        $rootScope.$broadcast('changeSearchFilter')
         _goToSearchResult()
 
       resetFilters : ()->
@@ -87,7 +91,9 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
           dateTo : null
           orderBy : _sortFilters[0]
         }
+        _setFilterPlaceStorage()
         $scope.setFiltersNamesList()
+        $rootScope.$broadcast('changeSearchFilter')
         _goToSearchResult()
 
       setFiltersNamesList : ()->
@@ -118,8 +124,13 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
         _hideDropdowns(dropdown)
       , 200)
 
+    _setFilterPlaceStorage = ()->
+      CurrentPlaceStorage.set(_.extend({}, $scope.filters, {
+        orderBy : $scope.filters.orderBy.value
+      }))
+
     _goToSearchResult = ()->
-      $state.go('search.result', _.extend({}, $scope.filters, {orderBy : $scope.filters.orderBy.value}))
+      $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
 
 
     #event handler

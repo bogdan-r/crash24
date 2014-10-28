@@ -22,6 +22,14 @@ angular.module("app").run([
           endDate : new Date()
         }
       }
+      mapsItemOptions : {
+        iconLayout : 'incidentItemLayout',
+        iconShape : {
+          type : 'Rectangle',
+          coordinates: [[-37, -56], [37, 0]]
+        }
+        hideIconOnBalloonOpen : false
+      }
     }
 
 
