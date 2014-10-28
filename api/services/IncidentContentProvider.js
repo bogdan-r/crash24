@@ -67,7 +67,6 @@ IncidentContentProvider.prototype.retrieveMapIncident = function(){
     self.query.long['>='] = boundMap[0][1];
     self.query.long['<='] = boundMap[1][1];
 
-    console.log(self.query)
 
     var incidents = Incident.findByActiveState().where(self.query);
 

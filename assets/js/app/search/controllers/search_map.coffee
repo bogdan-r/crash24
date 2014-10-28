@@ -15,13 +15,13 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
 
     #var
     _deferMap = $q.defer()
-    _deferPoint = $q.defer()
+    _deferPoint = null
     _map = null
     _mapPointCollection = MapPointCollection
-    _points = []
     _cityInfo = LocateDefinition.getCityInfo()
     _settings = new SettingsServ
     _activeIncidentIndex = null
+
 
 
     if $stateParams.lat && $stateParams.long
@@ -69,17 +69,24 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
 
       moveMap : ($event)->
         _mapPointCollection.load({
-          dateFrom : $stateParams.dateFrom
-          dateTo : $stateParams.dateTo
+          dateFrom : CurrentPlaceStorage.get('dateFrom')
+          dateTo : CurrentPlaceStorage.get('dateTo')
           boundMap : _map.getBounds()
         }).then((points)->
           $scope.points = points
-          console.info 'load moveMap'
+          _deferPoint?.promise.then((index)->
+            _setActivePointIndex(index)
+            $scope.points[_getActivePointIndex()].properties.isActive = true
+            _deferPoint = null
+          )
+
         )
 
     })
 
     #helpers
+
+    #TODO вынести в отдельную компоненту работу с активной точкой на карте
     _pointsIndexOf = (itemId)->
       index = -1
       _.any $scope.points, (x, i) ->
@@ -90,8 +97,15 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
 
     _resetActivePoint = (index)->
       pointIndex = if index then index else _activeIncidentIndex
+      return if _.isNull(pointIndex)
       $scope.points[pointIndex].properties.isActive = false
       _activeIncidentIndex = null
+
+    _setActivePointIndex = (index)->
+      _activeIncidentIndex = if _pointsIndexOf(index) == -1 then null else _pointsIndexOf(index)
+
+    _getActivePointIndex = ()->
+      _activeIncidentIndex
 
     #event handler
     $scope.$on('chouseSearchPlace', (e, place)->
@@ -101,20 +115,14 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
     )
 
     $scope.$on('loadIncidentItem', (e, incident)->
-      console.info 'loadIncidentItem'
-      _deferPoint = $q.defer()
-      _deferPoint.resolve(incident)
-#      _deferPoint.promise.then(()->
-#      $timeout(->
-
-      ###if _activeIncidentIndex != null
+      if !_.isNull(_getActivePointIndex())
         _resetActivePoint()
-      _activeIncidentIndex = _pointsIndexOf(incident.id)
-      $scope.points[_activeIncidentIndex].properties.isActive = true###
-
-#      , 1000)
-
-#      )
+      _setActivePointIndex(incident.id)
+      if !_.isNull(_getActivePointIndex())
+        $scope.points[_getActivePointIndex()].properties.isActive = true
+      else
+        _deferPoint = $q.defer()
+        _deferPoint.resolve(incident.id)
 
       if $state.current.data?.fromMap == false or $state.current.data?.fromMap == undefined
         _deferMap.promise.then(->
@@ -131,13 +139,12 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
     )
 
     $scope.$on('changeSearchFilter', (e)->
-      console.log('changeSearchFilter')
       if $state.current.name == 'search.showitem'
         _resetActivePoint(_pointsIndexOf($state.params.id))
 
       _mapPointCollection.load({
-        dateFrom : $stateParams.dateFrom
-        dateTo : $stateParams.dateTo
+        dateFrom : CurrentPlaceStorage.get('dateFrom')
+        dateTo : CurrentPlaceStorage.get('dateTo')
         boundMap : _map.getBounds()
       }, true).then((points)->
         $scope.points = points
