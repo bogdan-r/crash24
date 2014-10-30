@@ -27,20 +27,16 @@
 
         <div class="form-group" ng-class="{'has-error':errors.place.length}">
             <label for="">Адрес <sup>*</sup></label>
-            <div class="input-group">
-                <input type="text"
-                       class="form-control"
-                       name="place"
-                       required="required"
-                       ng-model="incidentParam.place"
-                       typeahead="place for place in relatedAddress($viewValue)"
-                       typeahead-wait-ms="300"
-                       typeahead-on-select="findAddressByValue($item)"
-                       ng-focus="resetError('place')"/>
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button" ng-click="findAddressByValue($event)">Поставить метку</button>
-            </span>
-            </div>
+            <input type="text"
+                   class="form-control"
+                   name="place"
+                   required="required"
+                   ng-model="incidentParam.place"
+                   typeahead="place as place.value for place in relatedAddress($viewValue)"
+                   typeahead-wait-ms="300"
+                   typeahead-on-select="setAddress($item)"
+                   ng-focus="resetError('place')"
+                   cr-prevent-submit=""/>
             <span class="help-block" ng-repeat="error in errors.place">
                 {{error}}
             </span>

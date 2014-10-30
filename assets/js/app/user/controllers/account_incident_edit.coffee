@@ -56,24 +56,20 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsEditC
           interimArr = []
           result.geoObjects.each((el)->
             props = el.properties.getAll()
-            interimArr.push("#{props.name} #{props.description}")
+            props.coords = el.geometry.getCoordinates()
+            interimArr.push({
+              props : props
+              value : "#{props.name} #{props.description}"
+            })
           )
           return interimArr
         )
 
-      findAddressByValue : ()->
-        ymaps.geocode(incidentForm.place.value, {
-          results : 1
-          boundedBy : _locatePlaceInfo.boundedBy
-        }).then((result)->
-          geoObject = result.geoObjects.get(0)
-          coords = geoObject.geometry.getCoordinates()
-          _chousePlace({
-            prop : geoObject.properties.getAll()
-            coords : coords
-          })
-          $scope.$apply()
-        )
+      setAddress : ($item)->
+        _chousePlace({
+          prop : $item.props
+          coords : $item.props.coords
+        })
 
       dragIncidentMarker : ($event)->
         _setIncidentCoords($event.get('target').geometry.getCoordinates())
