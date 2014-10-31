@@ -2,8 +2,9 @@ angular.module("app").run([
   '$rootScope'
   '$modal'
   '$window'
+  '$cacheFactory'
   'LocateDefinition'
-  ($rootScope, $modal, $window, LocateDefinition)->
+  ($rootScope, $modal, $window, $cacheFactory, LocateDefinition)->
     $rootScope.settings = {
       sortFilters : [
         {name : 'Дистанции', value: "0", predicate : '', reverse : false},
@@ -22,6 +23,8 @@ angular.module("app").run([
           endDate : new Date()
         }
       }
+
+
       mapsItemOptions : {
         iconLayout : 'incidentItemLayout',
         iconShape : {
@@ -29,6 +32,10 @@ angular.module("app").run([
           coordinates: [[-37, -56], [37, 0]]
         }
         hideIconOnBalloonOpen : false
+      }
+
+      caches : {
+        searchResultScroll : $cacheFactory('searchResultScroll')
       }
     }
 

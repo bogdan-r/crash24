@@ -15,6 +15,7 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
     _adressAutocompliteTimeout = null
     _settings = new SettingsServ
     _sortFilters = _settings.get('sortFilters')
+    _scrollOffsetResult = _settings.get('caches:searchResultScroll')
 
     #scope
     _.extend($scope, {
@@ -75,6 +76,7 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
           place : place.prop.text
           boundLocation : place.prop.boundedBy
         })
+        _scrollOffsetResult.put('offset', 0)
         $rootScope.$broadcast('chouseSearchPlace', place)
         $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
         $scope.placeAutocompliteList = []
@@ -82,6 +84,7 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
       applyFilters : ()->
         _setFilterPlaceStorage()
         $scope.setFiltersNamesList()
+        _scrollOffsetResult.put('offset', 0)
         $rootScope.$broadcast('changeSearchFilter')
         _goToSearchResult()
 
@@ -93,6 +96,7 @@ angular.module('app.modules.search.controllers').controller('IncidentSearchFilte
         }
         _setFilterPlaceStorage()
         $scope.setFiltersNamesList()
+        _scrollOffsetResult.put('offset', 0)
         $rootScope.$broadcast('changeSearchFilter')
         _goToSearchResult()
 

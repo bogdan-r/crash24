@@ -1,5 +1,7 @@
 <div class="b-placer">
-    <div class="b-result">
+    <div class="b-result"
+         cr-watch-scroll-offset="scrollOffset($event, currentScrollOffset)"
+         cr-scroll-offset-init="scrollOffsetInit($element)">
         <div class="b-result__current">
             <div class="b-result__headline" ng-hide="locationIncidents.length == 0">
                 Результат по запросу: <span class="b-result__headline__selected">{{place}}</span>
@@ -8,7 +10,10 @@
                 По запросу {{place}}, ничего не найдено
             </div>
 
-            <a ui-sref="search.showitem({id : incident.id})" ng-repeat="incident in locationIncidents | orderBy:predicate:reverse"  class="b-result__item">
+            <a ui-sref="search.showitem({id : incident.id})"
+               ng-repeat="incident in locationIncidents | orderBy:predicate:reverse"
+               cr-repeat-complite="renderIncident($index)"
+               class="b-result__item">
                 <div class="b-result__item__pic">
                     <img ng-src="{{incident.video_thumbnail_small}}" alt=""/>
                 </div>
@@ -22,7 +27,10 @@
 
         <div class="b-result__current-city" ng-hide="userLocationIncidents.length == 0">
             <div class="b-result__headline">Ближайшие аварии в городе: <span class="b-result__headline__selected">{{cityInfo.name}}</span></div>
-            <a ui-sref="search.showitem({id : incident.id})" ng-repeat="incident in userLocationIncidents | orderBy:predicate:reverse"  class="b-result__item">
+            <a ui-sref="search.showitem({id : incident.id})"
+               ng-repeat="incident in userLocationIncidents | orderBy:predicate:reverse"
+               cr-repeat-complite="renderIncident($index)"
+               class="b-result__item">
                 <div class="b-result__item__pic">
                     <img ng-src="{{incident.video_thumbnail_small}}" alt=""/>
                 </div>
@@ -36,7 +44,10 @@
 
         <div class="b-result__other" ng-hide="otherIncidents.length == 0">
             <div class="b-result__headline">Остальное</div>
-            <a ui-sref="search.showitem({id : incident.id})" ng-repeat="incident in otherIncidents | orderBy:predicate:reverse"  class="b-result__item">
+            <a ui-sref="search.showitem({id : incident.id})"
+               ng-repeat="incident in otherIncidents | orderBy:predicate:reverse"
+               cr-repeat-complite="renderIncident($index)"
+               class="b-result__item">
                 <div class="b-result__item__pic">
                     <img ng-src="{{incident.video_thumbnail_small}}" alt=""/>
                 </div>
