@@ -51,29 +51,41 @@ ErrorStorage.prototype.get = function(errName){
     }
 }
 ErrorStorage.prototype.transformValidateErrors = function(errors){
+    var invalidAttrs;
+    var exsistErrorValidation = errors.invalidAttributes && !_.isEmpty(errors.invalidAttributes)
+    var exsistRawErrorValidation = errors.toJSON().raw && errors.toJSON().raw.invalidAttributes
 
-    if(errors.invalidAttributes && !_.isEmpty(errors.invalidAttributes)){
-        for(var key in errors.invalidAttributes){
-            for(var i = 0; i < errors.invalidAttributes[key].length; i++){
-
-                switch (errors.invalidAttributes[key][i].rule){
-                    case 'required':
-                        this.add(key, 'Поле обязательно для заполнения');
-                        break
-                    case 'email':
-                        this.add(key, 'Неправильный формат поля email');
-                        break
-                    case 'unique':
-                        this.add(key, 'Поле должно быть уникальным');
-                        break
-                    case 'isCurrentUsername':
-                        this.add(key, 'Недопустимые символы');
-                        break
-                }
-            }
-        }
+    if(exsistErrorValidation){
+        invalidAttrs = errors.invalidAttributes
+    }else if(exsistRawErrorValidation){
+        invalidAttrs = errors.toJSON().raw.invalidAttributes
+    }else{
         return this.get();
     }
+
+    for(var key in invalidAttrs){
+        for(var i = 0; i < invalidAttrs[key].length; i++){
+
+            switch (invalidAttrs[key][i].rule){
+                case 'required':
+                    this.add(key, 'Поле обязательно для заполнения');
+                    break
+                case 'email':
+                    this.add(key, 'Неправильный формат поля email');
+                    break
+                case 'unique':
+                    this.add(key, 'Поле должно быть уникальным');
+                    break
+                case 'isCurrentUsername':
+                    this.add(key, 'Недопустимые символы');
+                    break
+                case 'uniqueVideo':
+                    this.add(key, 'Такое видео уже есть');
+                    break
+            }
+        }
+    }
+    return this.get();
 }
 
 ErrorStorage.prototype.hasError = function(){

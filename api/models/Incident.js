@@ -5,6 +5,37 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+
+function checkUniqueVideo(values, next){
+    Incident.find({video : values.video}).exec(function(err, videos){
+        var isExistVideo = false
+        if (err){next(err)}
+
+        if(_.isEmpty(videos)){
+            next()
+        }else{
+            for(var i = 0; i < videos.length; i ++){
+                if(videos[i].isActive == true){
+                    isExistVideo = true
+                    break;
+                }
+            }
+            if(isExistVideo){
+                next(
+                    {invalidAttributes : {
+                        video : [{
+                            rule : 'uniqueVideo'
+                        }]
+                    }}
+                )
+            }else{
+                next()
+            }
+        }
+    })
+}
+
+
 module.exports = {
     attributes: {
         title: {
@@ -49,6 +80,12 @@ module.exports = {
             return obj;
         }
 
+    },
+    beforeCreate : function(values, next){
+        checkUniqueVideo(values, next);
+    },
+    beforeUpdate : function(values, next){
+        checkUniqueVideo(values, next);
     },
     //Поиск по активным событиям
     findByActiveState : function(options){
