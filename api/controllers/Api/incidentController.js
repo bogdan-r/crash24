@@ -12,6 +12,7 @@ var fs = require('node-fs');
 module.exports = {
 
     create : function(req, res){
+        var errors = new ErrorStorage();
         var reqParams = req.allParams();
         reqParams = _.extend(reqParams, {user : req.user.id});
         var incidentParamsProvider = IncidentParamsProvider.retrieve(reqParams);
@@ -22,7 +23,10 @@ module.exports = {
         }
 
         Incident.create(incidentParamsProvider.incidentParams).exec(function(err, incident){
-            if (err) return res.badRequest();
+            if (err){
+                var transformsErrors = errors.transformValidateErrors(err)
+                return res.badRequest(transformsErrors)
+            }
             incidentParamsProvider.socialVideo.setVideoThumbs(incident).then(function(){
                 return res.json(incident);
             }, function(errProm){
