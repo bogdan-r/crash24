@@ -13,4 +13,6 @@ angular.module('app', [
   'ui.bootstrap'
   'yaMap'
   'angularFileUpload'
+  'angulartics'
+  'angulartics.google.analytics'
 ])
