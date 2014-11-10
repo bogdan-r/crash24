@@ -16,9 +16,6 @@
             </li>
         </ul>
     </div>
-    <!--<span class="b-filter-panel__bars-button" ng-click="toggleBarsMenu($event)">
-        <i class="fa fa-bars"></i>
-    </span>-->
     <div class="b-filter-panel__extend">
         <div class="b-filter-panel__extend__filter" ng-show="isOpenFilterPanel">
             <div class="form-inline b-filter-panel__extend__filter__form-inline">
@@ -70,25 +67,39 @@
 <div ng-controller="MapMainCtrl">
     <ya-template-layout ya-key="incidentItemLayout" >
         <div class="b-ya-map__item {% if properties.isActive %} b-ya-map__item_active {% endif %}">
-            <img src="$[properties.incident.video_thumbnail_small]" alt=""/>
+            <img src="{{properties.incident.video_thumbnail_small}}" alt=""/>
         </div>
     </ya-template-layout>
 
     <ya-template-layout ya-key="incidentItemActiveLayout">
         <div class="b-ya-map__item b-ya-map__item_active">
-            <img src="$[properties.incident.video_thumbnail_small]" alt=""/>
+            <img src="{{properties.incident.video_thumbnail_small}}" alt=""/>
         </div>
     </ya-template-layout>
 
     <ya-template-layout ya-key="incidentItemHoverLayout">
         <div class="b-ya-map__item b-ya-map__item_hover">
-            <img src="$[properties.incident.video_thumbnail_small]" alt=""/>
+            <img src="{{properties.incident.video_thumbnail_small}}" alt=""/>
         </div>
+    </ya-template-layout>
+
+    <ya-template-layout ya-key="clusterLayout" ya-overrides="clusterLayoutOverrides">
+        <ul class="b-ya-map__cluster-items">
+            {% for geoObject in properties.geoObjects %}
+            <li class="b-ya-map__cluster-item">
+                <a href="#" data-placemark-incident-id="{{geoObject.properties.incident.id}}" class="jq_cluster_search_item_link b-ya-map__cluster-item__link">
+                    <span class="b-ya-map__cluster-item__title">{{geoObject.properties.balloonContentHeader|raw}}</span>
+                    <span class="b-ya-map__cluster-item__date">{{geoObject.properties.date}}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
     </ya-template-layout>
 
     <ya-map class="js_ya-map b-ya-map" ya-zoom="15" ya-center="{{cityCoords}}" ya-controls="" ya-after-init="afterMapInit($target)"
             ya-event-actionend="moveMap($event)">
-        <ya-cluster ya-options="{gridSize : 128}">
+        <ya-cluster ya-options="{{searchMapClusterOptions}}" ya-after-init="afterclusterInit($target)"
+                ya-event-click="clusterPlacemarkClick($event)">
             <ya-geo-object ng-repeat="point in points"
                            ya-source="point"
                            ya-options="{{mapsItemOptions}}"
