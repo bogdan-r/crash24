@@ -24,15 +24,24 @@ angular.module("app").run([
         }
       }
 
-
-      mapsItemOptions : {
-        iconLayout : 'incidentItemLayout',
-        iconShape : {
-          type : 'Rectangle',
-          coordinates: [[-37, -56], [37, 0]]
+      maps : {
+        mapsItemOptions : {
+          iconLayout : 'incidentItemLayout',
+          iconShape : {
+            type : 'Rectangle',
+            coordinates: [[-37, -56], [37, 0]]
+          }
+          hideIconOnBalloonOpen : false
+          openBalloonOnClick : false
         }
-        hideIconOnBalloonOpen : false
+        searchMapClusterOptions : {
+          gridSize : 128
+          disableClickZoom : true
+          openBalloonOnClick : false
+          clusterBalloonContentLayout : 'clusterLayout'
+        }
       }
+
 
       caches : {
         searchResultScroll : $cacheFactory('searchResultScroll')

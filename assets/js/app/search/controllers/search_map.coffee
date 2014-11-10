@@ -15,8 +15,10 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
 
     #var
     _deferMap = $q.defer()
+    _deferCluster = $q.defer()
     _deferPoint = null
     _map = null
+    _cluster = null
     _mapPointCollection = MapPointCollection
     _cityInfo = LocateDefinition.getCityInfo()
     _settings = new SettingsServ
@@ -34,11 +36,35 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
       points : []
       cityCoords : _cityCoords
 
-      mapsItemOptions : _settings.get('mapsItemOptions')
+      mapsItemOptions : _settings.get('maps:mapsItemOptions')
+      searchMapClusterOptions : _settings.get('maps:searchMapClusterOptions')
+
+      clusterLayoutOverrides : {
+        build : ()->
+          BalloonContentLayout = templateLayoutFactory.get('clusterLayout')
+          BalloonContentLayout.superclass.build.call(this);
+          angular.element('.jq_cluster_search_item_link').on('click', @onClickClusterItem)
+
+        clear : ()->
+          angular.element('.jq_cluster_search_item_link').off('click', @onClickClusterItem)
+          BalloonContentLayout = templateLayoutFactory.get('clusterLayout')
+          BalloonContentLayout.superclass.clear.call(this);
+
+        onClickClusterItem : (e)->
+          e.preventDefault()
+          $item = angular.element(@)
+          incidentId = $item.data('placemark-incident-id')
+          $state.go('search.showitem.fromMap', {id : incidentId}, {})
+
+      }
 
       afterMapInit : (map)->
         _map = map
         _deferMap.resolve(map)
+
+      afterclusterInit : ($target)->
+        _cluster = $target
+        _deferCluster.resolve($target)
 
       chouseIncident : ($event, point)->
         isStateShowItem = $state.current.name == 'search.showitem'
@@ -81,6 +107,15 @@ angular.module('app.modules.search.controllers').controller('MapMainCtrl', [
           )
 
         )
+
+      clusterPlacemarkClick : ($event)->
+        $event.preventDefault()
+        target = $event.get('target')
+        if typeof target.getGeoObjects == 'function'
+          if _.isEqual(target.getBounds()[0], target.getBounds()[1])
+            _cluster.balloon.open($event.get('target'))
+          else
+            _map.setBounds(target.getBounds())
 
     })
 

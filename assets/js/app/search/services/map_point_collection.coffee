@@ -29,6 +29,8 @@ angular.module('app.modules.search.services').factory('MapPointCollection', [
               properties : {
                 incident : incident
                 isActive : false
+                balloonContentHeader: incident.title
+                date : moment(incident.date).format('DD.MM.YYYY')
               }
             })
 
