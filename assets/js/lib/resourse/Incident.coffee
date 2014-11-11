@@ -19,10 +19,6 @@ angular.module('app.resources').factory('Incident', [
       update : {
         method : 'PUT'
       }
-      restore : {
-        method : 'POST'
-        url : '/api/incident/:id/restore'
-      }
     })
 
     Incident

@@ -11,10 +11,6 @@ angular.module('app.modules.user.controllers').controller('AccountIncidentsCtrl'
       incidents : []
       cb : new Date().getTime()
 
-      deleteIncident : ($event, incident)->
-        AccountIncidentCollection.delete(incident.id).then(()->
-          $scope.incidents = $filter('splitApart')(AccountIncidentCollection.getAll(true), [3])
-        )
     })
     #helpers
 

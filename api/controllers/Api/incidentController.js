@@ -61,6 +61,7 @@ module.exports = {
         })
     },
     update : function(req, res){
+        var errors = new ErrorStorage();
         var idIncident = req.param('id');
         var reqParams = req.allParams();
         reqParams = _.extend(reqParams, {user : req.user.id});
@@ -74,7 +75,10 @@ module.exports = {
             id: idIncident,
             user: req.user.id
         }, incidentParamsProvider.incidentParams).exec(function (err, incident) {
-            if (err) return res.badRequest();
+            if (err){
+                var transformsErrors = errors.transformValidateErrors(err)
+                return res.badRequest(transformsErrors)
+            }
             incidentParamsProvider.socialVideo.setVideoThumbs(incident[0]).then(function () {
                 return res.json(incident[0]);
             }, function (errProm) {
@@ -83,24 +87,6 @@ module.exports = {
 
         })
 
-    },
-    delete : function(req, res){
-        Incident.remove({
-            id: req.param('id'),
-            user: req.user.id
-        }).exec(function (err, incident) {
-                if (err) {return res.serverError()}
-                return res.json(incident[0])
-            });
-    },
-    restore : function(req, res){
-        Incident.restore({
-            id: req.param('id'),
-            user: req.user.id
-        }).exec(function (err, incident) {
-                if (err) {return res.serverError()}
-                return res.json(incident[0])
-            });
     },
 
     search : function(req, res){
