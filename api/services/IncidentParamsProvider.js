@@ -17,6 +17,7 @@ IncidentParamsProvider.retrieve = function(params){
     }
 
     var incidentParams = {
+        id :          params['id'],
         title :       params['title'],
         video :       socialVideoInfo.embedUrl,
         video_type :  socialVideoInfo.videoType,

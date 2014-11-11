@@ -15,7 +15,7 @@ function checkUniqueVideo(values, next){
             next()
         }else{
             for(var i = 0; i < videos.length; i ++){
-                if(videos[i].isActive == true){
+                if(videos[i].isActive == true && values.id != videos[i].id){
                     isExistVideo = true
                     break;
                 }

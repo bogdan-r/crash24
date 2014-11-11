@@ -50,25 +50,6 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
         )
         defer.promise
 
-      delete : (incidentId)->
-        defer = $q.defer()
-        indexBeforeDelete = @indexOf(incidentId)
-        @_incidents[indexBeforeDelete].isDeleted = true
-        @_incidents[indexBeforeDelete].indexPromise = indexBeforeDelete
-
-        Incident.delete({id : incidentId}).$promise.then(()=>
-          defer.resolve()
-        , (err)=>
-          defer.reject(err)
-        )
-        defer.promise.then(()=>
-          @_incidents[indexBeforeDelete].isCompliteDeleted = true
-          @_deletedIncidentPromise['incidentPromise_' + indexBeforeDelete] = $timeout(()=>
-            index = @indexOf(incidentId)
-            @_incidents.splice(index, 1);
-            delete @_deletedIncidentPromise['incidentPromise_' + indexBeforeDelete]
-          , @INCIDENT_TIME_DELETED)
-        )
       update : (incident)->
         defer = $q.defer()
         Incident.update({id : incident.id}, incident).$promise.then((result)=>
@@ -80,15 +61,6 @@ angular.module('app.modules.user.services').factory('AccountIncidentCollection',
         )
         defer.promise
 
-      restore : (incidentId)->
-        index = indexOf(incidentId)
-        indexPromise = @_incidents[index].indexPromise
-        @_incidents[index].isDeleted = false
-        $timeout.cancel(@_deletedIncidentPromise['incidentPromise_' + indexPromise])
-
-        Incident.restore({id : incidentId}).$promise.then(()=>
-          @_incidents[index].isCompliteDeleted = false
-        )
 
       indexOf : (item)->
         itemId = if typeof item == 'number' or typeof item == 'string' then parseInt(item, 10) else item.id
