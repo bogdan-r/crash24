@@ -63,6 +63,10 @@ module.exports = {
             defaultsTo : true
         },
         user : {model : 'user'},
+        messages : {
+            collection : 'message',
+            via : 'incident'
+        },
 
         toJSON : function(){
             var publicThumbAsset = SocialVideo.getThumbsUrl().thumbUrlAssetPublic;

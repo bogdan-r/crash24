@@ -53,6 +53,14 @@ module.exports = {
             type : 'boolean',
             defaultsTo : false
         },
+        sentMessages : {
+            collection : 'message',
+            via : 'user'
+        },
+        receivedMessages : {
+            collection : 'message',
+            via : 'userRecipient'
+        },
         toJSON : function(){
             var obj = this.toObject();
             obj.avatars = {}

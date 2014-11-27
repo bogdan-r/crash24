@@ -110,4 +110,13 @@ angular.module('app').config([
           }
         }
       })
+    .state('account.messages', {
+          url : '/messages'
+          views : {
+            '@account' : {
+              templateUrl : RouterHelper.templateUrl('user/account_messages')
+              controller : 'AccountMessagesCtrl'
+            }
+          }
+        })
 ])
