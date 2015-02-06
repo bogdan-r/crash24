@@ -30,6 +30,7 @@ module.exports.policies = {
     'Api/userController' : {
         '*' : false,
         create : true,
+        verification : true,
         profile : 'authenticated',
         uploadAvatar : 'authenticated',
         update : 'authenticated',
@@ -48,6 +49,12 @@ module.exports.policies = {
         update : 'authenticated',
         delete : 'authenticated',
         restore : 'authenticated'
+    },
+
+    /*messages*/
+    'Api/messageController' : {
+        '*' : false,
+        create : true
     }
 
 

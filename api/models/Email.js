@@ -6,9 +6,6 @@
  */
 
 module.exports = {
-    connections: ['madrill'],
-    attributes: {
-
-    }
+    connection: ['madrill']
 };
 

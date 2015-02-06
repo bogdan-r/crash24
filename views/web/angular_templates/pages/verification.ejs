@@ -1,0 +1,47 @@
+<div class="b-verification-page">
+    <div class="row">
+        <div class="col-xs-12 col-md-4 col-md-push-4">
+
+            <div class="main-box">
+                <div class="main-box-header clearfix">
+                    <h2>
+                        Подтверждение регистрации
+                    </h2>
+                </div>
+                <div class="main-box-body clearfix">
+                    <form action="" ng-submit="verificate(verificateParams)" ng-hide="isVerificateSuccess">
+                        <div class="form-group" ng-class="{'has-error':errors.common.length}">
+                            <label for="">Для подтверждения регистрации введите email</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input class="form-control" type="email" ng-model="verificateParams.email" ng-focus="resetError('common')">
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':errors.common.length}">
+                        <span class="help-block" ng-repeat="error in errors.common">
+                            {{error}}
+                        </span>
+                        </div>
+                        <button class="btn btn-primary btn-lg col-xs-12" type="submit">Подтвердить регистрацию</button>
+                    </form>
+                    <div ng-show="isVerificateSuccess">
+                        <div >
+                            <p>
+                                Ваш аккаунт подтвержден
+                            </p>
+                            <p>
+                                <a ui-sref="signin" class="btn btn-default">Войти</a>
+                                <a ui-sref="main" class="btn btn-default">На главную</a>
+                            </p>
+                        </div>
+                        <div class="clearfix">
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

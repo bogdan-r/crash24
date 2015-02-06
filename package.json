@@ -36,7 +36,8 @@
     "sails-postgresql": "^0.10.4",
     "sails-mandrill" : "~0.10.2",
     "underscore": "^1.6.0",
-    "moment" : "*"
+    "moment" : "*",
+    "password-generator" : "*"
   },
   "scripts": {
     "start": "node app.js",

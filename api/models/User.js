@@ -41,6 +41,13 @@ module.exports = {
             type : 'boolean',
             defaultsTo : false
         },
+        isVerification : {
+            type : 'boolean',
+            defaultsTo : false
+        },
+        verificationToken : {
+            type : 'string'
+        },
         password : {
             type : 'string',
             required : true
@@ -70,6 +77,7 @@ module.exports = {
                 obj.avatars = UserAvatar.getAvatarUrlPublic(this.id);
             }
             delete obj.isSetAvatar
+            delete obj.verificationToken
 
             return obj;
         },

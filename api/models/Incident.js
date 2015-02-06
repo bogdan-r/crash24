@@ -77,7 +77,6 @@ module.exports = {
             }
             delete obj.isApproved;
             delete obj.isActive;
-            delete obj.user;
             obj.video_thumbnail = publicThumbAsset + this.id + '/' + thumbsName.original;
             obj.video_thumbnail_small = publicThumbAsset + this.id + '/' + thumbsName.small;
 

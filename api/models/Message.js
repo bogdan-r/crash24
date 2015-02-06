@@ -9,7 +9,8 @@ module.exports = {
 
     attributes: {
         text : {
-            type : 'strint'
+            type : 'string',
+            required : true
         },
         user : {model : 'user'},
         userRecipient : {model : 'user'},

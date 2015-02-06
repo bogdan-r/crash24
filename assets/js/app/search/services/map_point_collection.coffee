@@ -1,44 +1,40 @@
 angular.module('app.modules.search.services').factory('MapPointCollection', [
   '$q'
+  'DataStorageCollection'
   'Incident'
-  ($q, Incident)->
-    class MapPointCollection
-      constructor : ()->
-        @_mapPoints = []
-
-      get : ()->
-        @_mapPoints
+  ($q, DataStorageCollection, Incident)->
+    class MapPointCollection extends DataStorageCollection
 
       load : (params = {}, clearPoints = false)->
         defer = $q.defer()
         _points = []
 
         if clearPoints == true
-          @_mapPoints = []
+          @_collection = []
 
-        Incident.searchMap(params, (incidents)=>
-          for incident, i in incidents
-            continue if _.any(@_mapPoints, (x, i)=> return true if x.incident.id == incident.id )
+        @_resourse.searchMap(params, (result)=>
+          for item, i in result
+            continue if _.any(@_collection, (x, i)=> return true if x.incident.id == item.id )
 
             _points.push({
-              incident : incident
+              incident : item
               geometry: {
                 type: 'Point'
-                coordinates: [incident.lat, incident.long]
+                coordinates: [item.lat, item.long]
               },
               properties : {
-                incident : incident
+                incident : item
                 isActive : false
-                balloonContentHeader: incident.title
-                date : moment(incident.date).format('DD.MM.YYYY')
+                balloonContentHeader: item.title
+                date : moment(item.date).format('DD.MM.YYYY')
               }
             })
 
-          @_mapPoints = @_mapPoints.concat(_points)
-          defer.resolve(@_mapPoints)
+          @_collection = @_collection.concat(_points)
+          defer.resolve(@_collection)
         )
         defer.promise
 
 
-    return new MapPointCollection()
+    return new MapPointCollection(Incident, {loadMethod : 'searchMap'})
 ])

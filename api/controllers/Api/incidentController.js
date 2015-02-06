@@ -21,7 +21,7 @@ module.exports = {
         if(incidentParamsProvider.errors !== undefined){
             return res.badRequest(incidentParamsProvider.errors)
         }
-
+        delete incidentParamsProvider.incidentParams.id;
         Incident.create(incidentParamsProvider.incidentParams).exec(function(err, incident){
             if (err){
                 var transformsErrors = errors.transformValidateErrors(err)

@@ -54,6 +54,11 @@ angular.module('app').config([
         template : ''
         controller : 'LogoutCtrl'
       })
+    .state('verification', {
+          url : '/user/verification?token'
+          templateUrl : RouterHelper.templateUrl('pages/verification')
+          controller : 'VerificationCtrl'
+        })
     .state('account', {
         abstract : true
         url : '/account'

@@ -8,13 +8,13 @@ angular.module('app.modules.registration.controllers').controller('SignupCtrl', 
 
     #scope
     _.extend($scope, {
-
+      errors : {}
       signup : (userParam)->
         user = new User(userParam)
-        errors : {}
+        $scope.errors = {}
         user.$save().then(
           ->
-            $window.location = '/'
+            $window.location = $state.href('account.profile')
         , (err)->
             $scope.errors = err.data.errors
         )
