@@ -148,8 +148,10 @@ module.exports = {
                 errors.add('common', 'Данный пользователь не найден')
                 return res.badRequest(errors.get())
             }
+
             user.isVerification = true
             user.verificationToken = ''
+            delete user.password //NOTE что бы не обновлял пароль
             user.save(function(err, u){
                 if (err) {
                     errors.add('common', 'Произошла ошибка, попробуйте еще раз')

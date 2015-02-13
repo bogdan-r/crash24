@@ -94,6 +94,15 @@ angular.module('app').config([
             controller : 'AccountIncidentsAddCtrl'
           }
         }
+        resolve : {
+          userLoad : ['UserInfo', '$state', (UserInfo, $state)->
+            UserInfo.get().then((user)->
+              console.log(user)
+              if user.isVerification == false
+                $state.go('account.verificateIt')
+            )
+          ]
+        }
 
       })
     .state('account.incidents.show', {
@@ -115,6 +124,15 @@ angular.module('app').config([
           }
         }
       })
+    .state('account.verificateIt', {
+          url : '/edit/verificate'
+          views : {
+            '@account' : {
+              templateUrl : RouterHelper.templateUrl('user/account_verificate_forbidden')
+              controller : 'AccountIncidentsEditCtrl'
+            }
+          }
+        })
     .state('account.messages', {
           url : '/messages'
           views : {

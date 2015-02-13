@@ -2,7 +2,8 @@ angular.module('app.modules.pages.controllers').controller('VerificationCtrl', [
   '$scope',
   '$stateParams',
   'User'
-  ($scope, $stateParams, User)->
+  'UserInfo'
+  ($scope, $stateParams, User, UserInfo)->
 
     #var
 
@@ -16,6 +17,7 @@ angular.module('app.modules.pages.controllers').controller('VerificationCtrl', [
       verificate : (verificateParams)->
         verificateParams.token = $stateParams.token
         User.verification(verificateParams, ()->
+          UserInfo.get(true)
           $scope.isVerificateSuccess = true
         , (err)->
           $scope.errors = err.data.errors

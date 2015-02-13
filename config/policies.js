@@ -43,12 +43,12 @@ module.exports.policies = {
         show : true,
         search : true,
         searchMap : true,
-        create : 'authenticated',
-        findByAccount : 'authenticated',
-        showByAccount : 'authenticated',
-        update : 'authenticated',
-        delete : 'authenticated',
-        restore : 'authenticated'
+        create : ['authenticated', 'isVerificate'],
+        findByAccount : ['authenticated', 'isVerificate'],
+        showByAccount : ['authenticated', 'isVerificate'],
+        update : ['authenticated', 'isVerificate'],
+        delete : ['authenticated', 'isVerificate'],
+        restore : ['authenticated', 'isVerificate']
     },
 
     /*messages*/
