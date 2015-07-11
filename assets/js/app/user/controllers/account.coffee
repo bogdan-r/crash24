@@ -2,7 +2,8 @@ angular.module('app.modules.user.controllers').controller('AccountCtrl', [
   '$scope'
   '$state'
   'UserInfo'
-  ($scope, $state, UserInfo)->
+  'userLoad'
+  ($scope, $state, UserInfo, userLoad)->
 
     #var
 
@@ -25,8 +26,6 @@ angular.module('app.modules.user.controllers').controller('AccountCtrl', [
     )
 
     #run
-    UserInfo.get().then((user)->
-      $scope.user = user
-      $scope.userAvatar = UserInfo.getAvatar($scope.user.avatars, 'avatar')
-    )
+    $scope.user = userLoad
+    $scope.userAvatar = UserInfo.getAvatar($scope.user.avatars, 'avatar')
 ])

@@ -1,6 +1,48 @@
 <div class="main-box-header clearfix">
-    <h2>Сообщения</h2>
+  <h2>Сообщения</h2>
 </div>
 <div class="main-box-body clearfix">
-    сообщения
+
+
+<section class="b-user-messages">
+  <div class="tabs-wrapper">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#">Для меня</a>
+      </li>
+      <li>
+        <a href="#">От меня</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade active in">
+        <article class="b-user-messages__item" ng-repeat="incidentMess in messagesByIncident.forMe">
+          <div class="b-user-messages__item__img-wrap">
+            <img class="b-user-messages__item__img" ng-src="{{incidentMess.video_thumbnail_small}}" alt=""/>
+          </div>
+          <div class="b-user-messages__item__content">
+            <div class="b-user-messages__item__title">
+              {{incidentMess.title}}
+            </div>
+            <div class="b-user-messages__users-wrap">
+              <div class="b-user-messages__users" ng-repeat="user in incidentMess.users"
+                   ng-click="showDialog(incidentMess, user)">
+                <img class="b-user-messages__users__img" ng-src="{{user.avatars.avatar_small}}" alt=""/>
+
+                <div class="b-user-messages__users__content ">{{user.messages[user.messages.length-1].text}}</div>
+              </div>
+            </div>
+          </div>
+        </article>
+        {{currentDialog}}
+        <div class="b-user-messages__dialog" ng-repeat="mess in currentDialog">
+          {{mess.text}}
+          sdfsdf
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 </div>

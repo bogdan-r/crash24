@@ -8,6 +8,7 @@
 var path = require('path')
 var fs = require('node-fs');
 var crypto = require('crypto');
+var q = require('q')
 module.exports = {
     create : function(req, res){
         var errors = new ErrorStorage();
@@ -29,7 +30,7 @@ module.exports = {
                 var transformsErrors = errors.transformValidateErrors(err)
                 return res.badRequest(transformsErrors)
             }
-            Email.send({
+            /*Email.send({
                 to : [{
                     name : user.username,
                     email : user.email
@@ -39,7 +40,9 @@ module.exports = {
                     'Для подтверждения регистрации перейдите по ссылке ' +
                     '<a href="http://allcrash.ru/user/verification?token=' + userParams.verificationToken + '">http://allcrach.ru/user/verification?token=' + userParams.verificationToken + '</a>'
 
-            });
+            });*/
+
+            console.log('http://allcrash.ru/user/verification?token=' + userParams.verificationToken)
 
             req.logIn(user, function(err){
                 return res.json(user.toJSON());
@@ -48,10 +51,29 @@ module.exports = {
     },
     profile : function(req, res){
         if(!req.user){return res.serverError()}
-        User.findOne(req.user.id).populate('sentMessages').populate('receivedMessages').exec(function(err, user){
-            if(err){return res.serverError();}
-            return res.json(user)
-        })
+        q.fcall(function(){
+            var user = User.findOne(req.user.id)
+            var messages = Message.find({
+                or : [
+                    {user: req.user.id},
+                    {userRecipient: req.user.id}
+                ]
+            }).populate('user').populate('userRecipient').populate('incident')
+            return [user, messages]
+        }).spread(function(user, messages){
+                user.messages = messages
+                for(var i = 0; i < user.messages.length; i++){
+                    user.messages[i].user = UserHelpers.convertUserToSafe(user.messages[i].user.toJSON())
+                    user.messages[i].userRecipient = UserHelpers.convertUserToSafe(user.messages[i].userRecipient.toJSON())
+
+                    if (user.messages[i].user.id == user.id){user.messages[i].isSentMessage = true}
+                    user.messages[i].incident = user.messages[i].incident.toJSON()
+                    delete user.messages[i].incident.messages
+                }
+                return res.json(user)
+            }).fail(function(err){
+                if(err){return res.serverError();}
+            })
     },
     update : function(req, res){
         //TODO обработать ошибку

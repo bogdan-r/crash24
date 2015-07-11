@@ -12,7 +12,8 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
   'mapApiLoad'
   'CurrentPlaceStorage'
   'AccountIncidentCollection'
-  ($rootScope, $scope, $state, $stateParams, $sce, $q, $location, $timeout, Incident, Message, mapApiLoad, CurrentPlaceStorage, AccountIncidentCollection)->
+  'UserInfo'
+  ($rootScope, $scope, $state, $stateParams, $sce, $q, $location, $timeout, Incident, Message, mapApiLoad, CurrentPlaceStorage, AccountIncidentCollection, UserInfo)->
     #var
     _deferIncident = $q.defer()
     _sendMessageSuccessTimeout = null
@@ -39,8 +40,9 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
         params.userRecipient = $scope.incident.user
         params.incidentId = $scope.incident.id
         $scope.isLoadingSendMessage = true
-        $scope.messageSendSuccessed = true
         Message.sendMessage(params).$promise.then((message)->
+          UserInfo.get(true)
+          $scope.messageSendSuccessed = true
           $scope.isLoadingSendMessage = false
           $scope.resetIncidentMessageField()
           _sendMessageSuccessTimeout = $timeout(()->

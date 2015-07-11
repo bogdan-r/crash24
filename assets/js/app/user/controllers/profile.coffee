@@ -44,7 +44,6 @@ angular.module('app.modules.user.controllers').controller('ProfileCtrl', [
             _successTimeout = $timeout(()->
               $scope.updateSuccessed = false
             , 5000)
-            #if $scope.avatarUploader.queue.length != 0
 
           , (err)->
             $scope.isLoadingUserUpdate = false

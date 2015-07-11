@@ -640,3 +640,68 @@ html, body{
   font-size: 11px;
   color: #999;
 }
+
+
+
+
+
+
+/*USER MESSAGES*/
+.b-user-messages{
+
+}
+.b-user-messages__item{
+  padding: 20px 0;
+  border-bottom: 1px solid #e7ebee;
+  display: flex;
+}
+.b-user-messages__item__img-wrap{
+  margin-right: 25px;
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  overflow: hidden;
+  border-radius: 1000px;
+}
+.b-user-messages__item__content{
+  flex-grow: 1;
+}
+.b-user-messages__item__img{
+
+}
+.b-user-messages__item__title{
+  font-size: 22px;
+  font-family: Geneva, sans-serif;
+  margin-bottom: 10px;
+}
+.b-user-messages__users{
+  display: block;
+  cursor: pointer;
+}
+.b-user-messages__users__content{
+  display: block;
+  background: #f5f5f5;
+  font-size: 0.875em;
+  width: auto;
+  margin-left: 55px;
+  padding: 8px 10px;
+  position: relative;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  &:before{
+    border-color: transparent #f5f5f5 transparent transparent;
+    border-style: solid;
+    border-width: 6px;
+    content: "";
+    cursor: pointer;
+    left: -12px;
+    position: absolute;
+    top: 12px;
+  }
+}
+
+.b-user-messages__users__img{
+  border-radius: 100px;
+  float: left;
+}

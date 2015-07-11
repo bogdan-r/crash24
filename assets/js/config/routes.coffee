@@ -97,7 +97,6 @@ angular.module('app').config([
         resolve : {
           userLoad : ['UserInfo', '$state', (UserInfo, $state)->
             UserInfo.get().then((user)->
-              console.log(user)
               if user.isVerification == false
                 $state.go('account.verificateIt')
             )
@@ -139,6 +138,22 @@ angular.module('app').config([
             '@account' : {
               templateUrl : RouterHelper.templateUrl('user/account_messages')
               controller : 'AccountMessagesCtrl'
+            }
+          }
+          resolve: {
+            messagesByIncident: ['AccountIncidentCollection', 'UserInfo', (AccountIncidentCollection, UserInfo)->
+              AccountIncidentCollection.getAll().then(->
+                return UserInfo.getMessages()
+              )
+            ]
+          }
+        })
+    .state('account.messages.dialog', {
+          url : '/dialog?incident&user'
+          views : {
+            '@account' : {
+              templateUrl : RouterHelper.templateUrl('user/account_messages_dialog')
+              controller : 'AccountMessagesDialogCtrl'
             }
           }
         })
