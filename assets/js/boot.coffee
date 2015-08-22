@@ -1,4 +1,3 @@
-window.Components = 'app.components'
 angular.module('app', [
   'app.modules'
   'app.directives'

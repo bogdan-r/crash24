@@ -52,8 +52,8 @@ ErrorStorage.prototype.get = function(errName){
 }
 ErrorStorage.prototype.transformValidateErrors = function(errors){
     var invalidAttrs;
-    var exsistErrorValidation = errors.invalidAttributes && !_.isEmpty(errors.invalidAttributes)
-    var exsistRawErrorValidation = errors.toJSON().raw && errors.toJSON().raw.invalidAttributes
+    var exsistErrorValidation = !_.isUndefined(errors.invalidAttributes) && !_.isEmpty(errors.invalidAttributes);
+    var exsistRawErrorValidation = ('toJSON' in errors) && errors.toJSON().raw && errors.toJSON().raw.invalidAttributes;
 
     if(exsistErrorValidation){
         invalidAttrs = errors.invalidAttributes

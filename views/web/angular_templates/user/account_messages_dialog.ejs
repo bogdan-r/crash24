@@ -1,0 +1,39 @@
+<div class="main-box-header clearfix">
+  <h2>Сообщения</h2>
+</div>
+<div class="main-box-body clearfix">
+
+  <div class="conversation-wrapper message-dialog">
+    <div class="conversation-content message-dialog__content" cr-scroll-bottom>
+      <div class="conversation-inner message-dialog__inner">
+        <div class="conversation-item message-dialog__item clearfix" ng-class="{'item-right': message.isSentMessage, 'item-left':!message.isSentMessage}" ng-repeat="message in dialogInfo.messages">
+          <div class="conversation-user">
+            <img ng-src="{{dialogInfo.avatars.avatar}}" ng-if="!message.isSentMessage" alt=""/>
+            <img ng-src="{{userAvatar}}" ng-if="message.isSentMessage" alt=""/>
+          </div>
+          <div class="conversation-body">
+            <div class="name" ng-if="!message.isSentMessage">{{dialogInfo.name || dialogInfo.username}}</div>
+            <div class="name" ng-if="message.isSentMessage">{{user.name || user.username}}</div>
+            <div class="time hidden-xs">
+              {{message.createdAt | date:'medium'}}
+            </div>
+            <div class="text">
+              {{message.text}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conversation-new-message">
+      <form>
+        <div class="form-group">
+          <textarea ng-model="messageText" class="form-control" rows="2" placeholder="Введите ваше сообщение..." required="required"></textarea>
+        </div>
+
+        <div class="clearfix">
+          <button type="submit" class="btn btn-success pull-right" ng-click="sendMessage(messageText)">Отправить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

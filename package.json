@@ -29,13 +29,15 @@
     "passport-local": "1.0.0",
     "q": "^1.0.1",
     "rc": "~0.5.0",
-    "sails": "~0.10.1",
+    "sails": "0.10.1",
     "sails-disk": "~0.10.0",
     "sails-migrations": "^0.1.0",
     "sails-mongo": "^0.10.2",
     "sails-postgresql": "^0.10.4",
+    "sails-mandrill" : "~0.10.2",
     "underscore": "^1.6.0",
-    "moment" : "*"
+    "moment" : "*",
+    "password-generator" : "*"
   },
   "scripts": {
     "start": "node app.js",
@@ -50,6 +52,8 @@
   "license": "",
   "devDependencies": {
     "assert": "~1.1.1",
+    "should" : "*",
+    "supertest" : "*",
     "grunt-mocha-test": "~0.10.2",
     "mocha": "~1.19.0",
     "nock": "~0.31.3",
