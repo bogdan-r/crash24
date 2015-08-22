@@ -141,7 +141,7 @@ angular.module('app').config([
             }
           }
           resolve: {
-            messagesByIncident: ['AccountIncidentCollection', 'UserInfo', (AccountIncidentCollection, UserInfo)->
+            messagesByIncident: ['AccountIncidentCollection', 'UserInfo', 'userLoad', (AccountIncidentCollection, UserInfo, userLoad)->
               AccountIncidentCollection.getAll().then(->
                 return UserInfo.getMessages()
               )
@@ -149,7 +149,7 @@ angular.module('app').config([
           }
         })
     .state('account.messages.dialog', {
-          url : '/dialog?incident&user'
+          url : '/dialog?incident&user&type'
           views : {
             '@account' : {
               templateUrl : RouterHelper.templateUrl('user/account_messages_dialog')

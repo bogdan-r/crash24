@@ -42,8 +42,6 @@ module.exports = {
 
             });*/
 
-            console.log('http://allcrash.ru/user/verification?token=' + userParams.verificationToken)
-
             req.logIn(user, function(err){
                 return res.json(user.toJSON());
             })

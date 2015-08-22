@@ -8,6 +8,7 @@ angular.module('app.services').factory('UserInfo', [
 
       constructor : ()->
         @_user = {}
+        @messagesByIncident = {}
 
       get : (forcedLoad = false)->
         defer = $q.defer()
@@ -50,8 +51,13 @@ angular.module('app.services').factory('UserInfo', [
       getMessages : ()->
         @_convertMessagesByIncident()
 
-      getDialog : ()->
+      getDialogInfo : (incidentId, userId, type)->
+        currentTypeMessages = @messagesByIncident[type]
+        currentIncidentIndex = @_indexOfPropItem(currentTypeMessages, parseInt(incidentId))
+        currentUserIndex = @_indexOfPropItem(currentTypeMessages[currentIncidentIndex].users, parseInt(userId))
+        return currentTypeMessages[currentIncidentIndex].users[currentUserIndex]
 
+      addMessage : ()->
 
 
       _convertMessagesByIncident : ()->
@@ -86,7 +92,7 @@ angular.module('app.services').factory('UserInfo', [
               propMessageList : propMessageList
             })
 
-
+        @messagesByIncident = outputMessages
         outputMessages
 
       _addFormationMessageByIncident : (params)->
@@ -119,6 +125,7 @@ angular.module('app.services').factory('UserInfo', [
           primeryUserId
         else
           secondaryUserId
+
 
       _indexOfPropItem : (incomingObj, verifiableCondition)->
         index = -1
