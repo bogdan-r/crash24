@@ -39,6 +39,7 @@ module.exports.routes = {
     'put /api/user/password' : 'Api/userController.updatePassword',
     'post /api/user/uploadAvatar' : 'Api/userController.uploadAvatar',
     'get /api/user/verification' : 'Api/userController.verification',
+    'get /api/user/getVerificateTokenByEmail' : 'Api/userController.getVerificateTokenByEmail',
 
     /*incidents*/
         /*common*/

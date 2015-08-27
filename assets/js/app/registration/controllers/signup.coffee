@@ -1,8 +1,9 @@
 angular.module('app.modules.registration.controllers').controller('SignupCtrl', [
   '$scope'
   '$window'
+  '$state'
   'User'
-  ($scope, $window, User)->
+  ($scope, $window, $state, User)->
 
     #var
 

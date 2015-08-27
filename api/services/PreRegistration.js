@@ -18,6 +18,7 @@ PreRegistration.register = function(params){
         if(err){
             defer.reject(err)
         }else{
+            var port = parseInt(sails.config.port) === 80 ? '' : ':' + sails.config.port
             Email.send({
                 to : [{
                     name : user.username,
@@ -28,7 +29,7 @@ PreRegistration.register = function(params){
                     'Вы зарегестрировались на сайте allcrash.ru <br>' +
                     'Ваш пароль: ' + userParams.password + '<br>' +
                     'Для полноценного использования сайта, вам нужно подтвердить регистрацию ' +
-                    '<a href="http://allcrash.ru/user/verification?token=' + userParams.verificationToken + '">http://allcrach.ru/user/verification?token=' + userParams.verificationToken + '</a>'
+                    '<a href="http://allcrash.ru'+ port +'/user/verification?token=' + userParams.verificationToken + '">http://allcrach.ru'+ port +'/user/verification?token=' + userParams.verificationToken + '</a>'
             });
             defer.resolve(user)
         }
