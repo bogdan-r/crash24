@@ -21,9 +21,13 @@ angular.module('app.modules.user.controllers').controller('ProfileCtrl', [
       isLoadingUserUpdate : false
       isLoadingPassUpdate : false
       isLoadingAvatarUpdate : false
+      isLoadingVerificate : false
+
       updateSuccessed : false
       avatarUpdateSuccessed : false
       passwordUpdateSuccessed : false
+      verificateLoad : false
+      verificateLoadError : false
 
       avatarUploader : new FileUploader({
         url : '/api/user/uploadAvatar'
@@ -66,6 +70,21 @@ angular.module('app.modules.user.controllers').controller('ProfileCtrl', [
         , (err)->
           $scope.isLoadingPassUpdate = false
           $scope.errors = err.data.errors
+        )
+
+      getVerificateTokenByEmail : ()->
+        $scope.isLoadingVerificate = true
+        UserProfile.getVerificateTokenByEmail(null, ->
+          $scope.isLoadingVerificate = false
+          $scope.verificateLoad = true
+          $timeout(()->
+            $scope.verificateLoad = false
+          , 10000)
+        , (err)->
+          $scope.verificateLoadError = true
+          $timeout(()->
+            $scope.verificateLoadError = false
+          , 10000)
         )
 
 

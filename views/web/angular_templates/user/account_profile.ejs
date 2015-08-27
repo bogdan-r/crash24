@@ -8,16 +8,27 @@
         <i class="fa fa-info-circle fa-fw fa-lg"></i>
         Вашь аккаунт не подтвержден. Вам на почту было высланно письмо со ссылкой для подтверждение регистрации.
         Если вам не пришло письмо с подтверждением, вы можете отправить его еще раз.
-        <a href="#" ng-click="">Получить ссылку</a>
+        <a href="#" ng-click="getVerificateTokenByEmail()" ng-hide="isLoadingVerificate">Получить ссылку</a>
+        <i class="b-update-profile-form__loader fa fa-spinner fa-spin" ng-show="isLoadingVerificate"></i>
+    </div>
+    <div ng-if="!user.isVerification">
+      <div class="alert alert-success" ng-show="verificateLoad">
+        <i class="fa fa-check-circle fa-fw fa-lg"></i>
+        Вам на почтовый ящик было высланно письмо со ссылкой на подтверждение
+      </div>
+      <div class="alert alert-danger" ng-show="verificateLoadError">
+        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+        Что то пошло не так, попробуйте позже
+      </div>
     </div>
     <form ng-submit="updateProfileInfo(user)" class="b-update-profile-form" name="updateProfileForm">
         <div class="form-group" ng-class="{'has-error':errors.username.length}">
-            <label for="">Имя пользователя <sup>*</sup></label>
+            <label for="">Логин <sup>*</sup></label>
             <input type="text" ng-model="user.username" name="username" class="form-control" ng-focus="resetError('username')" required="required"/>
             <span class="help-block" ng-repeat="error in errors.username">
                 {{error}}
             </span>
-            <span class="help-block">Имя пользователя может содержать только латинские буквы, цифры и должно начинаться с буквы.</span>
+            <span class="help-block">Логин может содержать только латинские буквы, цифры и должно начинаться с буквы.</span>
         </div>
 
         <div class="form-group" ng-class="{'has-error':errors.email.length}">

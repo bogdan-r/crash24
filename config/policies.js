@@ -34,7 +34,8 @@ module.exports.policies = {
         profile : 'authenticated',
         uploadAvatar : 'authenticated',
         update : 'authenticated',
-        updatePassword : 'authenticated'
+        updatePassword : 'authenticated',
+        getVerificateTokenByEmail : 'authenticated'
     },
 
     /*incidents*/

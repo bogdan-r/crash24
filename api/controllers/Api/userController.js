@@ -18,6 +18,7 @@ module.exports = {
             password : req.param('password'),
             confirm_password : req.param('confirm_password')
         }
+        //TODO Вынести верификацию в отдельный сервис
         userParams.verificationToken = crypto.createHash('md5').update(sails.config.salt + userParams.username + userParams.email).digest('hex')
         if(userParams.password !== userParams.confirm_password){
             errors.add('confirm_password', 'Пароли не совпадают');
@@ -30,7 +31,9 @@ module.exports = {
                 var transformsErrors = errors.transformValidateErrors(err)
                 return res.badRequest(transformsErrors)
             }
-            /*Email.send({
+            //TODO Вынести отправку подтверждения в отдельный сервис
+            var port = parseInt(sails.config.port) === 80 ? '' : ':' + sails.config.port
+            Email.send({
                 to : [{
                     name : user.username,
                     email : user.email
@@ -38,9 +41,9 @@ module.exports = {
                 subject : 'Подтверждение регистрации',
                 html :
                     'Для подтверждения регистрации перейдите по ссылке ' +
-                    '<a href="http://allcrash.ru/user/verification?token=' + userParams.verificationToken + '">http://allcrach.ru/user/verification?token=' + userParams.verificationToken + '</a>'
+                    '<a href="http://allcrash.ru'+ port +'/user/verification?token=' + userParams.verificationToken + '">http://allcrach.ru'+ port +'/user/verification?token=' + userParams.verificationToken + '</a>'
 
-            });*/
+            });
 
             req.logIn(user, function(err){
                 return res.json(user.toJSON());
@@ -183,5 +186,27 @@ module.exports = {
 
         })
 
+    },
+    getVerificateTokenByEmail : function(req, res){
+      var errors = new ErrorStorage();
+      User.findOne(req.user.id).exec(function(err, user){
+        if (err) {return res.serverError()};
+
+        //TODO Вынести отправку подтверждения в отдельный сервис
+        var port = parseInt(sails.config.port) === 80 ? '' : ':' + sails.config.port
+        Email.send({
+          to : [{
+            name : user.username,
+            email : user.email
+          }],
+          subject : 'Подтверждение регистрации',
+          html :
+            'Вы повторно запросили ссылку для подтверждения регистрации: ' +
+              '<a href="http://allcrash.ru'+ port +'/user/verification?token=' + user.verificationToken + '">http://allcrach.ru'+ port +'/user/verification?token=' + user.verificationToken + '</a>'
+
+        });
+
+        return res.json({ok : true})
+      })
     }
 };

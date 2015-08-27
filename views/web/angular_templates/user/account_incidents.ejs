@@ -1,31 +1,39 @@
 <div class="main-box-header clearfix">
-    <h2>Видео</h2>
+  <h2>Видео</h2>
 </div>
 <div class="main-box-body clearfix">
-    <section class="b-incident-list row" ng-repeat="row in incidents">
-        <article class="b-incident-list__item col-sm-4" ng-repeat="incident in row">
-            <div class="thumbnail">
-                <div class="b-incident-list__item__img-wrap">
-                    <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail}}?cb={{cb}}" alt=""/>
-                    <div class="b-incident-list__item__settings">
-                        <div class="b-incident-list__item__show">
-                            <a href="" class="b-incident-list__item__settings__link" ui-sref="account.incidents.show({id : incident.id})">Посмотреть</a>
-                        </div>
-                        <div class="b-incident-list__item__edit">
-                            <a href="" class="b-incident-list__item__settings__link" ui-sref="account.incidents.edit({id : incident.id})">Редактировать</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="caption">
-                    <h2 class="b-incident-list__item__headline">{{incident.title}}</h2>
-                    <time class="b-incident-list__item__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
-                    <div class="b-incident-list__item__place">{{incident.place}}</div>
-                    <p class="b-incident-list__item__desc">{{incident.description | limitTo:100}}</p>
-                </div>
+  <section class="b-incident-list row" ng-repeat="row in incidents">
+    <article class="b-incident-list__item col-sm-4" ng-repeat="incident in row">
+      <div class="thumbnail">
+        <div class="b-incident-list__item__img-wrap">
+          <img class="b-incident-list__item__img img-responsive" ng-src="{{incident.video_thumbnail}}?cb={{cb}}"
+               alt=""/>
+
+          <div class="b-incident-list__item__settings">
+            <div class="b-incident-list__item__show">
+              <a href="" class="b-incident-list__item__settings__link"
+                 ui-sref="account.incidents.show({id : incident.id})">Посмотреть</a>
             </div>
-        </article>
-    </section>
-    <div class="b-incident-add">
-        <a ui-sref="account.incidents.add">Добавить видео</a>
-    </div>
+            <div class="b-incident-list__item__edit">
+              <a href="" class="b-incident-list__item__settings__link"
+                 ui-sref="account.incidents.edit({id : incident.id})">Редактировать</a>
+            </div>
+          </div>
+        </div>
+        <div class="caption">
+          <h2 class="b-incident-list__item__headline">{{incident.title}}</h2>
+          <time class="b-incident-list__item__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
+          <div class="b-incident-list__item__place">{{incident.place}}</div>
+          <p class="b-incident-list__item__desc">{{incident.description | limitTo:100}}</p>
+        </div>
+      </div>
+    </article>
+  </section>
+  <div class="alert alert-info" ng-if="!user.isVerification">
+    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+    Вашь аккаунт не подтвержден. Вы не можете добавлять видео.
+  </div>
+  <div class="b-incident-add" ng-if="user.isVerification">
+    <a ui-sref="account.incidents.add">Добавить видео</a>
+  </div>
 </div>

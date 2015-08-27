@@ -5,9 +5,13 @@ angular.module('app.resources').factory('UserProfile', [
       update : {
         method : 'PUT'
       }
-      updatePassword :{
+      updatePassword : {
         method : 'PUT'
         url : '/api/user/password'
+      }
+      getVerificateTokenByEmail : {
+        method : 'GET'
+        url : '/api/user/getVerificateTokenByEmail'
       }
     })
 
