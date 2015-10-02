@@ -7,14 +7,18 @@
 
 module.exports = {
 
-    attributes: {
-        text : {
-            type : 'string',
-            required : true
-        },
-        user : {model : 'user'},
-        userRecipient : {model : 'user'},
-        incident : {model : 'incident'}
+  attributes: {
+    text: {
+      type: 'string',
+      required: true
+    },
+    user: {model: 'user'},
+    userRecipient: {model: 'user'},
+    incident: {model: 'incident'},
+    isReading : {
+      type : 'boolean',
+      defaultsTo : false
     }
+  }
 };
 

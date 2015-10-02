@@ -25,6 +25,7 @@ angular.module('app.modules.user.controllers').controller('AccountMessagesDialog
 
         Message.sendMessage(params).$promise.then((message)->
           UserInfo.addMessage()
+          #TODO сделать без перезагрузки
           location.reload()
         )
     })
@@ -34,6 +35,7 @@ angular.module('app.modules.user.controllers').controller('AccountMessagesDialog
     #event handler
 
     #run
+    UserInfo.getUnreadMessagesCount()
 
 
 ])

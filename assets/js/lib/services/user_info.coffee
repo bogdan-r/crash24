@@ -59,6 +59,9 @@ angular.module('app.services').factory('UserInfo', [
 
       addMessage : ()->
 
+      getUnreadMessagesCount : ()->
+        console.log @messagesByIncident
+
 
       _convertMessagesByIncident : ()->
         propMessageList = ['id', 'createdAt', 'isSentMessage', 'text', 'updatedAt']
