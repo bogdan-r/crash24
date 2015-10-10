@@ -1,5 +1,5 @@
 var util = require('util');
-var _ = require('underscore');
+var _ = require('lodash');
 function ErrorStorage (errors){
     this._errors = {};
     if(typeof errors == 'object'){
