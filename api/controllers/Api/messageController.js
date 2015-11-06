@@ -75,10 +75,5 @@ module.exports = {
         var transformsErrors = errors.transformValidateErrors(err);
         res.badRequest(transformsErrors)
       })
-  },
-  sendAnswer: function(req, res){
-    var errors = new ErrorStorage();
-    var messageProvider = new MessageProvider();
-
   }
 };
