@@ -173,13 +173,21 @@ html, body{
 
 
 
-/*LOGIN*/
+/*AUTH*/
 .b-auth{}
 .b-auth__title{
   padding-left: 0;
   margin-top: -10px;
   margin-bottom: 25px;
 }
+
+/*verification*/
+.b-verification-page{
+  margin-top: 60px;
+}
+
+
+
 
 
 
@@ -189,12 +197,16 @@ html, body{
 
 
 /*HEADER*/
+.navbar > .container .navbar-brand{
+  width: 170px;
+}
 .b-nav-menu{
 
 }
-.b-nav-menu__item{
-
+.b-navbar__brand-small{
+  font-size: 0.4em;
 }
+.b-nav-menu__item{}
 .b-nav-menu__link{
   transition: background-color 0.2s ease, color 0.2s ease;
   line-height: 18px !important;
@@ -496,16 +508,30 @@ html, body{
 }
 .b-incident-video__close{
   position: absolute;
-  top: 15px;
+  top: 8px;
   right: 15px;
-  color: #404040;
-  font-size: 50px;
+  color: #606060;
+  font-size: 30px;
   line-height: 100%;
   &:hover{
     color: #000;
     text-decoration: none;
   }
 }
+
+.b-incident-video__send{
+  position: absolute;
+  top: 8px;
+  right: 55px;
+  color: #606060;
+  font-size: 30px;
+  line-height: 100%;
+  &:hover{
+    color: #000;
+    text-decoration: none;
+  }
+}
+
 .b-incident-video__headline{
   padding: 0 50px 0 0;
 }
@@ -617,4 +643,76 @@ html, body{
 .b-dropdown__list__item__minor{
   font-size: 11px;
   color: #999;
+}
+
+
+
+
+
+
+/*USER MESSAGES*/
+.b-user-messages{
+
+}
+.b-user-messages__item{
+  padding: 20px 0;
+  border-bottom: 1px solid #e7ebee;
+  display: flex;
+}
+.b-user-messages__item__img-wrap{
+  margin-right: 25px;
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  overflow: hidden;
+  border-radius: 1000px;
+}
+.b-user-messages__item__content{
+  flex-grow: 1;
+}
+.b-user-messages__item__img{
+
+}
+.b-user-messages__item__title{
+  font-size: 22px;
+  font-family: Geneva, sans-serif;
+  margin-bottom: 10px;
+}
+.b-user-messages__users{
+  display: block;
+  cursor: pointer;
+}
+.b-user-messages__users__content{
+  display: block;
+  background: #f5f5f5;
+  font-size: 0.875em;
+  width: auto;
+  margin-left: 55px;
+  padding: 8px 10px;
+  position: relative;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  &:before{
+    border-color: transparent #f5f5f5 transparent transparent;
+    border-style: solid;
+    border-width: 6px;
+    content: "";
+    cursor: pointer;
+    left: -12px;
+    position: absolute;
+    top: 12px;
+  }
+}
+
+.b-user-messages__users__img{
+  border-radius: 100px;
+  float: left;
+}
+
+
+
+.message-dialog__content{
+  max-height: 400px;
+  overflow: auto;
 }

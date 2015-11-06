@@ -1,7 +1,8 @@
 <div class="b-placer b-placer_result">
     <section class="b-result">
         <article class="b-incident-video">
-            <a href="#" class="b-incident-video__close anim-b-incident-video__close" ng-click="goToSearch()">&times;</a>
+            <!--<a href="#" class="b-incident-video__send"><i class="fa fa-envelope-o"></i></a>-->
+            <a href="#" class="b-incident-video__close anim-b-incident-video__close" ng-click="goToSearch()"><i class="fa fa-times"></i></a>
             <h1 class="b-incident-video__headline">{{incident.title}}</h1>
             <time datetime="{{incident.date}}" class="b-incident-video__time">{{incident.date | date:'dd.MM.yyyy'}}</time>
             <div class="b-incident-video__place">
@@ -11,6 +12,59 @@
                 <iframe width="570" height="321" ng-src="{{trustVideoSrc(incident.video)}}" frameborder="0" allowfullscreen></iframe>
             </div>
             <p class="b-incident-video__descr">{{incident.description}}</p>
+
+            <div ng-if="!isOwnIncident">
+                <button class="btn btn-primary btn-lg" ng-click="showMessageForm()" ng-hide="isShowMessageForm">
+                    Написать автору
+                </button>
+
+                <div class="b-incident-video__message" ng-show="isShowMessageForm">
+                    <form  class="b-incident-video__message__form" name="incidentMessageForm" ng-submit="sendMessage(incidentMessage)">
+                        <% if(!isAuth){%>
+                        <div class="form-group" ng-class="{'has-error':errors.username.length}">
+                            <label for="">Имя <sup>*</sup></label>
+                            <input name="username" ng-model="incidentMessage.username" ng-focus="resetError('username')" type="text" class="form-control" required="required"/>
+                            <span class="help-block">Допускаються латинские символы, цифры, знак подчеркивания.</span>
+                            <div>
+                            <span class="help-block" ng-repeat="error in errors.username">
+                                {{error}}
+                            </span>
+                            </div>
+
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':errors.email.length}">
+                            <label for="">Email <sup>*</sup></label>
+                            <input name="username" ng-model="incidentMessage.email" ng-focus="resetError('email')" type="text" class="form-control" required="required"/>
+                        <span class="help-block" ng-repeat="error in errors.email">
+                            {{error}}
+                        </span>
+                        </div>
+                        <%}%>
+                        <div class="form-group">
+                            <label for="">Текст сообщения <sup>*</sup></label>
+                            <textarea name="title" ng-model="incidentMessage.text" class="form-control" required="required"></textarea>
+                        </div>
+                        <div class="alert alert-success" ng-show="messageSendSuccessed">
+                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                            Сообщение отправленно
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg" ng-disabled="isLoadingSendMessage">
+                                Отправить сообщение
+                            </button>
+                            <i class="fa fa-spinner fa-spin" ng-show="isLoadingSendMessage"></i>
+                        </div>
+
+
+                        <% if(!isAuth){%>
+                        <div>
+                            <span class="help-block">На указанную вами почту придет письмо с данными для входа на сайт.</span>
+                        </div>
+                        <%}%>
+                    </form>
+                </div>
+            </div>
+
         </article>
     </section>
 </div>

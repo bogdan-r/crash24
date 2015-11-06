@@ -38,6 +38,8 @@ module.exports.routes = {
     'put /api/user/profile' : 'Api/userController.update',
     'put /api/user/password' : 'Api/userController.updatePassword',
     'post /api/user/uploadAvatar' : 'Api/userController.uploadAvatar',
+    'get /api/user/verification' : 'Api/userController.verification',
+    'get /api/user/getVerificateTokenByEmail' : 'Api/userController.getVerificateTokenByEmail',
 
     /*incidents*/
         /*common*/
@@ -50,6 +52,9 @@ module.exports.routes = {
         'get /api/account/incident' :      'Api/incidentController.findByAccount',
         'put /api/incident/:id' :          'Api/incidentController.update',
 
+
+    /*messages*/
+    'post /api/send_message' : 'Api/messageController.create',
 
     /*locate info*/
     'get /api/get_country_by_name/:title' : 'Api/locateInfoController.findCountryByName',

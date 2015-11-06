@@ -54,6 +54,11 @@ angular.module('app').config([
         template : ''
         controller : 'LogoutCtrl'
       })
+    .state('verification', {
+          url : '/user/verification?token'
+          templateUrl : RouterHelper.templateUrl('pages/verification')
+          controller : 'VerificationCtrl'
+        })
     .state('account', {
         abstract : true
         url : '/account'
@@ -89,6 +94,14 @@ angular.module('app').config([
             controller : 'AccountIncidentsAddCtrl'
           }
         }
+        resolve : {
+          userLoad : ['UserInfo', '$state', (UserInfo, $state)->
+            UserInfo.get().then((user)->
+              if user.isVerification == false
+                $state.go('account.verificateIt')
+            )
+          ]
+        }
 
       })
     .state('account.incidents.show', {
@@ -110,4 +123,38 @@ angular.module('app').config([
           }
         }
       })
+    .state('account.verificateIt', {
+          url : '/edit/verificate'
+          views : {
+            '@account' : {
+              templateUrl : RouterHelper.templateUrl('user/account_verificate_forbidden')
+              controller : 'AccountIncidentsEditCtrl'
+            }
+          }
+        })
+    .state('account.messages', {
+          url : '/messages'
+          views : {
+            '@account' : {
+              templateUrl : RouterHelper.templateUrl('user/account_messages')
+              controller : 'AccountMessagesCtrl'
+            }
+          }
+          resolve: {
+            messagesByIncident: ['AccountIncidentCollection', 'UserInfo', 'userLoad', (AccountIncidentCollection, UserInfo, userLoad)->
+              AccountIncidentCollection.getAll().then(->
+                return UserInfo.getMessages()
+              )
+            ]
+          }
+        })
+    .state('account.messages.dialog', {
+          url : '/dialog?incident&user&type'
+          views : {
+            '@account' : {
+              templateUrl : RouterHelper.templateUrl('user/account_messages_dialog')
+              controller : 'AccountMessagesDialogCtrl'
+            }
+          }
+        })
 ])

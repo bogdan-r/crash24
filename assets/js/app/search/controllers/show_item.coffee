@@ -8,15 +8,27 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
   '$location'
   '$timeout'
   'Incident'
+  'Message'
   'mapApiLoad'
   'CurrentPlaceStorage'
-  ($rootScope, $scope, $state, $stateParams, $sce, $q, $location, $timeout, Incident, mapApiLoad, CurrentPlaceStorage)->
+  'AccountIncidentCollection'
+  'UserInfo'
+  ($rootScope, $scope, $state, $stateParams, $sce, $q, $location, $timeout, Incident, Message, mapApiLoad, CurrentPlaceStorage, AccountIncidentCollection, UserInfo)->
     #var
     _deferIncident = $q.defer()
+    _sendMessageSuccessTimeout = null
 
     #scope
     _.extend($scope, {
       incident : {}
+      errors : {}
+      incidentMessage : {}
+      isShowMessageForm : false
+      isOwnIncident : false
+      isLoadingSendMessage : false
+
+      messageSendSuccessed : false
+
       trustVideoSrc : (src)->
         $sce.trustAsResourceUrl(src)
 
@@ -24,6 +36,32 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
         $rootScope.$broadcast('closeIncidentItem', $scope.incident)
         $state.go('search.result', CurrentPlaceStorage.getPlaceParams())
 
+      sendMessage : (params)->
+        params.userRecipient = $scope.incident.user
+        params.incidentId = $scope.incident.id
+        $scope.isLoadingSendMessage = true
+        Message.sendMessage(params).$promise.then((message)->
+          UserInfo.get(true)
+          $scope.messageSendSuccessed = true
+          $scope.isLoadingSendMessage = false
+          $scope.resetIncidentMessageField()
+          _sendMessageSuccessTimeout = $timeout(()->
+            $scope.messageSendSuccessed = false
+          , 5000)
+        , (err)->
+          $scope.isLoadingSendMessage = false
+          $scope.errors = err.data.errors
+        )
+
+      showMessageForm : ()->
+        $scope.isShowMessageForm = true
+
+      resetError : (error)->
+        $scope.errors[error] = []
+
+      resetIncidentMessageField : ()->
+        for name, val of $scope.incidentMessage
+          $scope.incidentMessage[name] = ''
     })
 
     #helpers
@@ -44,6 +82,12 @@ angular.module('app.modules.search.controllers').controller('IncidentShowFromRes
     #run
     Incident.get({id : $stateParams.id}, (incident)->
       $scope.incident = incident
+      AccountIncidentCollection.get(incident.id).then((incidentCollectionItem)->
+        if _.isUndefined(incidentCollectionItem)
+          $scope.isOwnIncident = false
+        else
+          $scope.isOwnIncident = true
+      )
       mapApiLoad(()->
         $rootScope.$broadcast('loadIncidentItem', incident)
       )
