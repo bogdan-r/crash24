@@ -157,4 +157,18 @@ angular.module('app').config([
             }
           }
         })
+    .state('pages', {
+      abstract : true
+      url : '/pages'
+      views : {
+        '' : {
+          templateUrl : RouterHelper.templateUrl('pages/common')
+        }
+      }
+      controller : 'CommonPageCtrl'
+    })
+    .state('pages.rules', {
+      url : '/rules'
+      templateUrl : RouterHelper.templateUrl('pages/rules')
+    })
 ])
