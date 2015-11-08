@@ -2,6 +2,9 @@
 
 import angular from 'angular'
 
+import StoreService from './store_service'
+
 export default angular.module('app.services', [
 
-]).name
+]).factory('StoreFactory', StoreService)
+  .name
