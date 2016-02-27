@@ -15,19 +15,22 @@ module.exports = {
       userRecipient: req.param('userRecipient'),
       userIdIncident: req.param('userIdIncident'),
       incident: req.param('incidentId')
-    }
+    };
     var userParams = {
       username: req.param('username'),
       email: req.param('email')
-    }
+    };
 
 
-    if(MessageProvider.isWrongParamsData(messageParams)){
+    if (MessageProvider.isWrongParamsData(messageParams)) {
       errors.add('common', 'Неправильные данные')
       return res.badRequest(errors.get())
     }
 
-    Incident.find({id: messageParams.incident, user: messageParams.userIdIncident || messageParams.userRecipient}).then(function (incident) {
+    Incident.find({
+      id: messageParams.incident,
+      user: messageParams.userIdIncident || messageParams.userRecipient
+    }).then(function (incident) {
       if (incident.length === 0) {
         errors.add('common', 'У данного пользователя нет такого видео');
         throw new Error();
@@ -43,37 +46,37 @@ module.exports = {
       }
 
     }).then(function (user) {
-        if (user) {
-          messageParams.user = user.id;
-        }
+      if (user) {
+        messageParams.user = user.id;
+      }
 
-        if (parseInt(messageParams.user) == parseInt(messageParams.userRecipient)) {
-          errors.add('common', 'Нельзя отправить сообщение себе');
-          throw new Error();
-        }
-        return Message.create(messageParams)
+      if (parseInt(messageParams.user) == parseInt(messageParams.userRecipient)) {
+        errors.add('common', 'Нельзя отправить сообщение себе');
+        throw new Error();
+      }
+      return Message.create(messageParams)
 
-      }).then(function (message) {
-        return [message, User.findOne(messageParams.userRecipient)]
+    }).then(function (message) {
+      return [message, User.findOne(messageParams.userRecipient)]
 
-      }).spread(function (message, userRecipient) {
-        /*Email.send({
-          to: [
-            {
-              name: userRecipient.username,
-              email: userRecipient.email
-            }
-          ],
-          subject: 'Новое сообщение',
-          text: 'Вы получили новое сообщение, для прочтения войдите в личный кабинет'
-        }, function (err) {
-          console.log(err)
-        });*/
+    }).spread(function (message, userRecipient) {
+      /*Email.send({
+       to: [
+       {
+       name: userRecipient.username,
+       email: userRecipient.email
+       }
+       ],
+       subject: 'Новое сообщение',
+       text: 'Вы получили новое сообщение, для прочтения войдите в личный кабинет'
+       }, function (err) {
+       console.log(err)
+       });*/
 
-        return res.json(message)
-      }).fail(function (err) {
-        var transformsErrors = errors.transformValidateErrors(err);
-        res.badRequest(transformsErrors)
-      })
+      return res.json(message)
+    }).fail(function (err) {
+      var transformsErrors = errors.transformValidateErrors(err);
+      res.badRequest(transformsErrors)
+    })
   }
 };

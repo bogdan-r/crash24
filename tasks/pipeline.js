@@ -25,60 +25,7 @@ var cssFilesToInject = [
 
 // Client-side javascript files to inject in order
 // (uses Grunt-style wildcard/glob/splat expressions)
-var jsFilesToInject = [
-
-	// Dependencies like sails.io.js, jQuery, or Angular
-	// are brought in here
-	'js/dependencies/jquery-1.11.0.min.js',
-	'js/dependencies/underscore-min.js',
-	'js/dependencies/select2.min.js',
-	'js/dependencies/angular/angular.min.js',
-	'js/dependencies/angular/*.js',
-	'js/dependencies/bootstrap/*.js',
-	'js/dependencies/**/*.js',
-
-	// All of the rest of your client-side js files
-	// will be injected here in no particular order.
-    'js/boot.js',
-    /*configs*/
-	'js/config/**/*.js',
-    /*libs*/
-        /*components*/
-        'js/lib/components/module.js',
-        'js/lib/components/**/*.js',
-        /*directives*/
-        'js/lib/directives/module.js',
-        'js/lib/directives/**/*.js',
-        /*filters*/
-        'js/lib/filters/module.js',
-        'js/lib/filters/**/*.js',
-        /*resourse*/
-        'js/lib/resourse/module.js',
-        'js/lib/resourse/**/*.js',
-        /*services*/
-        'js/lib/services/module.js',
-        'js/lib/services/**/*.js',
-    /*app*/
-        /*modal windows*/
-        'js/app/modals/module.js',
-        'js/app/modals/**/*.js',
-        /*pages*/
-        'js/app/pages/module.js',
-        'js/app/pages/**/*.js',
-        /*control panel*/
-        'js/app/control_panel/module.js',
-        'js/app/control_panel/**/*.js',
-        /*registration*/
-        'js/app/registration/module.js',
-        'js/app/registration/**/*.js',
-        /*user*/
-        'js/app/user/module.js',
-        'js/app/user/**/*.js',
-        /*search*/
-        'js/app/search/module.js',
-        'js/app/search/**/*.js',
-    'js/app/app.js'
-];
+var jsFilesToInject = [];
 
 
 // Client-side HTML templates are injected using the sources below

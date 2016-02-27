@@ -7,39 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,300,700&subset=latin,cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/bootstrap/bootstrap.css">
-    <link rel="stylesheet" href="/styles/libs/nanoscroller.css">
-    <link rel="stylesheet" href="/styles/compiled/layout.css">
-    <link rel="stylesheet" href="/styles/compiled/elements.css">
-    <link rel="stylesheet" href="/styles/compiled/calendar.css">
-    <link rel="stylesheet" href="/styles/compiled/wizard.css">
-    <link rel="stylesheet" href="/styles/importer.css">
-    <link rel="stylesheet" href="/styles/libs/bootstrap-timepicker.css">
-    <link rel="stylesheet" href="/styles/libs/bootstrap-timepicker.min.css">
-    <link rel="stylesheet" href="/styles/libs/bootstrap-wizard.css">
-    <link rel="stylesheet" href="/styles/libs/datepicker.css">
-    <link rel="stylesheet" href="/styles/libs/daterangepicker.css">
-    <link rel="stylesheet" href="/styles/libs/dropzone.css">
-    <link rel="stylesheet" href="/styles/libs/font-awesome.css">
-    <link rel="stylesheet" href="/styles/libs/font-awesome.min.css">
-    <link rel="stylesheet" href="/styles/libs/fullcalendar.css">
-    <link rel="stylesheet" href="/styles/libs/fullcalendar.print.css">
-    <link rel="stylesheet" href="/styles/libs/jquery-jvectormap-1.1.1.css">
-    <link rel="stylesheet" href="/styles/libs/jquery-jvectormap-1.2.2.css">
-    <link rel="stylesheet" href="/styles/libs/jquery-ui.custom_ZATIAL_SA_NEPOUZIVA.css">
-    <link rel="stylesheet" href="/styles/libs/jquery.nouislider.css">
-    <link rel="stylesheet" href="/styles/libs/jquery.nouislider.min.css">
-    <link rel="stylesheet" href="/styles/libs/magnific-popup.css">
-    <link rel="stylesheet" href="/styles/libs/morris.css">
-    <link rel="stylesheet" href="/styles/libs/select2.css">
-    <link rel="stylesheet" href="/styles/libs/xcharts.css">
-    <link rel="stylesheet" href="/styles/libs/xcharts.min.css">
+    <link rel="stylesheet" href="/web.css">
     <!--STYLES END-->
 </head>
 
 <body class="content-wrapper-no-mar">
 <!-- Yandex.Metrika counter -->
-<script type="text/javascript">
+<!--<script type="text/javascript">
     var yaParams = {/*Здесь параметры визита*/};
 </script>
 
@@ -69,7 +43,7 @@
     })(document, window, "yandex_metrika_callbacks");
 </script>
 <noscript><div><img src="//mc.yandex.ru/watch/26881080" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+&lt;!&ndash; /Yandex.Metrika counter &ndash;&gt;
 
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -79,7 +53,7 @@
 
     ga('create', 'UA-56294302-1', 'auto');
 
-</script>
+</script>-->
     <%- partial('web/shared/navbar') %>
     <div id="page-wrapper" class="container">
         <div class="row">
@@ -89,92 +63,6 @@
         </div>
     </div>
 
-
-    <!--TEMPLATES-->
-    
-    <!--TEMPLATES END-->
-
-
-    <!--<script src="/js/dependencies/jquery-1.11.0.min.js"></script>
-    <script src="/js/dependencies/underscore-min.js"></script>
-    <script src="/js/dependencies/select2.min.js"></script>
-    <script src="/js/dependencies/angular/angular.min.js"></script>
-    <script src="/js/dependencies/angular/angular-animate.min.js"></script>
-    <script src="/js/dependencies/angular/angular-cookies.min.js"></script>
-    <script src="/js/dependencies/angular/angular-file-upload.min.js"></script>
-    <script src="/js/dependencies/angular/angular-loader.min.js"></script>
-    <script src="/js/dependencies/angular/angular-locale_ru-ru.js"></script>
-    <script src="/js/dependencies/angular/angular-resource.min.js"></script>
-    <script src="/js/dependencies/angular/angular-route.min.js"></script>
-    <script src="/js/dependencies/angular/angular-sanitize.min.js"></script>
-    <script src="/js/dependencies/angular/angular-ui-router.min.js"></script>
-    <script src="/js/dependencies/angular/angulartics-ga.js"></script>
-    <script src="/js/dependencies/angular/angulartics.js"></script>
-    <script src="/js/dependencies/angular/ui-bootstrap-tpls-0.11.0.js"></script>
-    <script src="/js/dependencies/angular/ya-map.js"></script>
-    <script src="/js/dependencies/bootstrap/bootstrap.min.js"></script>
-    <script src="/js/dependencies/bootstrap-datepicker.js"></script>
-    <script src="/js/dependencies/bootstrap-datepicker.ru.js"></script>
-    <script src="/js/dependencies/moment.min.js"></script>
-    <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/boot.js"></script>
-    <script src="/js/config/application.js"></script>
-    <script src="/js/config/router_helper.js"></script>
-    <script src="/js/config/routes.js"></script>
-    <script src="/js/lib/components/module.js"></script>
-    <script src="/js/lib/components/dropdown.js"></script>
-    <script src="/js/lib/components/locate_definition.js"></script>
-    <script src="/js/lib/components/setting_access.js"></script>
-    <script src="/js/lib/directives/module.js"></script>
-    <script src="/js/lib/directives/datepicker.js"></script>
-    <script src="/js/lib/directives/prevent_submit.js"></script>
-    <script src="/js/lib/directives/repeat_complite.js"></script>
-    <script src="/js/lib/directives/scrollBottom.js"></script>
-    <script src="/js/lib/directives/scroll_offset_init.js"></script>
-    <script src="/js/lib/directives/watch_scroll_offset.js"></script>
-    <script src="/js/lib/filters/module.js"></script>
-    <script src="/js/lib/filters/split_apart.js"></script>
-    <script src="/js/lib/resourse/module.js"></script>
-    <script src="/js/lib/resourse/Incident.js"></script>
-    <script src="/js/lib/resourse/LocateInfo.js"></script>
-    <script src="/js/lib/resourse/Message.js"></script>
-    <script src="/js/lib/resourse/Session.js"></script>
-    <script src="/js/lib/resourse/User.js"></script>
-    <script src="/js/lib/resourse/UserProfile.js"></script>
-    <script src="/js/lib/services/module.js"></script>
-    <script src="/js/lib/services/data_storage.js"></script>
-    <script src="/js/lib/services/kladr.js"></script>
-    <script src="/js/lib/services/user_info.js"></script>
-    <script src="/js/app/modals/module.js"></script>
-    <script src="/js/app/modals/controllers/confirm_locate.js"></script>
-    <script src="/js/app/pages/module.js"></script>
-    <script src="/js/app/pages/controllers/verification.js"></script>
-    <script src="/js/app/pages/controllers/welcome.js"></script>
-    <script src="/js/app/control_panel/module.js"></script>
-    <script src="/js/app/control_panel/controllers/navbar.js"></script>
-    <script src="/js/app/registration/module.js"></script>
-    <script src="/js/app/registration/controllers/logout.js"></script>
-    <script src="/js/app/registration/controllers/signin.js"></script>
-    <script src="/js/app/registration/controllers/signup.js"></script>
-    <script src="/js/app/user/module.js"></script>
-    <script src="/js/app/user/controllers/account.js"></script>
-    <script src="/js/app/user/controllers/account_incident.js"></script>
-    <script src="/js/app/user/controllers/account_incident_add.js"></script>
-    <script src="/js/app/user/controllers/account_incident_edit.js"></script>
-    <script src="/js/app/user/controllers/account_incident_show.js"></script>
-    <script src="/js/app/user/controllers/account_messages.js"></script>
-    <script src="/js/app/user/controllers/account_messages_dialog.js"></script>
-    <script src="/js/app/user/controllers/profile.js"></script>
-    <script src="/js/app/user/services/account_incident_collection.js"></script>
-    <script src="/js/app/search/module.js"></script>
-    <script src="/js/app/search/controllers/search_filters.js"></script>
-    <script src="/js/app/search/controllers/search_map.js"></script>
-    <script src="/js/app/search/controllers/search_result.js"></script>
-    <script src="/js/app/search/controllers/show_item.js"></script>
-    <script src="/js/app/search/services/current_place_storage.js"></script>
-    <script src="/js/app/search/services/filtersName.js"></script>
-    <script src="/js/app/search/services/map_point_collection.js"></script>
-    <script src="/js/app/app.js"></script>-->
     <script src="/js/web/web.bundle.js"></script>
 
 </body>
